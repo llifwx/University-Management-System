@@ -1,0 +1,27 @@
+[project]
+name = "university-backend"
+version = "1.0.0"
+description = "University course registration and timetable API"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.115,<1", "uvicorn[standard]>=0.34,<1",
+  "SQLAlchemy>=2.0.38,<2.1", "asyncpg>=0.30,<1", "alembic>=1.14,<2",
+  "pydantic[email]>=2.10,<3", "pydantic-settings>=2.7,<3",
+  "PyJWT>=2.10,<3", "argon2-cffi>=23.1,<26", "python-multipart>=0.0.20,<1",
+]
+
+[dependency-groups]
+dev = ["pytest>=8.3,<10", "pytest-asyncio>=0.25,<2", "httpx>=0.28,<1", "ruff>=0.9,<1"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["B008"]
