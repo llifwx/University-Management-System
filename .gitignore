@@ -16,3 +16,5 @@ dist/
 .postgres-test/
 .postgres-test.log
 .next/
+.claude/
+skills-lock.json
