@@ -1,7 +1,7 @@
 # University Management System
 
-A BIS university project backend for course registration and recurring weekly timetables.
-The monorepo contains an operational FastAPI API and a reserved `frontend/` directory.
+A BIS university project for course registration and recurring weekly timetables.
+The monorepo contains a FastAPI API and a Next.js frontend (see [frontend/README.md](frontend/README.md)).
 Python 3.12+, PostgreSQL 17, SQLAlchemy 2 async ORM/asyncpg, Alembic, Pydantic 2,
 Argon2, JWT, pytest/httpx and Ruff are used. `backend/uv.lock` pins the resolved dependencies.
 
@@ -27,7 +27,7 @@ backend/
   alembic/versions/    # explicit initial schema; reversible migrations
   scripts/            # explicit bootstrap, idempotent development seed, startup
   tests/              # unit, HTTP, integrity, PostgreSQL concurrency tests
-frontend/README.md
+frontend/              # Next.js App Router + Feature-Sliced Design
 compose.yaml
 .env.example
 ```
@@ -53,14 +53,16 @@ docker compose up --build -d
 docker compose exec backend .venv/bin/python -m scripts.bootstrap_admin
 ```
 
-API: <http://localhost:8000>, Swagger: <http://localhost:8000/docs>,
+Frontend: <http://localhost:3000>, API: <http://localhost:8000>, Swagger: <http://localhost:8000/docs>,
 OpenAPI: <http://localhost:8000/openapi.json>. `/health` checks process health;
 `/ready` checks PostgreSQL connectivity and returns 503 on failure.
 
 Compose persists data in `postgres_data`, waits for PostgreSQL's health check, and runs
 `alembic upgrade head` before starting Uvicorn. A migration failure prevents API startup.
 The backend runs as an unprivileged container user. The source mount permits editing code;
-restart the backend after edits. The frontend is independent and is not a Compose dependency.
+restart the backend after edits. The frontend starts after the backend is healthy, holds no data, and
+never touches the database or its volume. Set `BACKEND_PORT`, `FRONTEND_PORT` and `POSTGRES_PORT` to change host ports.
+Behind HTTPS, set `COOKIE_SECURE=true`.
 Only run one migration runner at a time when scaling beyond the supplied single backend service.
 If a local PostgreSQL instance already uses port 5432, set `POSTGRES_PORT=55433` and update
 the local `DATABASE_URL` port accordingly; containers still communicate on PostgreSQL port 5432.
@@ -320,12 +322,17 @@ seat, duplicate registration and an admin meeting edit racing enrollment.
 See [the executed validation report](backend/VALIDATION.md) for actual commands, test results,
 migration round-trip verification and Docker smoke checks from this implementation session.
 
-## Future frontend
+## Frontend
 
-Keep frontend dependencies under `frontend/`. Add its exact origin to the JSON `CORS_ORIGINS` list
-and restart the API. Use bearer headers, store access tokens in memory, and rotate refresh tokens
-atomically; do not run multiple refresh attempts for the same session concurrently. The supplied
-API returns tokens in JSON and does not use cookies. Choose secure refresh storage appropriate to
-the eventual frontend (a server-side frontend session is suitable). All API contracts stay under
-`/api/v1`; no frontend source or build pipeline is embedded in FastAPI. JSON request logs include
-request ID, method, path, status and duration; credentials and token bodies are not logged.
+`frontend/` is a Next.js App Router application structured with Feature-Sliced Design. Browsers talk only to
+Next.js, which keeps tokens in HttpOnly cookies and forwards API calls with the bearer token, so `CORS_ORIGINS` is not
+needed for it. No frontend source or build pipeline is embedded in FastAPI. JSON request logs include request ID, method,
+path, status and duration; credentials and token bodies are not logged. Architecture, authentication, testing and known
+limitations are in [frontend/README.md](frontend/README.md).
+
+```bash
+docker compose up --build -d                                   # postgres, backend, frontend
+docker compose exec backend .venv/bin/python -m scripts.bootstrap_admin
+docker compose exec backend .venv/bin/python -m scripts.seed   # optional demo data, development only
+cd frontend && npm install && npm run dev                      # or run the frontend outside Docker
+```
