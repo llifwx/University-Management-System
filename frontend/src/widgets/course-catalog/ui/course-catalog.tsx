@@ -70,7 +70,7 @@ export function CourseCatalog() {
                   const summary = sectionsByCourse.get(course.course_id);
                   return (
                     <li key={course.course_id}>
-                      <Card className="hover:border-primary/40 h-full shadow-sm transition-colors">
+                      <Card className="hover:border-primary/40 relative h-full shadow-sm transition-colors">
                         <CardContent className="flex h-full flex-col gap-2 p-5">
                           <div className="flex items-center justify-between gap-2">
                             <Badge variant="secondary">{course.course_code}</Badge>
