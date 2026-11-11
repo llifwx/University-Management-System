@@ -1,3 +1,5 @@
+import json
+import logging
 from datetime import UTC, datetime, timedelta
 from uuid import UUID, uuid4
 
@@ -19,13 +21,39 @@ from app.core.security import (
     verify_password,
 )
 from app.db.session import SessionFactory
-from app.models import AuthSession, RefreshToken, User
+from app.models import AuthSession, LoginFailure, RefreshToken, User
 from app.modules.auth import repository as auth_repo
-from app.modules.auth.schemas import StaffCreate, StaffPatch, TokenPair, UserOut
+from app.modules.auth.schemas import PasswordChange, StaffCreate, StaffPatch, TokenPair, UserOut
+
+logger = logging.getLogger("university")
+
+FAILURE_WINDOW = timedelta(minutes=15)
+MAX_FAILURES_PER_EMAIL = 5
+# Higher than per email: a campus NAT puts many people behind one address.
+MAX_FAILURES_PER_IP = 30
 
 
 def unauthorized() -> AppError:
     return AppError(401, "INVALID_CREDENTIALS", "Invalid credentials or revoked session.")
+
+
+def too_many_attempts() -> AppError:
+    return AppError(
+        429, "TOO_MANY_ATTEMPTS", "Too many failed sign-in attempts. Try again in 15 minutes."
+    )
+
+
+def audit(event: str, **fields) -> None:
+    logger.info(json.dumps({"event": event, **fields}, default=str))
+
+
+async def throttled(db: AsyncSession, email: str, ip: str | None) -> bool:
+    # ponytail: count-then-insert, so parallel guesses can overshoot the limit by a few;
+    # an advisory lock per email closes that if it ever matters.
+    by_email, by_ip = await auth_repo.failure_counts(
+        db, email, ip, datetime.now(UTC) - FAILURE_WINDOW
+    )
+    return by_email >= MAX_FAILURES_PER_EMAIL or by_ip >= MAX_FAILURES_PER_IP
 
 
 async def token_pair(db: AsyncSession, user_id: int, session: AuthSession) -> TokenPair:
@@ -38,12 +66,18 @@ async def token_pair(db: AsyncSession, user_id: int, session: AuthSession) -> To
     )
 
 
-async def login(email: str, password: str) -> TokenPair:
+async def login(email: str, password: str, ip: str | None = None) -> TokenPair:
+    email = email.lower()
+
     async def operation(db: AsyncSession):
+        if await throttled(db, email, ip):
+            return too_many_attempts()
         user = await auth_repo.by_email(db, email)
         valid = verify_password(password, user.password_hash if user else DUMMY_HASH)
         if not user or not valid or not user.is_active:
-            raise unauthorized()
+            db.add(LoginFailure(email=email, ip=ip))
+            return unauthorized()  # Returned, not raised: the failure row must commit.
+        await auth_repo.clear_failures(db, email)
         if hasher.check_needs_rehash(user.password_hash):
             user.password_hash = hash_password(password)
         session = AuthSession(
@@ -54,9 +88,14 @@ async def login(email: str, password: str) -> TokenPair:
         )
         db.add(session)
         await db.flush()
+        audit("login_ok", user_id=user.id, ip=ip)
         return await token_pair(db, user.id, session)
 
-    return await transact(operation)
+    result = await transact(operation)
+    if isinstance(result, AppError):
+        audit("login_locked" if result.status == 429 else "login_failed", email=email, ip=ip)
+        raise result
+    return result
 
 
 async def authenticate(token: str) -> UserOut:
@@ -90,13 +129,15 @@ async def refresh(token: str) -> TokenPair:
             raise unauthorized()
         stored = await db.get(RefreshToken, token_digest(token))
         user = await db.get(User, session.user_id)
-        if not stored or stored.session_id != session.id or stored.consumed:
+        if not stored or stored.session_id != session.id:
+            # Validly signed but already spent: someone else rotated it first.
             session.revoked = True
+            audit("refresh_replay", user_id=session.user_id, session_id=session.id)
             return None  # Commit revocation before reporting replay.
         if not user or not user.is_active:
             session.revoked = True
             return None
-        stored.consumed = True
+        await db.delete(stored)
         return await token_pair(db, session.user_id, session)
 
     result = await transact(operation)
@@ -105,17 +146,57 @@ async def refresh(token: str) -> TokenPair:
     return result
 
 
-async def logout(token: str) -> dict:
-    claims = decode_token(token, "access")
+def logout_claims(access: str | None, refresh: str | None) -> dict:
+    """Either token names the session; the refresh token still works once the access one expired."""
+    if refresh:
+        return decode_token(refresh, "refresh")
+    if access:
+        return decode_token(access, "access")
+    raise unauthorized()
 
+
+async def logout(claims: dict, everywhere: bool = False) -> dict:
     async def operation(db: AsyncSession):
         session = await auth_repo.lock_session(db, UUID(claims["sid"]))
         if not session or session.user_id != int(claims["sub"]):
             raise unauthorized()
-        session.revoked = True
-        return {"message": "Session and its access/refresh tokens revoked."}
+        targets = await auth_repo.user_sessions(db, session.user_id) if everywhere else [session]
+        for target in targets:
+            target.revoked = True
+        audit("logout_all" if everywhere else "logout", user_id=session.user_id)
+        return {"message": f"{len(targets)} session(s) revoked."}
 
     return await transact(operation)
+
+
+async def change_password(access: str, payload: PasswordChange, ip: str | None) -> dict:
+    claims = decode_token(access, "access")
+
+    async def operation(db: AsyncSession):
+        user = await repo.require(db, User, int(claims["sub"]), lock=True)
+        if await throttled(db, user.email, ip):
+            return too_many_attempts()
+        if not verify_password(payload.current_password, user.password_hash):
+            db.add(LoginFailure(email=user.email, ip=ip))
+            # 400, not 401: the session is fine and the BFF would treat 401 as signed out.
+            return AppError(400, "INVALID_CURRENT_PASSWORD", "Current password is incorrect.")
+        await auth_repo.clear_failures(db, user.email)
+        user.password_hash = hash_password(payload.new_password)
+        current = UUID(claims["sid"])
+        for session in await auth_repo.user_sessions(db, user.id):
+            session.revoked = session.revoked or session.id != current
+        audit("password_changed", user_id=user.id, ip=ip)
+        return {"message": "Password changed. Other sessions were signed out."}
+
+    result = await transact(operation)
+    if isinstance(result, AppError):
+        raise result
+    return result
+
+
+async def purge_expired() -> None:
+    now = datetime.now(UTC)
+    await transact(lambda db: auth_repo.purge(db, now, now - FAILURE_WINDOW))
 
 
 async def create_staff(payload: StaffCreate) -> UserOut:

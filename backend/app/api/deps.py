@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import Depends, Query
+from fastapi import Depends, Query, Request
 from fastapi.security import OAuth2PasswordBearer
 
 from app.core.exceptions import AppError
@@ -9,6 +9,17 @@ from app.modules.auth.service import authenticate
 
 oauth2 = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
 Token = Annotated[str, Depends(oauth2)]
+OptionalToken = Annotated[
+    str | None, Depends(OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login", auto_error=False))
+]
+
+
+def client_ip(request: Request) -> str | None:
+    # Uvicorn rewrites this from X-Forwarded-For only for proxies in FORWARDED_ALLOW_IPS.
+    return request.client.host if request.client else None
+
+
+ClientIP = Annotated[str | None, Depends(client_ip)]
 
 
 async def current_user(token: Token) -> UserOut:

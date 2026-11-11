@@ -56,4 +56,15 @@ class RefreshToken(Base):
         ForeignKey("auth_sessions.id", ondelete="CASCADE"),
         index=True,
     )
-    consumed: Mapped[bool] = mapped_column(default=False, server_default="false")
+
+
+class LoginFailure(Base):
+    """Failed password checks, counted per email and per client IP to throttle guessing."""
+
+    __tablename__ = "login_failures"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    email: Mapped[str] = mapped_column(String(150), index=True)
+    ip: Mapped[str | None] = mapped_column(String(45), index=True)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), index=True
+    )

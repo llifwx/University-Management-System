@@ -196,3 +196,89 @@ async def test_teacher_roster_scope(client, data, headers):
 async def test_health_and_ready(client):
     assert (await client.get("/health")).json() == {"status": "ok"}
     assert (await client.get("/ready")).json() == {"status": "ready"}
+
+
+async def test_login_lockout_and_reset(client, data):
+    for _ in range(5):
+        assert (await login(client, password="incorrect-password")).status_code == 401
+    # Locked even with the right password, and without revealing whether it was right.
+    locked = await login(client)
+    assert locked.status_code == 429
+    assert locked.json()["error"]["code"] == "TOO_MANY_ATTEMPTS"
+    # Other accounts are unaffected.
+    assert (await login(client, email="student1@example.edu")).status_code == 200
+
+
+async def test_success_clears_failures(client, data):
+    for _ in range(4):
+        await login(client, password="incorrect-password")
+    assert (await login(client)).status_code == 200
+    for _ in range(4):
+        await login(client, password="incorrect-password")
+    assert (await login(client)).status_code == 200
+
+
+async def test_logout_with_refresh_token_only(client, data):
+    pair = (await login(client)).json()
+    response = await client.post(
+        "/api/v1/auth/logout", json={"refresh_token": pair["refresh_token"]}
+    )
+    assert response.status_code == 200
+    me = await client.get(
+        "/api/v1/auth/me", headers={"Authorization": f"Bearer {pair['access_token']}"}
+    )
+    assert me.status_code == 401
+    assert (await client.post("/api/v1/auth/logout")).status_code == 401
+
+
+async def test_logout_all(client, data):
+    first, second = (await login(client)).json(), (await login(client)).json()
+    headers = {"Authorization": f"Bearer {first['access_token']}"}
+    assert (await client.post("/api/v1/auth/logout-all", headers=headers)).status_code == 200
+    for pair in (first, second):
+        refreshed = await client.post(
+            "/api/v1/auth/refresh", json={"refresh_token": pair["refresh_token"]}
+        )
+        assert refreshed.status_code == 401
+
+
+async def test_change_password(client, data):
+    current, other = (await login(client)).json(), (await login(client)).json()
+    headers = {"Authorization": f"Bearer {current['access_token']}"}
+    new_password = "Another-fictional-password-456"
+    wrong = await client.post(
+        "/api/v1/auth/password",
+        headers=headers,
+        json={"current_password": "incorrect", "new_password": new_password},
+    )
+    assert wrong.status_code == 400 and wrong.json()["error"]["code"] == "INVALID_CURRENT_PASSWORD"
+    changed = await client.post(
+        "/api/v1/auth/password",
+        headers=headers,
+        json={"current_password": PASSWORD, "new_password": new_password},
+    )
+    assert changed.status_code == 200
+    assert (await client.get("/api/v1/auth/me", headers=headers)).status_code == 200
+    other_headers = {"Authorization": f"Bearer {other['access_token']}"}
+    assert (await client.get("/api/v1/auth/me", headers=other_headers)).status_code == 401
+    assert (await login(client)).status_code == 401
+    assert (await login(client, password=new_password)).status_code == 200
+
+
+async def test_purge_drops_spent_sessions(client, data, db_factory):
+    from sqlalchemy import func, select
+
+    from app.models import AuthSession, RefreshToken
+    from app.modules.auth.service import purge_expired
+
+    live = (await login(client)).json()
+    dead = (await login(client)).json()
+    await client.post("/api/v1/auth/logout", json={"refresh_token": dead["refresh_token"]})
+    await purge_expired()
+    async with db_factory() as db:
+        assert await db.scalar(select(func.count()).select_from(AuthSession)) == 1
+        assert await db.scalar(select(func.count()).select_from(RefreshToken)) == 1
+    refreshed = await client.post(
+        "/api/v1/auth/refresh", json={"refresh_token": live["refresh_token"]}
+    )
+    assert refreshed.status_code == 200

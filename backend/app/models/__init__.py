@@ -1,4 +1,4 @@
-from app.modules.auth.models import AuthSession, RefreshToken, Role, User
+from app.modules.auth.models import AuthSession, LoginFailure, RefreshToken, Role, User
 from app.modules.courses.models import Course
 from app.modules.registrations.models import Registration
 from app.modules.sections.models import CourseSection, SectionMeeting
@@ -10,6 +10,7 @@ __all__ = [
     "User",
     "AuthSession",
     "RefreshToken",
+    "LoginFailure",
     "Student",
     "Course",
     "Semester",

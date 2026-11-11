@@ -157,11 +157,21 @@ Send `Authorization: Bearer <access_token>` on protected requests. Refresh by po
 `{"refresh_token":"..."}` to `/api/v1/auth/refresh`. Each refresh token can be used once;
 rotation returns a replacement pair without extending the session's absolute lifetime.
 Only SHA-256 digests of refresh tokens are stored. Refresh replay revokes the entire session
-family. Logout, with the access bearer token, revokes the server-side session, immediately
-invalidating its access and refresh tokens. Other login sessions remain independent.
+family and is logged as `refresh_replay`. Logout revokes the server-side session, immediately
+invalidating its access and refresh tokens; it accepts either the access bearer token or
+`{"refresh_token":"..."}`, so an expired access token is no obstacle. `/auth/logout-all` revokes
+every session of the user. Other login sessions remain independent of a plain logout.
 Access tokens expire in 15 minutes by default; session lifetime is seven days, both configurable.
 JWT claims include issuer, audience, type, expiration, identity and session ID. Roles and active
-status come from the database on every request. Password changes via admin revoke all user sessions.
+status come from the database on every request. Password changes via admin revoke all user sessions;
+`POST /auth/password` (`current_password`, `new_password`) keeps the caller's session and revokes the rest.
+
+Failed password checks are recorded in `login_failures`. Five failures for one email, or thirty from
+one client IP, within 15 minutes answer `429 TOO_MANY_ATTEMPTS` until the window passes; a successful
+sign-in clears that email's count. The client IP comes from `X-Forwarded-For` only when the direct peer
+is listed in uvicorn's `FORWARDED_ALLOW_IPS`. Revoked and expired sessions and stale failures are
+purged at startup and hourly. Sign-in events (`login_ok`, `login_failed`, `login_locked`, `logout`,
+`password_changed`) are written as JSON log lines.
 
 Students see their own private data, register and cancel their own enrollment. The request body
 cannot override the authenticated student's ID. Teachers see assigned sections and their rosters;
@@ -178,7 +188,8 @@ unless marked public. JSON responses and detailed schemas are available in OpenA
 | Methods | Route | Access |
 |---|---|---|
 | POST | `/auth/login`, `/auth/refresh` | Public, valid credentials/token required |
-| POST | `/auth/logout` | Authenticated |
+| POST | `/auth/logout`, `/auth/logout-all` | Access bearer or refresh token |
+| POST | `/auth/password` | Authenticated |
 | GET | `/auth/me` | Authenticated |
 | GET, POST | `/users` | Admin |
 | PATCH | `/users/{user_id}` | Admin; active status/password |

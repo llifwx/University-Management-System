@@ -31,3 +31,8 @@ class TokenPair(BaseModel):
 
 class RefreshInput(Input):
     refresh_token: str = Field(min_length=1, max_length=4096)
+
+
+class PasswordChange(Input):
+    current_password: str = Field(min_length=1, max_length=128)
+    new_password: Password

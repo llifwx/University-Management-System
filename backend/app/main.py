@@ -1,3 +1,4 @@
+import asyncio
 import json
 import logging
 import time
@@ -14,14 +15,26 @@ from app.api.v1.router import router
 from app.core.config import get_settings
 from app.core.exceptions import install_handlers
 from app.db.session import engine
+from app.modules.auth.service import purge_expired
 
 logger = logging.getLogger("university")
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
+async def purge_auth_rows():
+    while True:
+        try:
+            await purge_expired()
+        except Exception:
+            logger.exception("Purging expired sessions failed")
+        await asyncio.sleep(3600)
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    purger = asyncio.create_task(purge_auth_rows())
     yield
+    purger.cancel()
     await engine.dispose()
 
 

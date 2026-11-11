@@ -24,6 +24,12 @@ function errorResponse(status: number, code: string, message: string) {
 const forbiddenOrigin = () => errorResponse(403, "CSRF_REJECTED", "Cross-site request rejected.");
 const backendDown = () => errorResponse(503, "BACKEND_UNAVAILABLE", "The university service is unavailable. Please try again shortly.");
 
+/** FastAPI throttles sign-in by client address; uvicorn honours this only from trusted proxies. */
+function forwardedFor(request: NextRequest): Record<string, string> {
+  const value = request.headers.get("x-forwarded-for");
+  return value ? { "X-Forwarded-For": value } : {};
+}
+
 /** Relative Location: request.url can carry the container's bind address behind Docker. */
 function redirectTo(path: string) {
   return new NextResponse(null, { status: 303, headers: { Location: path, ...NO_STORE } });
@@ -38,7 +44,7 @@ export async function handleLogin(request: NextRequest): Promise<NextResponse> {
   try {
     const login = await fetch(apiUrl("/auth/login"), {
       method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      headers: { "Content-Type": "application/x-www-form-urlencoded", ...forwardedFor(request) },
       body: new URLSearchParams({ username: credentials.email, password: credentials.password }),
       cache: "no-store",
     });
@@ -59,15 +65,19 @@ export async function handleLogin(request: NextRequest): Promise<NextResponse> {
 
 export async function handleLogout(request: NextRequest): Promise<NextResponse> {
   if (!isSameOriginRequest(request)) return forbiddenOrigin();
-  let access = request.cookies.get(ACCESS_COOKIE)?.value;
+  const access = request.cookies.get(ACCESS_COOKIE)?.value;
   const refresh = request.cookies.get(REFRESH_COOKIE)?.value;
-  if (!access && refresh) {
-    // Revocation needs a live access token, so an expired one must be renewed first.
-    const result = await refreshSession(refresh);
-    if (result.status === "ok") access = result.tokens.access_token;
-  }
-  if (access) {
-    await fetch(apiUrl("/auth/logout"), { method: "POST", headers: { Authorization: `Bearer ${access}` }, cache: "no-store" }).catch(() => undefined);
+  const everywhere = request.nextUrl.searchParams.get("scope") === "all";
+  if (access || refresh) {
+    // The refresh token names the session even after the access token expired, so no renewal is needed.
+    const upstream = await fetch(apiUrl(everywhere ? "/auth/logout-all" : "/auth/logout"), {
+      method: "POST",
+      headers: { ...(access ? { Authorization: `Bearer ${access}` } : {}), ...(refresh ? { "Content-Type": "application/json" } : {}) },
+      body: refresh ? JSON.stringify({ refresh_token: refresh }) : undefined,
+      cache: "no-store",
+    }).catch(() => null);
+    // Clearing cookies would hide that the other devices were never signed out.
+    if (everywhere && (!upstream || upstream.status >= 500)) return backendDown();
   }
   const response = new NextResponse(null, { status: 204, headers: NO_STORE });
   clearSessionCookies(response);
@@ -95,7 +105,7 @@ const SAFE_SEGMENT = /^[\w-]+$/;
 /** Token-issuing routes have dedicated handlers; through here they would hand raw tokens to the browser. */
 function isProxyable(path: string[]): boolean {
   if (!path.every((segment) => SAFE_SEGMENT.test(segment))) return false;
-  return path[0] !== "auth" || (path.length === 2 && path[1] === "me");
+  return path[0] !== "auth" || (path.length === 2 && (path[1] === "me" || path[1] === "password"));
 }
 
 export async function handleProxy(request: NextRequest, context: { params: Promise<{ path: string[] }> }): Promise<NextResponse> {
@@ -110,7 +120,7 @@ export async function handleProxy(request: NextRequest, context: { params: Promi
   const send = (token: string) =>
     fetch(url, {
       method: request.method,
-      headers: { Authorization: `Bearer ${token}`, ...(contentType ? { "Content-Type": contentType } : {}) },
+      headers: { Authorization: `Bearer ${token}`, ...(contentType ? { "Content-Type": contentType } : {}), ...forwardedFor(request) },
       body: body?.byteLength ? body : undefined,
       cache: "no-store",
       signal: request.signal,

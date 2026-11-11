@@ -43,7 +43,8 @@ async def db_factory(monkeypatch):
         assert revision
         await connection.execute(
             text(
-                "TRUNCATE refresh_tokens, auth_sessions, registrations, section_meetings, "
+                "TRUNCATE login_failures, refresh_tokens, auth_sessions, "
+                "registrations, section_meetings, "
                 "course_sections, students, courses, semesters, users RESTART IDENTITY CASCADE"
             )
         )

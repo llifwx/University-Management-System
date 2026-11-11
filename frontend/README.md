@@ -24,7 +24,7 @@ Slices on one layer never import each other, and other slices use a slice's publ
 |---|---|---|
 | `pages` | Compose a screen | `login`, `student-dashboard`, `teacher-dashboard`, `admin-dashboard`, `course-catalog`, `course-details`, `my-courses`, `my-schedule`, `profile`, `student-management`, `course-management`, `section-management`, `semester-management`, `registrations-management`, `staff-management`, `forbidden` |
 | `widgets` | Large reusable sections | `app-shell`, `weekly-timetable`, `course-catalog`, `course-sections`, `enrollment-table` |
-| `features` | User actions and their mutations | `auth-by-email`, `logout`, `select-semester`, `register-for-section`, `cancel-registration`, `manage-course`, `manage-section`, `manage-semester`, `manage-student`, `manage-staff`, `manage-registration` |
+| `features` | User actions and their mutations | `auth-by-email`, `logout`, `change-password`, `select-semester`, `register-for-section`, `cancel-registration`, `manage-course`, `manage-section`, `manage-semester`, `manage-student`, `manage-staff`, `manage-registration` |
 | `entities` | Domain types, read queries, query keys, display parts | `user`, `student`, `course`, `course-section`, `semester`, `registration`, `schedule` |
 | `shared` | Domain-free code | `api` (transport, BFF, generated types), `lib`, `ui` |
 
@@ -39,8 +39,8 @@ Browser --HttpOnly cookies--> Next.js route handlers --Authorization: Bearer--> 
 ```
 
 - `POST /api/auth/login` exchanges credentials, stores both tokens in HttpOnly `SameSite=Lax` cookies and returns only the user.
-- `/api/proxy/*` forwards API calls with the bearer token. It refuses `auth/*` other than `auth/me`, so raw tokens cannot leak to the browser.
-- `POST /api/auth/logout` revokes the session in FastAPI, then clears the cookies.
+- `/api/proxy/*` forwards API calls with the bearer token. It refuses `auth/*` other than `auth/me` and `auth/password`, so raw tokens cannot leak to the browser.
+- `POST /api/auth/logout` revokes the session in FastAPI with the refresh cookie, then clears the cookies. `?scope=all` signs out every device and keeps the cookies if FastAPI could not confirm it.
 - `GET /api/auth/refresh?next=` renews a session for full page loads, because Server Components cannot set cookies.
 
 **Refresh rotation.** FastAPI refresh tokens are single-use, and replaying one revokes the whole session. All renewals

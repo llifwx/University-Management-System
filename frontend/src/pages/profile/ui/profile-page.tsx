@@ -4,7 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 
 import { studentQueries } from "@/entities/student";
 import { ROLE_LABELS, useSessionUser } from "@/entities/user";
-import { Card, CardContent } from "@/shared/ui/card";
+import { ChangePasswordForm } from "@/features/change-password";
+import { LogoutEverywhereButton } from "@/features/logout";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/ui/card";
 import { PageHeader } from "@/shared/ui/page-header";
 import { QueryState } from "@/shared/ui/states";
 
@@ -45,6 +47,31 @@ function StudentProfile() {
   );
 }
 
+function Security() {
+  return (
+    <div className="mt-6 grid max-w-2xl gap-6">
+      <Card className="shadow-sm">
+        <CardHeader>
+          <CardTitle>Password</CardTitle>
+          <CardDescription>Changing it signs out your other devices.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ChangePasswordForm />
+        </CardContent>
+      </Card>
+      <Card className="shadow-sm">
+        <CardHeader>
+          <CardTitle>Sessions</CardTitle>
+          <CardDescription>Lost a device or signed in on a shared computer? End every session at once.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <LogoutEverywhereButton />
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
 export function ProfilePage() {
   const user = useSessionUser();
   return (
@@ -61,6 +88,7 @@ export function ProfilePage() {
           ]}
         />
       )}
+      <Security />
     </>
   );
 }

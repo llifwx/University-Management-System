@@ -124,7 +124,7 @@ describe("proxy", () => {
 
   it("keeps token-issuing routes unreachable", async () => {
     const calls = stubBackend({});
-    for (const path of [["auth", "login"], ["auth", "refresh"], ["auth", "logout"], ["..", "admin"]]) {
+    for (const path of [["auth", "login"], ["auth", "refresh"], ["auth", "logout"], ["auth", "logout-all"], ["..", "admin"]]) {
       expect((await proxy(request("/api/proxy/x", { method: "POST", cookies: { ums_access: "a" }, body: "{}" }), ...path)).status).toBe(404);
     }
     expect(calls).toEqual([]);
@@ -244,10 +244,22 @@ describe("logout", () => {
     expect(response.headers.getSetCookie().join()).toMatch(/ums_access=;.*ums_refresh=;/);
   });
 
-  it("renews an expired access token so the session is still revoked", async () => {
-    const calls = stubBackend({ "POST /auth/refresh": () => json(pair()), "POST /auth/logout": () => json({ message: "ok" }) });
-    await handleLogout(request("/api/auth/logout", { method: "POST", cookies: { ums_refresh: uniqueRefresh() } }));
-    expect(bearer(calls[1].init)).toBe("Bearer new-access");
+  it("revokes with the refresh token alone, without spending it on a renewal", async () => {
+    const refresh = uniqueRefresh();
+    const calls = stubBackend({ "POST /auth/logout": () => json({ message: "ok" }) });
+    await handleLogout(request("/api/auth/logout", { method: "POST", cookies: { ums_refresh: refresh } }));
+    expect(calls).toHaveLength(1);
+    expect(JSON.parse(String(calls[0].init.body))).toEqual({ refresh_token: refresh });
+  });
+
+  it("signs out everywhere, but keeps cookies when that could not be confirmed", async () => {
+    const cookies = { ums_access: "tok", ums_refresh: uniqueRefresh() };
+    stubBackend({ "POST /auth/logout-all": () => json({ message: "ok" }) });
+    expect((await handleLogout(request("/api/auth/logout?scope=all", { method: "POST", cookies }))).status).toBe(204);
+    stubBackend({ "POST /auth/logout-all": () => json({}, 503) });
+    const failed = await handleLogout(request("/api/auth/logout?scope=all", { method: "POST", cookies }));
+    expect(failed.status).toBe(503);
+    expect(failed.headers.getSetCookie()).toEqual([]);
   });
 
   it("still clears cookies when the backend is unreachable", async () => {
