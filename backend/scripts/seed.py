@@ -11,6 +11,7 @@ from app.core.security import hash_password
 from app.db.session import SessionFactory, engine
 from app.models import Course, CourseSection, Registration, SectionMeeting, Semester, Student, User
 from app.modules.sections import repository as section_repo
+from app.modules.students import repository as student_repo
 from scripts.bootstrap_admin import bootstrap
 
 
@@ -69,6 +70,8 @@ async def seed() -> None:
                     full_name=name,
                     program="Information Systems",
                     year_level=2,
+                    # Second-year students enrolled last year.
+                    student_number=await student_repo.new_student_number(db, date.today().year - 1),
                 )
             )
         semesters = [

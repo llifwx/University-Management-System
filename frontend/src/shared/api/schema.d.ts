@@ -954,11 +954,15 @@ export interface components {
             program?: string | null;
             /** Year Level */
             year_level: number;
+            /** Enrollment Year */
+            enrollment_year?: number | null;
         };
         /** StudentOut */
         StudentOut: {
             /** Student Id */
             student_id: number;
+            /** Student Number */
+            student_number: string;
             /** User Id */
             user_id: number;
             /** Email */

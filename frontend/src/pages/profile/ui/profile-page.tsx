@@ -39,7 +39,7 @@ function StudentProfile() {
         <Details
           rows={[
             ["Full name", data.full_name],
-            ["Student ID", data.student_id],
+            ["Student ID", data.student_number],
             ["Email", data.email],
             ["Academic program", data.program ?? "Not set"],
             ["Year level", data.year_level],

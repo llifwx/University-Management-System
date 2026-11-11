@@ -1,3 +1,5 @@
+from datetime import UTC, datetime
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.common import repository as repo
@@ -36,7 +38,9 @@ async def create_student(payload: StudentCreate) -> StudentOut:
         user = User(email=str(payload.email).lower(), password_hash=password_hash, role="STUDENT")
         db.add(user)
         await db.flush()
+        year = payload.enrollment_year or datetime.now(UTC).year
         student = Student(
+            student_number=await student_repo.new_student_number(db, year),
             user_id=user.id,
             user=user,
             full_name=payload.full_name,

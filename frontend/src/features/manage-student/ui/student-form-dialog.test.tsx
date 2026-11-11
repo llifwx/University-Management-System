@@ -6,7 +6,7 @@ import { apiError, json, renderWithClient } from "../../../../tests/utils";
 
 import { StudentForm } from "./student-form-dialog";
 
-const STUDENT = { student_id: 3, user_id: 8, email: "s@example.edu", full_name: "Sam", program: null, year_level: 2 };
+const STUDENT = { student_id: 3, student_number: "25ID000003", user_id: 8, email: "s@example.edu", full_name: "Sam", program: null, year_level: 2 };
 
 describe("StudentForm", () => {
   it("requires a 12-character password on create", async () => {

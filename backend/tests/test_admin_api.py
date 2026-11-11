@@ -1,8 +1,18 @@
+import re
+
 from sqlalchemy import func, select
 
 from app.models import User
 from app.modules.registrations.service import enroll
+from app.modules.students import repository as student_repo
 from tests.conftest import PASSWORD
+
+
+async def test_student_number_retries_on_collision(data, db_factory, monkeypatch):
+    draws = iter([0, 0, 7])  # 26ID000000 belongs to the fixture's first student.
+    monkeypatch.setattr(student_repo.secrets, "randbelow", lambda _: next(draws))
+    async with db_factory() as db:
+        assert await student_repo.new_student_number(db, 2026) == "26ID000007"
 
 
 async def test_catalog_crud(client, data, headers):
@@ -101,9 +111,11 @@ async def test_student_create_patch_email_and_deactivate(client, data, headers, 
             "full_name": "New Student",
             "year_level": 1,
             "program": "BIS",
+            "enrollment_year": 2024,
         },
     )
     assert response.status_code == 201
+    assert re.fullmatch(r"24ID\d{6}", response.json()["student_number"])
     identity = response.json()["student_id"]
     path = f"/api/v1/students/{identity}"
     changed = await client.patch(

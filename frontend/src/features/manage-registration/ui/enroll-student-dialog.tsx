@@ -52,7 +52,7 @@ function EnrollForm({ options, onDone }: { options: EnrollOptions; onDone: () =>
           <option value="">Choose a student</option>
           {options.students.map((student) => (
             <option key={student.student_id} value={student.student_id}>
-              {student.full_name} (#{student.student_id})
+              {student.full_name} ({student.student_number})
             </option>
           ))}
         </NativeSelect>

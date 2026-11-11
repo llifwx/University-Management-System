@@ -50,7 +50,7 @@ export function RegistrationsManagementPage() {
       if (status && row.status !== status) return false;
       if (!needle) return true;
       const student = studentById.get(row.student_id);
-      return student?.full_name.toLowerCase().includes(needle) || student?.email.toLowerCase().includes(needle) || String(row.student_id) === needle;
+      return student?.full_name.toLowerCase().includes(needle) || student?.email.toLowerCase().includes(needle) || Boolean(student?.student_number.toLowerCase().includes(needle));
     });
   }, [registrations.data, status, studentTerm, studentById]);
   const pagination = useClientPagination(filtered);

@@ -78,7 +78,14 @@ async def data(db_factory):
         db.add_all([admin, teacher, other_teacher, *users])
         await db.flush()
         students = [
-            Student(user_id=u.id, user=u, full_name=f"Student {i}", program="BIS", year_level=1)
+            Student(
+                user_id=u.id,
+                user=u,
+                student_number=f"26ID{i:06d}",
+                full_name=f"Student {i}",
+                program="BIS",
+                year_level=1,
+            )
             for i, u in enumerate(users)
         ]
         semesters = [

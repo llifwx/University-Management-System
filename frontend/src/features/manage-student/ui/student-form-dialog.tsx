@@ -22,8 +22,10 @@ const baseSchema = z.object({
   program: z.string().trim().max(80, "Use at most 80 characters."),
   year_level: z.number("Enter the year level.").int("Use a whole number.").min(1, "Year must be between 1 and 8.").max(8, "Year must be between 1 and 8."),
 });
+const THIS_YEAR = new Date().getFullYear();
 const createSchema = baseSchema.extend({
   password: z.string().min(12, "Use at least 12 characters.").max(128, "Use at most 128 characters."),
+  enrollment_year: z.number("Enter the enrollment year.").int("Use a whole number.").min(2000, "Use a year from 2000.").max(THIS_YEAR + 1, `Use a year up to ${THIS_YEAR + 1}.`),
 });
 type Values = z.infer<typeof createSchema>;
 
@@ -40,12 +42,12 @@ export function StudentForm({ student, onDone }: { student?: Student; onDone: ()
     resolver: zodResolver(student ? baseSchema : createSchema) as never,
     defaultValues: student
       ? { email: student.email, full_name: student.full_name, program: student.program ?? "", year_level: student.year_level }
-      : { email: "", full_name: "", program: "", password: "" },
+      : { email: "", full_name: "", program: "", password: "", enrollment_year: THIS_YEAR },
   });
   const mutation = useMutation({
-    mutationFn: ({ password, ...values }: Values) => {
+    mutationFn: ({ password, enrollment_year, ...values }: Values) => {
       const profile = { ...values, program: values.program || null };
-      return student ? updateStudent(student.student_id, profile) : createStudent({ ...profile, password });
+      return student ? updateStudent(student.student_id, profile) : createStudent({ ...profile, password, enrollment_year });
     },
     onSuccess: async () => {
       toast.success(student ? "Student updated." : "Student created.");
@@ -77,6 +79,15 @@ export function StudentForm({ student, onDone }: { student?: Student; onDone: ()
           <Input type="number" min={1} max={8} {...fieldProps("year_level", errors.year_level?.message)} {...register("year_level", { valueAsNumber: true })} />
         </FormField>
       </div>
+      {student ? (
+        <p className="text-muted-foreground text-sm">
+          Student ID <span className="text-foreground font-mono">{student.student_number}</span> is permanent.
+        </p>
+      ) : (
+        <FormField id="enrollment_year" label="Enrollment year" hint="Its last two digits start the student ID, e.g. 24ID…; the ID cannot be changed later." error={errors.enrollment_year?.message}>
+          <Input type="number" min={2000} max={THIS_YEAR + 1} {...fieldProps("enrollment_year", errors.enrollment_year?.message)} {...register("enrollment_year", { valueAsNumber: true })} />
+        </FormField>
+      )}
       {mutation.isError && <FormError message={getErrorMessage(mutation.error, MESSAGES)} />}
       <FormSubmit isPending={mutation.isPending} label={student ? "Save changes" : "Create student"} />
     </form>

@@ -9,6 +9,8 @@ class StudentCreate(Input):
     full_name: Name
     program: str | None = Field(default=None, max_length=80)
     year_level: int = Field(ge=1, le=8)
+    # Becomes the first two digits of the student number; defaults to the current year.
+    enrollment_year: int | None = Field(default=None, ge=2000, le=2099)
 
 
 class StudentPatch(Input):
@@ -21,6 +23,7 @@ class StudentPatch(Input):
 
 class StudentOut(Output):
     student_id: int
+    student_number: str
     user_id: int
     email: str
     full_name: str

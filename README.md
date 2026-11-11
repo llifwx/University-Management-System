@@ -257,7 +257,11 @@ failures, 404 for missing records, 409 for enrollment/integrity conflicts, and 5
 
 Users have roles STUDENT, TEACHER or ADMIN. A student has one unique user account. **Users.email
 is authoritative**: student responses expose it through the user relationship, avoiding duplicated
-email state. Students retain `student_id` as their own primary key. Courses have sections within
+email state. Students retain `student_id` as their own primary key for foreign keys and routes.
+What people see is the permanent `student_number`: the enrollment year's last two digits, `ID`, and six
+random digits (`24ID583019`). Random rather than sequential so it reveals neither enrollment counts nor
+order; a unique constraint backs it, and creation retries on a hit under the academic lock.
+`POST /students` accepts an optional `enrollment_year` (default: the current year). Courses have sections within
 semesters; sections optionally reference a teacher user and own multiple weekly meetings.
 Registrations link students to sections and semesters. The composite foreign key
 `(section_id, semester_id)` guarantees registration/section semester consistency in PostgreSQL.

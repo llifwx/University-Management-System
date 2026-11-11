@@ -19,8 +19,7 @@ import { EmptyState, QueryState } from "@/shared/ui/states";
 
 function StudentDetails({ student, active }: { student: Student; active: boolean | undefined }) {
   const rows: [string, string | number][] = [
-    ["Student ID", student.student_id],
-    ["User ID", student.user_id],
+    ["Student ID", student.student_number],
     ["Email", student.email],
     ["Program", student.program ?? "Not set"],
     ["Year level", student.year_level],
@@ -48,12 +47,13 @@ export function StudentManagementPage() {
     const needle = term.trim().toLowerCase();
     const all = students.data ?? [];
     if (!needle) return all;
-    return all.filter((s) => s.full_name.toLowerCase().includes(needle) || s.email.toLowerCase().includes(needle) || String(s.student_id) === needle);
+    return all.filter((s) => s.full_name.toLowerCase().includes(needle) || s.email.toLowerCase().includes(needle) || s.student_number.toLowerCase().includes(needle));
   }, [students.data, term]);
   const pagination = useClientPagination(filtered);
 
   const columns: Column<Student>[] = [
     { header: "Name", cell: (student) => <span className="font-medium">{student.full_name}</span> },
+    { header: "Student ID", cell: (student) => <span className="font-mono text-sm">{student.student_number}</span> },
     { header: "Email", cell: (student) => <span className="break-all">{student.email}</span> },
     { header: "Program", cell: (student) => student.program ?? "Not set" },
     { header: "Year", cell: (student) => student.year_level },
