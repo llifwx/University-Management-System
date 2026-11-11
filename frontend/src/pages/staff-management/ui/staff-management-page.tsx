@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Plus, Shield } from "lucide-react";
 
 import { ROLE_LABELS, User, useSessionUser, userQueries } from "@/entities/user";
-import { CreateStaffDialog, ResetPasswordDialog, StaffActiveSwitch } from "@/features/manage-staff";
+import { CreateStaffDialog, EditStaffProfileDialog, ResetPasswordDialog, StaffActiveSwitch } from "@/features/manage-staff";
 import { Button } from "@/shared/ui/button";
 import { Column, DataTable } from "@/shared/ui/data-table";
 import { PageHeader } from "@/shared/ui/page-header";
@@ -14,21 +14,39 @@ export function StaffManagementPage() {
   const me = useSessionUser();
   const users = useQuery(userQueries.list());
   const columns: Column<User>[] = [
-    { header: "Email", cell: (user) => <span className="font-medium break-all">{user.email}</span> },
-    { header: "User ID", cell: (user) => user.id },
+    {
+      header: "Name",
+      cell: (user) => (
+        <div>
+          <p className="font-medium">{user.full_name ?? <span className="text-muted-foreground italic">No name</span>}</p>
+          {(user.title || user.department) && <p className="text-muted-foreground text-xs">{[user.title, user.department].filter(Boolean).join(" · ")}</p>}
+        </div>
+      ),
+    },
+    { header: "Email", cell: (user) => <span className="break-all">{user.email}</span> },
     { header: "Role", cell: (user) => ROLE_LABELS[user.role] },
     { header: "Active", cell: (user) => <StaffActiveSwitch user={user} disabled={user.id === me.id} /> },
     {
       header: "Actions",
       cell: (user) => (
-        <ResetPasswordDialog
-          user={user}
-          trigger={
-            <Button variant="ghost" size="sm">
-              Change password
-            </Button>
-          }
-        />
+        <div className="flex gap-1">
+          <EditStaffProfileDialog
+            user={user}
+            trigger={
+              <Button variant="ghost" size="sm">
+                Edit profile
+              </Button>
+            }
+          />
+          <ResetPasswordDialog
+            user={user}
+            trigger={
+              <Button variant="ghost" size="sm">
+                Change password
+              </Button>
+            }
+          />
+        </div>
       ),
     },
   ];

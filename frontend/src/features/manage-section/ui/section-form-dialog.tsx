@@ -102,7 +102,7 @@ export function SectionForm({ section, options, onDone }: { section?: Section; o
           <option value="">Unassigned</option>
           {options.teachers.map((teacher) => (
             <option key={teacher.id} value={teacher.id}>
-              {teacher.email}
+              {teacher.full_name ? `${teacher.full_name} (${teacher.email})` : teacher.email}
             </option>
           ))}
         </NativeSelect>

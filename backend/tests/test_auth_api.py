@@ -127,6 +127,7 @@ async def test_roles_and_private_student_data(client, data, headers):
                 "email": "hacker@example.edu",
                 "password": PASSWORD,
                 "role": "ADMIN",
+                "full_name": "Mallory",
             },
         )
     ).status_code == 403
@@ -175,6 +176,9 @@ async def test_student_registration_schedule_flow(client, data, headers):
     )
     assert schedule.status_code == 200
     assert schedule.json()["entries"][0]["start_time"] == "10:00:00"
+    assert schedule.json()["entries"][0]["teacher_name"] == "Grace Hopper"
+    section = await client.get(f"/api/v1/sections/{data.sections[0]}", headers=student)
+    assert section.json()["teacher_name"] == "Grace Hopper"
     assert (await client.get("/api/v1/registrations/me", headers=student)).json()["total"] == 1
     assert (
         await client.delete(

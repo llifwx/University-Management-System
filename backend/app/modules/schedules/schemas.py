@@ -10,6 +10,7 @@ class ScheduleEntry(BaseModel):
     course_title: str
     section_number: str
     teacher_id: int | None
+    teacher_name: str | None = None
     meeting_day: int
     start_time: time
     end_time: time

@@ -34,16 +34,24 @@ async def seed() -> None:
                 await db.flush()
             return entity
 
-        teachers = [
-            await get_or_add(
+        teachers = []
+        profiles = (
+            ("Emily Carter", "Associate Professor", "Computer Science", "B-204"),
+            ("Daniel Brooks", "Senior Lecturer", "Information Systems", "B-311"),
+            ("Priya Nair", "Assistant Professor", "Mathematics", "A-118"),
+        )
+        for i, (name, title, department, office) in enumerate(profiles, 1):
+            teacher = await get_or_add(
                 User,
                 "email",
                 f"teacher{i}@demo.example.edu",
                 role="TEACHER",
                 password_hash=password_hash,
             )
-            for i in range(1, 4)
-        ]
+            if teacher.full_name is None:  # Fills profiles of teachers seeded before they existed.
+                teacher.full_name, teacher.title = name, title
+                teacher.department, teacher.office = department, office
+            teachers.append(teacher)
         students = []
         for i, name in enumerate(("Alex Morgan", "Sam Rivera", "Taylor Kim", "Jordan Lee"), 1):
             user = await get_or_add(

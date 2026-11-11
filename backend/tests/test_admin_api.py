@@ -188,17 +188,27 @@ async def test_deleting_student_releases_seat(client, data, headers):
 async def test_admin_can_create_teacher_and_reset_password(client, data, headers):
     admin = await headers(data.admin)
     teacher_headers = await headers(data.teacher)
-    assert (
-        await client.post(
-            "/api/v1/users",
-            headers=admin,
-            json={
-                "email": "newteacher@example.edu",
-                "password": PASSWORD,
-                "role": "TEACHER",
-            },
-        )
-    ).status_code == 201
+    payload = {"email": "newteacher@example.edu", "password": PASSWORD, "role": "TEACHER"}
+    nameless = await client.post("/api/v1/users", headers=admin, json=payload)
+    assert nameless.status_code == 422
+    created = await client.post(
+        "/api/v1/users",
+        headers=admin,
+        json={**payload, "full_name": "Ada Lovelace", "department": "Mathematics"},
+    )
+    assert created.status_code == 201
+    assert created.json()["full_name"] == "Ada Lovelace"
+    assert created.json()["title"] is None
+    profile = await client.patch(
+        f"/api/v1/users/{created.json()['id']}",
+        headers=admin,
+        json={"title": "Professor", "department": None, "phone": "+1 555-0100"},
+    )
+    assert profile.json() | {"title": "Professor", "department": None} == profile.json()
+    bad = await client.patch(
+        f"/api/v1/users/{created.json()['id']}", headers=admin, json={"full_name": None}
+    )
+    assert bad.status_code == 422
     reset = await client.patch(
         f"/api/v1/users/{data.teacher.id}",
         headers=admin,

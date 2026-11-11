@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ReactNode } from "react";
-import { useForm } from "react-hook-form";
+import { FieldErrors, UseFormRegister, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -18,12 +18,47 @@ import { Switch } from "@/shared/ui/switch";
 import { createStaff, updateStaff } from "../api/staff-mutations";
 
 const password = z.string().min(12, "Use at least 12 characters.").max(128, "Use at most 128 characters.");
-const createSchema = z.object({
+/** Blank optional fields are sent as null, which clears them. */
+const optional = (max: number) =>
+  z
+    .string()
+    .max(max, `Use at most ${max} characters.`)
+    .transform((v) => v.trim() || null);
+const profileSchema = z.object({
+  full_name: z.string().trim().min(1, "Enter a full name.").max(100, "Use at most 100 characters."),
+  title: optional(100),
+  department: optional(100),
+  office: optional(50),
+  phone: optional(30).refine((v) => v === null || /^\+?[0-9()\- ]{3,30}$/.test(v), "Use digits, spaces, +, - and parentheses."),
+});
+type ProfileInput = z.input<typeof profileSchema>;
+const createSchema = profileSchema.extend({
   email: z.email("Enter a valid email address.").max(150, "Use at most 150 characters."),
   password,
   role: z.enum(["TEACHER", "ADMIN"]),
 });
-type CreateValues = z.infer<typeof createSchema>;
+type CreateInput = z.input<typeof createSchema>;
+type CreateValues = z.output<typeof createSchema>;
+const EMPTY_PROFILE: ProfileInput = { full_name: "", title: "", department: "", office: "", phone: "" };
+
+function ProfileFields({ register, errors }: { register: UseFormRegister<ProfileInput>; errors: FieldErrors<ProfileInput> }) {
+  const field = (name: keyof ProfileInput, label: string, extra: { type?: string; autoComplete?: string } = {}) => (
+    <FormField id={`staff_${name}`} label={label} error={errors[name]?.message}>
+      <Input autoComplete="off" {...extra} {...fieldProps(`staff_${name}`, errors[name]?.message)} {...register(name)} />
+    </FormField>
+  );
+  return (
+    <>
+      {field("full_name", "Full name")}
+      <div className="grid gap-4 sm:grid-cols-2">
+        {field("title", "Title (optional)")}
+        {field("department", "Department (optional)")}
+        {field("office", "Office (optional)")}
+        {field("phone", "Phone (optional)", { type: "tel" })}
+      </div>
+    </>
+  );
+}
 
 function CreateStaffForm({ onDone }: { onDone: () => void }) {
   const queryClient = useQueryClient();
@@ -32,7 +67,7 @@ function CreateStaffForm({ onDone }: { onDone: () => void }) {
     handleSubmit,
     setError,
     formState: { errors },
-  } = useForm<CreateValues>({ resolver: zodResolver(createSchema), defaultValues: { email: "", password: "", role: "TEACHER" } });
+  } = useForm<CreateInput, unknown, CreateValues>({ resolver: zodResolver(createSchema), defaultValues: { ...EMPTY_PROFILE, email: "", password: "", role: "TEACHER" } });
   const mutation = useMutation({
     mutationFn: createStaff,
     onSuccess: async () => {
@@ -44,6 +79,7 @@ function CreateStaffForm({ onDone }: { onDone: () => void }) {
   });
   return (
     <form onSubmit={handleSubmit((values) => mutation.mutate(values))} noValidate className="space-y-4">
+      <ProfileFields register={register as unknown as UseFormRegister<ProfileInput>} errors={errors} />
       <FormField id="staff_email" label="Email" error={errors.email?.message}>
         <Input type="email" autoComplete="off" {...fieldProps("staff_email", errors.email?.message)} {...register("email")} />
       </FormField>
@@ -66,6 +102,49 @@ export function CreateStaffDialog({ trigger }: { trigger: ReactNode }) {
   return (
     <FormDialog trigger={trigger} title="Add staff account">
       {(close) => <CreateStaffForm onDone={close} />}
+    </FormDialog>
+  );
+}
+
+function EditProfileForm({ user, onDone }: { user: User; onDone: () => void }) {
+  const queryClient = useQueryClient();
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<ProfileInput, unknown, z.output<typeof profileSchema>>({
+    resolver: zodResolver(profileSchema),
+    defaultValues: {
+      full_name: user.full_name ?? "",
+      title: user.title ?? "",
+      department: user.department ?? "",
+      office: user.office ?? "",
+      phone: user.phone ?? "",
+    },
+  });
+  const mutation = useMutation({
+    mutationFn: (values: z.output<typeof profileSchema>) => updateStaff(user.id, values),
+    onSuccess: async () => {
+      toast.success("Profile saved.");
+      await queryClient.invalidateQueries({ queryKey: userQueries.all });
+      onDone();
+    },
+    onError: (error) => applyFieldErrors(error, setError),
+  });
+  return (
+    <form onSubmit={handleSubmit((values) => mutation.mutate(values))} noValidate className="space-y-4">
+      <ProfileFields register={register} errors={errors} />
+      {mutation.isError && <FormError message={getErrorMessage(mutation.error)} />}
+      <FormSubmit isPending={mutation.isPending} label="Save profile" />
+    </form>
+  );
+}
+
+export function EditStaffProfileDialog({ user, trigger }: { user: User; trigger: ReactNode }) {
+  return (
+    <FormDialog trigger={trigger} title={`Edit profile of ${user.email}`}>
+      {(close) => <EditProfileForm user={user} onDone={close} />}
     </FormDialog>
   );
 }

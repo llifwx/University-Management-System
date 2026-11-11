@@ -22,7 +22,10 @@ async def delete_section(identity: int) -> dict:
 
 async def section_output(db: AsyncSession, section: CourseSection, count: int | None = None):
     count = await section_repo.seats(db, section.section_id) if count is None else count
+    # Identity map: a page with few distinct teachers loads each once.
+    teacher = await db.get(User, section.teacher_id) if section.teacher_id else None
     return SectionOut(
+        teacher_name=teacher and teacher.full_name,
         **{
             key: getattr(section, key)
             for key in (

@@ -46,7 +46,7 @@ export function SectionManagementPage() {
     },
     { header: "Section", cell: (section) => section.section_number },
     { header: "Semester", cell: (section) => semesterById.get(section.semester_id)?.name ?? "…" },
-    { header: "Teacher", cell: (section) => (section.teacher_id === null ? "Unassigned" : <span className="break-all">{userById.get(section.teacher_id)?.email ?? "…"}</span>) },
+    { header: "Teacher", cell: (section) => (section.teacher_id === null ? "Unassigned" : <span className="break-all">{section.teacher_name ?? userById.get(section.teacher_id)?.email ?? "…"}</span>) },
     { header: "Meetings", cell: (section) => <MeetingList meetings={section.meetings} /> },
     { header: "Seats", className: "tabular-nums", cell: (section) => `${section.enrolled_count} / ${section.capacity}` },
     {

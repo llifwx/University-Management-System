@@ -1,4 +1,5 @@
-/** The API exposes only a teacher id to non-admins: accounts have no display name and /users is admin-only. */
-export function instructorLabel(teacherId: number | null): string {
-  return teacherId === null ? "Unassigned" : `Instructor #${teacherId}`;
+/** Teachers without a profile name yet fall back to their id; /users is admin-only. */
+export function instructorLabel({ teacher_id, teacher_name }: { teacher_id: number | null; teacher_name?: string | null }): string {
+  if (teacher_id === null) return "Unassigned";
+  return teacher_name ?? `Instructor #${teacher_id}`;
 }

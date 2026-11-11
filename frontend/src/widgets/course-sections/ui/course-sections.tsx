@@ -29,7 +29,7 @@ function SectionCard({ section, semesterName, semesterOpen, enrolled, canRegiste
           <div className="text-sm">
             <MeetingList meetings={section.meetings} />
           </div>
-          <p className="text-muted-foreground text-sm">{instructorLabel(section.teacher_id)}</p>
+          <p className="text-muted-foreground text-sm">{instructorLabel(section)}</p>
           <p className="text-muted-foreground flex items-center gap-1.5 text-sm tabular-nums">
             <Users className="size-4" aria-hidden />
             {section.remaining_capacity} of {section.capacity} seats remaining

@@ -13,6 +13,6 @@ export function scheduleToEvents(entries: ScheduleEntry[]): TimetableEvent[] {
     code: entry.course_code,
     title: entry.course_title,
     section: entry.section_number,
-    instructor: instructorLabel(entry.teacher_id),
+    instructor: instructorLabel(entry),
   }));
 }

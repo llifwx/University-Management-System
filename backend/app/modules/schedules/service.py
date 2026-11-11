@@ -32,11 +32,12 @@ async def schedule(actor: UserOut, semester_id: int, student_id: int | None = No
                     course_title=c.course_title,
                     section_number=s.section_number,
                     teacher_id=s.teacher_id,
+                    teacher_name=teacher_name,
                     meeting_day=m.meeting_day,
                     start_time=m.start_time,
                     end_time=m.end_time,
                 )
-                for r, s, c, m in rows
+                for r, s, c, m, teacher_name in rows
             ],
         )
 

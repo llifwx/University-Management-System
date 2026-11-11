@@ -23,7 +23,14 @@ from app.core.security import (
 from app.db.session import SessionFactory
 from app.models import AuthSession, LoginFailure, RefreshToken, User
 from app.modules.auth import repository as auth_repo
-from app.modules.auth.schemas import PasswordChange, StaffCreate, StaffPatch, TokenPair, UserOut
+from app.modules.auth.schemas import (
+    PROFILE_FIELDS,
+    PasswordChange,
+    StaffCreate,
+    StaffPatch,
+    TokenPair,
+    UserOut,
+)
 
 logger = logging.getLogger("university")
 
@@ -207,7 +214,10 @@ async def create_staff(payload: StaffCreate) -> UserOut:
     async def operation(db: AsyncSession):
         await repo.academic_lock(db, exclusive=True)
         user = User(
-            email=str(payload.email).lower(), password_hash=password_hash, role=payload.role
+            email=str(payload.email).lower(),
+            password_hash=password_hash,
+            role=payload.role,
+            **payload.model_dump(include=set(PROFILE_FIELDS)),
         )
         db.add(user)
         await db.flush()
@@ -222,7 +232,11 @@ async def patch_staff(actor: UserOut, identity: int, payload: StaffPatch) -> Use
         user = await repo.require(db, User, identity, lock=True)
         if user.role == "STUDENT":
             raise AppError(400, "USE_STUDENTS_ENDPOINT", "Manage students through /students.")
-        data = values(payload)
+        # Optional profile fields may be cleared with null; the name may not.
+        data = values(payload, {"title", "department", "office", "phone"})
+        for key in PROFILE_FIELDS:
+            if key in data:
+                setattr(user, key, data[key])
         if identity == actor.id and data.get("is_active") is False:
             raise AppError(409, "SELF_DEACTIVATION", "Cannot deactivate the current administrator.")
         if "is_active" in data:

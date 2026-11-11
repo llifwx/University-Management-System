@@ -63,9 +63,13 @@ export function ProfilePage() {
           ) : (
             <Details
               rows={[
-                ["Email", user.email],
-                ["User ID", user.id],
+                ["Full name", user.full_name ?? "Not set"],
                 ["Role", ROLE_LABELS[user.role]],
+                ["Title", user.title ?? "Not set"],
+                ["Department", user.department ?? "Not set"],
+                ["Email", user.email],
+                ["Phone", user.phone ?? "Not set"],
+                ["Office", user.office ?? "Not set"],
               ]}
             />
           )}

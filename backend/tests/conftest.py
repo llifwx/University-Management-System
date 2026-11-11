@@ -62,7 +62,12 @@ async def db_factory(monkeypatch):
 async def data(db_factory):
     async with db_factory() as db, db.begin():
         admin = User(email="admin@example.edu", password_hash=PASSWORD_HASH, role="ADMIN")
-        teacher = User(email="teacher@example.edu", password_hash=PASSWORD_HASH, role="TEACHER")
+        teacher = User(
+            email="teacher@example.edu",
+            password_hash=PASSWORD_HASH,
+            role="TEACHER",
+            full_name="Grace Hopper",
+        )
         other_teacher = User(
             email="teacher2@example.edu", password_hash=PASSWORD_HASH, role="TEACHER"
         )

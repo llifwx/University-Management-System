@@ -51,6 +51,7 @@ class SectionOut(Output):
     section_number: str
     capacity: int
     teacher_id: int | None
+    teacher_name: str | None = None
     created_at: datetime
     meetings: list[MeetingOut]
     enrolled_count: int

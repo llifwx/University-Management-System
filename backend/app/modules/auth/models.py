@@ -33,6 +33,12 @@ class User(Base):
     password_hash: Mapped[str] = mapped_column(String(255))
     role: Mapped[str] = mapped_column(String(10))
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, server_default="true")
+    # Staff profile; students keep theirs in the students table.
+    full_name: Mapped[str | None] = mapped_column(String(100))
+    title: Mapped[str | None] = mapped_column(String(100))
+    department: Mapped[str | None] = mapped_column(String(100))
+    office: Mapped[str | None] = mapped_column(String(50))
+    phone: Mapped[str | None] = mapped_column(String(30))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),

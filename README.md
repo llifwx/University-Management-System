@@ -163,7 +163,9 @@ invalidating its access and refresh tokens; it accepts either the access bearer 
 every session of the user. Other login sessions remain independent of a plain logout.
 Access tokens expire in 15 minutes by default; session lifetime is seven days, both configurable.
 JWT claims include issuer, audience, type, expiration, identity and session ID. Roles and active
-status come from the database on every request. Password changes via admin revoke all user sessions;
+status come from the database on every request. Staff accounts carry a profile (`full_name`, required on
+creation; optional `title`, `department`, `office`, `phone`); sections and timetables expose the
+teacher's name as `teacher_name`. Password changes via admin revoke all user sessions;
 `POST /auth/password` (`current_password`, `new_password`) keeps the caller's session and revokes the rest.
 
 Failed password checks are recorded in `login_failures`. Five failures for one email, or thirty from
@@ -192,7 +194,7 @@ unless marked public. JSON responses and detailed schemas are available in OpenA
 | POST | `/auth/password` | Authenticated |
 | GET | `/auth/me` | Authenticated |
 | GET, POST | `/users` | Admin |
-| PATCH | `/users/{user_id}` | Admin; active status/password |
+| PATCH | `/users/{user_id}` | Admin; active status, password, profile |
 | GET | `/students/me` | Student |
 | GET, POST | `/students` | Admin |
 | GET | `/students/{student_id}` | Owner or admin |
