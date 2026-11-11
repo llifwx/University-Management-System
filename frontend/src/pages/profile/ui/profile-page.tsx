@@ -12,8 +12,12 @@ import { QueryState } from "@/shared/ui/states";
 
 function Details({ rows }: { rows: [string, string | number][] }) {
   return (
-    <Card className="max-w-2xl shadow-sm">
-      <CardContent className="p-6">
+    <Card className="shadow-sm">
+      <CardHeader>
+        <CardTitle>Account</CardTitle>
+        <CardDescription>To change these details, contact a university administrator.</CardDescription>
+      </CardHeader>
+      <CardContent>
         <dl className="grid gap-x-8 gap-y-4 sm:grid-cols-2">
           {rows.map(([label, value]) => (
             <div key={label}>
@@ -47,48 +51,44 @@ function StudentProfile() {
   );
 }
 
-function Security() {
-  return (
-    <div className="mt-6 grid max-w-2xl gap-6">
-      <Card className="shadow-sm">
-        <CardHeader>
-          <CardTitle>Password</CardTitle>
-          <CardDescription>Changing it signs out your other devices.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ChangePasswordForm />
-        </CardContent>
-      </Card>
-      <Card className="shadow-sm">
-        <CardHeader>
-          <CardTitle>Sessions</CardTitle>
-          <CardDescription>Lost a device or signed in on a shared computer? End every session at once.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <LogoutEverywhereButton />
-        </CardContent>
-      </Card>
-    </div>
-  );
-}
-
 export function ProfilePage() {
   const user = useSessionUser();
   return (
     <>
-      <PageHeader title="Profile" description="To change these details, contact a university administrator." />
-      {user.role === "STUDENT" ? (
-        <StudentProfile />
-      ) : (
-        <Details
-          rows={[
-            ["Email", user.email],
-            ["User ID", user.id],
-            ["Role", ROLE_LABELS[user.role]],
-          ]}
-        />
-      )}
-      <Security />
+      <PageHeader title="Profile" description="Your account details and sign-in security." />
+      <div className="grid max-w-6xl items-start gap-6 lg:grid-cols-2">
+        <div className="grid gap-6">
+          {user.role === "STUDENT" ? (
+            <StudentProfile />
+          ) : (
+            <Details
+              rows={[
+                ["Email", user.email],
+                ["User ID", user.id],
+                ["Role", ROLE_LABELS[user.role]],
+              ]}
+            />
+          )}
+          <Card className="shadow-sm">
+            <CardHeader>
+              <CardTitle>Sessions</CardTitle>
+              <CardDescription>Lost a device or signed in on a shared computer? End every session at once, including this one.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <LogoutEverywhereButton />
+            </CardContent>
+          </Card>
+        </div>
+        <Card className="shadow-sm">
+          <CardHeader>
+            <CardTitle>Password</CardTitle>
+            <CardDescription>Changing it keeps you signed in here and signs out your other devices.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ChangePasswordForm />
+          </CardContent>
+        </Card>
+      </div>
     </>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
+import { LogOut } from "lucide-react";
 
 import { NETWORK_ERROR_MESSAGE } from "@/shared/api";
 import { Button } from "@/shared/ui/button";
@@ -17,7 +18,12 @@ export function LogoutEverywhereButton() {
   const mutation = useMutation({ mutationFn: logoutEverywhere });
   return (
     <ConfirmDialog
-      trigger={<Button variant="outline">Sign out everywhere</Button>}
+      trigger={
+        <Button variant="outline" className="text-destructive hover:text-destructive">
+          <LogOut />
+          Sign out everywhere
+        </Button>
+      }
       title="Sign out on all devices?"
       description="Every session of this account ends, including this one. You will need to sign in again."
       confirmLabel="Sign out everywhere"
