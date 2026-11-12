@@ -33,6 +33,7 @@ services:
       - "${BACKEND_PORT:-8000}:8000"
     volumes:
       - ./backend/app:/app/app:ro
+      - media_data:/app/media
     depends_on:
       postgres:
         condition: service_healthy
@@ -49,6 +50,10 @@ services:
       API_INTERNAL_URL: http://backend:8000/api/v1
       # Plain-HTTP local default. Set COOKIE_SECURE=true behind HTTPS.
       COOKIE_SECURE: ${COOKIE_SECURE:-false}
+      # The one deliberate exception: the chat widget's WebSocket connects straight from the
+      # browser to the backend's published port (ticket-authenticated), since the BFF proxy
+      # cannot tunnel a WebSocket upgrade. Must be reachable from the browser, not just Docker.
+      CHAT_WS_URL: ${CHAT_WS_URL:-ws://localhost:8000/api/v1}
     ports:
       - "${FRONTEND_PORT:-3000}:3000"
     depends_on:
@@ -63,3 +68,4 @@ services:
 
 volumes:
   postgres_data:
+  media_data:

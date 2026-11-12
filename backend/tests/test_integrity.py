@@ -10,7 +10,8 @@ from sqlalchemy.exc import IntegrityError
         "SELECT email,password_hash,role FROM users LIMIT 1",
         "INSERT INTO users (id,email,password_hash,role) "
         "SELECT id,'duplicate@example.edu',password_hash,role FROM users LIMIT 1",
-        "INSERT INTO students (user_id,full_name,year_level) VALUES (999999,'Missing',1)",
+        "INSERT INTO students (user_id,student_number,last_name,first_name,year_level) "
+        "VALUES (999999,'99ID999999','Missing','Missing',1)",
         "UPDATE course_sections SET capacity=0 WHERE section_id=1",
         "UPDATE section_meetings SET end_time=start_time WHERE id=1",
         "UPDATE section_meetings SET meeting_day=7 WHERE id=1",
@@ -47,7 +48,8 @@ async def test_duplicate_student_email_api(client, data, headers):
         json={
             "email": data.actors[0].email,
             "password": "Another-valid-password",
-            "full_name": "Duplicate",
+            "last_name": "Duplicate",
+            "first_name": "Student",
             "year_level": 1,
         },
     )

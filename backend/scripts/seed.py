@@ -55,6 +55,7 @@ async def seed() -> None:
             teachers.append(teacher)
         students = []
         for i, name in enumerate(("Alex Morgan", "Sam Rivera", "Taylor Kim", "Jordan Lee"), 1):
+            last_name, first_name = name.split(" ", 1)
             user = await get_or_add(
                 User,
                 "email",
@@ -67,7 +68,8 @@ async def seed() -> None:
                     Student,
                     "user_id",
                     user.id,
-                    full_name=name,
+                    last_name=last_name,
+                    first_name=first_name,
                     program="Information Systems",
                     year_level=2,
                     # Second-year students enrolled last year.

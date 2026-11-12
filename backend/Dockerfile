@@ -7,7 +7,7 @@ COPY app ./app
 COPY alembic ./alembic
 COPY alembic.ini ./
 COPY scripts ./scripts
-RUN useradd --create-home api && chown -R api:api /app
+RUN useradd --create-home api && mkdir -p media/avatars media/chat_attachments && chown -R api:api /app
 USER api
 EXPOSE 8000
 CMD [".venv/bin/python", "scripts/start.py"]

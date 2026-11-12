@@ -82,7 +82,8 @@ async def data(db_factory):
                 user_id=u.id,
                 user=u,
                 student_number=f"26ID{i:06d}",
-                full_name=f"Student {i}",
+                last_name="Student",
+                first_name=str(i),
                 program="BIS",
                 year_level=1,
             )

@@ -52,6 +52,25 @@ export async function apiRequest<T>(path: string, { method = "GET", query, json,
   return (await response.json()) as T;
 }
 
+/** Multipart upload: the browser sets the correct `Content-Type` boundary, so it must not be overridden. */
+export async function apiUpload<T>(
+  path: string,
+  file: File | null,
+  signal?: AbortSignal,
+  fields?: Record<string, string>,
+): Promise<T> {
+  const formData = new FormData();
+  for (const [key, value] of Object.entries(fields ?? {})) formData.append(key, value);
+  if (file) formData.append("file", file);
+  const response = await fetch(`${PROXY_BASE}${path}`, { method: "POST", body: formData, signal });
+  if (!response.ok) {
+    const error = await parseApiError(response);
+    if (response.status === 401) redirectToLogin();
+    throw error;
+  }
+  return (await response.json()) as T;
+}
+
 /**
  * The backend has no search, status or student filters, so filtering those happens over complete lists.
  * ponytail: loads whole collections; add server-side filters to FastAPI if they outgrow a few thousand rows.

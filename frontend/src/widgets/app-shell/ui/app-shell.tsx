@@ -1,12 +1,14 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
 import { ChevronsLeft, ChevronsRight, Menu, Monitor, Moon, Sun, User as UserIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ReactNode, useEffect } from "react";
 
-import { ROLE_LABELS, useSessionUser } from "@/entities/user";
+import { studentQueries } from "@/entities/student";
+import { ROLE_LABELS, User, useSessionUser } from "@/entities/user";
 import { LogoutMenuItem } from "@/features/logout";
 import { cn } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";
@@ -112,6 +114,27 @@ function MobileDrawer() {
   );
 }
 
+/** Only students currently have a profile photo; the query is reused from the profile page's cache, so an upload there updates this too. */
+function UserAvatar({ user }: { user: User }) {
+  const student = useQuery({ ...studentQueries.me(), enabled: user.role === "STUDENT" });
+  const photoUrl = student.data?.photo_url;
+  if (photoUrl) {
+    // A cache-busting query param forces the browser to refetch the image instead of reusing the old bytes at the same URL.
+    const src = `/api/proxy${photoUrl}?v=${student.dataUpdatedAt}`;
+    return (
+      <span className="size-7 overflow-hidden rounded-full">
+        {/* eslint-disable-next-line @next/next/no-img-element -- same-origin BFF-proxied image, not a next/image-managed asset */}
+        <img src={src} alt="" className="size-full object-cover" />
+      </span>
+    );
+  }
+  return (
+    <span className="bg-accent text-accent-foreground grid size-7 place-items-center rounded-full">
+      <UserIcon className="size-4" aria-hidden />
+    </span>
+  );
+}
+
 function UserMenu() {
   const user = useSessionUser();
   const { theme, setTheme } = useTheme();
@@ -119,9 +142,7 @@ function UserMenu() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="sm" className="max-w-56" aria-label={`Account menu for ${user.email}`}>
-          <span className="bg-accent text-accent-foreground grid size-7 place-items-center rounded-full">
-            <UserIcon className="size-4" aria-hidden />
-          </span>
+          <UserAvatar user={user} />
           <span className="hidden truncate sm:inline">{user.email}</span>
         </Button>
       </DropdownMenuTrigger>

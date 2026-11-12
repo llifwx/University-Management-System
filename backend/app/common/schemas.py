@@ -6,6 +6,8 @@ Name = Annotated[str, Field(min_length=1, max_length=100)]
 
 Password = Annotated[str, Field(min_length=12, max_length=128)]
 
+Phone = Annotated[str, Field(min_length=6, max_length=20, pattern=r"^[0-9+()\-\s]+$")]
+
 
 class Input(BaseModel):
     model_config = ConfigDict(extra="forbid")

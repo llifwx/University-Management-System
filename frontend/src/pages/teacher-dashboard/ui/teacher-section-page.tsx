@@ -13,7 +13,6 @@ import { EmptyState, QueryState } from "@/shared/ui/states";
 // The API also returns student emails, but a roster does not need contact details on screen.
 const columns: Column<RosterStudent>[] = [
   { header: "Student", cell: (student) => <span className="font-medium">{student.full_name}</span> },
-  { header: "Student ID", cell: (student) => <span className="font-mono">{student.student_number}</span> },
   { header: "Program", cell: (student) => student.program ?? "Not set" },
   { header: "Year", cell: (student) => student.year_level },
 ];
