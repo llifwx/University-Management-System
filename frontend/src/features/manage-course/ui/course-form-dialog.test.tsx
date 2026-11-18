@@ -37,14 +37,14 @@ describe("CourseForm", () => {
     await waitFor(() => expect(onDone).toHaveBeenCalled());
     const [url, init] = fetchMock.mock.calls[0];
     expect(url).toBe("/api/proxy/courses");
-    expect(JSON.parse(String(init.body))).toEqual({ course_code: "CS900", course_title: "Compilers", credits: 4, description: null });
+    expect(JSON.parse(String(init.body))).toEqual({ course_code: "CS900", course_title: "Compilers", credits: 4, ects: null, description: null });
     expect(invalidate).toHaveBeenCalledWith({ queryKey: ["courses"] });
   });
 
   it("edits with PATCH", async () => {
     const fetchMock = vi.fn(async (..._args: [string, RequestInit]) => json({ course_id: 5 }));
     vi.stubGlobal("fetch", fetchMock);
-    const course = { course_id: 5, course_code: "CS1", course_title: "Old", description: "Text", credits: 3, created_at: "" };
+    const course = { course_id: 5, course_code: "CS1", course_title: "Old", description: "Text", credits: 3, ects: null, created_at: "" };
     renderWithClient(<CourseForm course={course} onDone={() => {}} />);
     expect(screen.getByLabelText("Title")).toHaveValue("Old");
     await save("Save changes");

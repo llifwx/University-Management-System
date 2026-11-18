@@ -7,6 +7,7 @@ from sqlalchemy import (
     ForeignKeyConstraint,
     Index,
     Integer,
+    Numeric,
     String,
     UniqueConstraint,
     func,
@@ -31,6 +32,9 @@ class Registration(Base):
         ),
         Index("ix_registration_schedule", "student_id", "semester_id", "status"),
         Index("ix_registration_seats", "section_id", "status"),
+        CheckConstraint("attestation_1 BETWEEN 0 AND 30", name="attestation_1"),
+        CheckConstraint("attestation_2 BETWEEN 0 AND 30", name="attestation_2"),
+        CheckConstraint("final_exam BETWEEN 0 AND 40", name="final_exam"),
     )
     registration_id: Mapped[int] = mapped_column(primary_key=True)
     student_id: Mapped[int] = mapped_column(ForeignKey("students.student_id"), index=True)
@@ -41,3 +45,9 @@ class Registration(Base):
         server_default=func.now(),
     )
     status: Mapped[str] = mapped_column(String(10), default="Enrolled", server_default="Enrolled")
+    # Points out of 30 + 30 + 40; the total and letter grade are derived, never stored.
+    attestation_1: Mapped[float | None] = mapped_column(Numeric(5, 2, asdecimal=False))
+    attestation_2: Mapped[float | None] = mapped_column(Numeric(5, 2, asdecimal=False))
+    final_exam: Mapped[float | None] = mapped_column(Numeric(5, 2, asdecimal=False))
+    graded_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    graded_by: Mapped[int | None] = mapped_column(ForeignKey("users.id"))

@@ -5,6 +5,7 @@ from app.modules.auth.router import router as auth_router
 from app.modules.auth.router import users_router
 from app.modules.chat.router import router as chat_router
 from app.modules.courses.router import router as courses_router
+from app.modules.grades.router import router as grades_router
 from app.modules.registrations.router import router as registrations_router
 from app.modules.schedules.router import router as schedules_router
 from app.modules.sections.router import router as sections_router
@@ -25,5 +26,6 @@ for module_router in (
     registrations_router,
     schedules_router,
     chat_router,
+    grades_router,
 ):
     router.include_router(module_router)

@@ -7,6 +7,7 @@ import type { Student } from "../model/types";
 export const studentQueries = {
   all: ["students"] as const,
   me: () => queryOptions({ queryKey: ["students", "me"], queryFn: ({ signal }) => apiRequest<Student>("/students/me", { signal }) }),
+  detail: (id: number) => queryOptions({ queryKey: ["students", "detail", id], queryFn: ({ signal }) => apiRequest<Student>(`/students/${id}`, { signal }) }),
   list: () => queryOptions({ queryKey: ["students", "list"], queryFn: ({ signal }) => fetchAllPages<Student>("/students", { signal }) }),
   total: () => queryOptions({ queryKey: ["students", "total"], queryFn: ({ signal }) => fetchTotal("/students", signal) }),
 };
