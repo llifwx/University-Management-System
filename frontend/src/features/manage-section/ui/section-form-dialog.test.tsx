@@ -9,7 +9,7 @@ import { sectionSchema } from "../model/section-schema";
 import { SectionForm } from "./section-form-dialog";
 
 const OPTIONS = {
-  courses: [{ course_id: 1, course_code: "CS101", course_title: "Programming", description: null, credits: 3, created_at: "" }],
+  courses: [{ course_id: 1, course_code: "CS101", course_title: "Programming", description: null, credits: 3, ects: null, created_at: "" }],
   semesters: [{ semester_id: 2, name: "Fall", start_date: "2026-09-01", end_date: "2026-12-20", is_active: true }],
   teachers: [{ id: 7, email: "t@example.edu", role: "TEACHER" as const, is_active: true }],
 };

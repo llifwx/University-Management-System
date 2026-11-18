@@ -21,6 +21,7 @@ export const courseSchema = z.object({
   course_title: z.string().trim().min(1, "Enter a title.").max(200, "Use at most 200 characters."),
   description: z.string(),
   credits: z.number("Enter the credits.").int("Use a whole number.").min(1, "Credits must be between 1 and 30.").max(30, "Credits must be between 1 and 30."),
+  ects: z.number().int("Use a whole number.").min(1, "ECTS must be between 1 and 60.").max(60, "ECTS must be between 1 and 60.").nullable(),
 });
 type Values = z.infer<typeof courseSchema>;
 
@@ -36,8 +37,8 @@ export function CourseForm({ course, onDone }: { course?: Course; onDone: () => 
   } = useForm<Values>({
     resolver: zodResolver(courseSchema),
     defaultValues: course
-      ? { course_code: course.course_code, course_title: course.course_title, description: course.description ?? "", credits: course.credits }
-      : { course_code: "", course_title: "", description: "" },
+      ? { course_code: course.course_code, course_title: course.course_title, description: course.description ?? "", credits: course.credits, ects: course.ects ?? null }
+      : { course_code: "", course_title: "", description: "", ects: null },
   });
   const mutation = useMutation({
     mutationFn: (values: Values) => {
@@ -62,6 +63,15 @@ export function CourseForm({ course, onDone }: { course?: Course; onDone: () => 
       </FormField>
       <FormField id="credits" label="Credits" error={errors.credits?.message}>
         <Input type="number" min={1} max={30} {...fieldProps("credits", errors.credits?.message)} {...register("credits", { valueAsNumber: true })} />
+      </FormField>
+      <FormField id="ects" label="ECTS (optional)" error={errors.ects?.message}>
+        <Input
+          type="number"
+          min={1}
+          max={60}
+          {...fieldProps("ects", errors.ects?.message)}
+          {...register("ects", { setValueAs: (v) => (v === "" || v == null ? null : Number(v)) })}
+        />
       </FormField>
       <FormField id="description" label="Description (optional)" error={errors.description?.message}>
         <Textarea {...fieldProps("description", errors.description?.message)} {...register("description")} />

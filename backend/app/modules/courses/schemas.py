@@ -10,6 +10,7 @@ class CourseCreate(Input):
     course_title: str = Field(min_length=1, max_length=200)
     description: str | None = None
     credits: int = Field(ge=1, le=30)
+    ects: int | None = Field(default=None, ge=1, le=60)
 
 
 class CoursePatch(Input):
@@ -17,6 +18,7 @@ class CoursePatch(Input):
     course_title: str | None = Field(default=None, min_length=1, max_length=200)
     description: str | None = None
     credits: int | None = Field(default=None, ge=1, le=30)
+    ects: int | None = Field(default=None, ge=1, le=60)
 
 
 class CourseOut(Output):
@@ -25,4 +27,5 @@ class CourseOut(Output):
     course_title: str
     description: str | None
     credits: int
+    ects: int | None
     created_at: datetime
