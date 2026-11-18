@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { FileText, Printer } from "lucide-react";
+import Link from "next/link";
 
 import { gradeQueries } from "@/entities/grade";
 import { Button } from "@/shared/ui/button";
@@ -20,20 +21,29 @@ const COLUMNS: GradeColumn[] = [
   { header: "Traditional", cell: (c) => c.traditional ?? "" },
 ];
 
-export function TranscriptPage() {
-  const grades = useQuery(gradeQueries.mine());
+/** Without studentId: the signed-in student's own transcript. With it: an admin viewing a student. */
+export function TranscriptPage({ studentId }: { studentId?: number }) {
+  const grades = useQuery(gradeQueries.of(studentId));
   return (
     <>
       <PageHeader
         title="Transcript"
+        crumbs={studentId ? [{ label: "Students", href: "/admin/students" }, { label: "Transcript" }] : undefined}
         actions={
-          // ponytail: browser print-to-PDF; a server-rendered PDF only if an official signed copy is needed.
-          <Button variant="outline" onClick={() => window.print()} className="print:hidden">
-            <Printer aria-hidden /> Print / PDF
-          </Button>
+          <div className="flex gap-2 print:hidden">
+            {studentId && (
+              <Button asChild variant="ghost">
+                <Link href={`/admin/students/${studentId}/attestation`}>Attestation</Link>
+              </Button>
+            )}
+            {/* ponytail: browser print-to-PDF; a server-rendered PDF only if an official signed copy is needed. */}
+            <Button variant="outline" onClick={() => window.print()}>
+              <Printer aria-hidden /> Print / PDF
+            </Button>
+          </div>
         }
       />
-      <StudentCard />
+      <StudentCard studentId={studentId} />
       <QueryState query={grades}>
         {(data) =>
           data.semesters.length === 0 ? (

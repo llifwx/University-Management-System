@@ -22,7 +22,14 @@ class GradeSheetRow(Output):
     attestation_2: float | None
     final_exam: float | None
     total: float
+    admitted: bool
     letter: str | None
+
+
+class GradeSheet(Output):
+    closed: bool  # the semester has ended
+    editable: bool  # teachers lose write access once it has; admins keep it
+    rows: list[GradeSheetRow]
 
 
 class CourseGrade(Output):
@@ -35,6 +42,7 @@ class CourseGrade(Output):
     attestation_2: float | None
     final_exam: float | None
     total: float
+    admitted: bool
     letter: str | None
     grade_points: float | None
     traditional: str | None

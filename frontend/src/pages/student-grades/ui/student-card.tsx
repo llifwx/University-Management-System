@@ -5,8 +5,10 @@ import { useQuery } from "@tanstack/react-query";
 import { studentQueries } from "@/entities/student";
 import { Card, CardContent } from "@/shared/ui/card";
 
-export function StudentCard() {
-  const { data } = useQuery(studentQueries.me());
+export function StudentCard({ studentId }: { studentId?: number }) {
+  const me = useQuery({ ...studentQueries.me(), enabled: !studentId });
+  const other = useQuery({ ...studentQueries.detail(studentId ?? 0), enabled: !!studentId });
+  const data = studentId ? other.data : me.data;
   if (!data) return null;
   const rows = [
     ["Program", data.program ?? "Not set"],

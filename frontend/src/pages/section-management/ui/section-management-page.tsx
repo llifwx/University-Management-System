@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { Layers, Plus } from "lucide-react";
+import Link from "next/link";
 import { useMemo } from "react";
 
 import { courseQueries } from "@/entities/course";
@@ -53,6 +54,9 @@ export function SectionManagementPage() {
       header: "Actions",
       cell: (section) => (
         <div className="flex justify-end gap-1 md:justify-start">
+          <Button asChild variant="ghost" size="sm">
+            <Link href={`/admin/sections/${section.section_id}/grades`}>Grades</Link>
+          </Button>
           {options && (
             <SectionFormDialog
               section={section}

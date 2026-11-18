@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { Plus, Users } from "lucide-react";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 
 import { Student, studentQueries } from "@/entities/student";
@@ -67,6 +68,9 @@ export function StudentManagementPage() {
       header: "Actions",
       cell: (student) => (
         <div className="flex flex-wrap justify-end gap-1 md:justify-start">
+          <Button asChild variant="ghost" size="sm">
+            <Link href={`/admin/students/${student.student_id}/transcript`}>Grades</Link>
+          </Button>
           <FormDialog
             trigger={
               <Button variant="ghost" size="sm">

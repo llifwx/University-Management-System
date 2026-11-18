@@ -1,5 +1,6 @@
 import type { components } from "@/shared/api";
 
+export type GradeSheet = components["schemas"]["GradeSheet"];
 export type GradeSheetRow = components["schemas"]["GradeSheetRow"];
 export type GradeInput = components["schemas"]["GradeInput"];
 export type StudentGrades = components["schemas"]["StudentGrades"];

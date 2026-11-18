@@ -683,6 +683,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/students/{student_id}/grades": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Student Grades */
+        get: operations["student_grades_api_v1_students__student_id__grades_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/health": {
         parameters: {
             query?: never;
@@ -806,6 +823,8 @@ export interface components {
             final_exam: number | null;
             /** Total */
             total: number;
+            /** Admitted */
+            admitted: boolean;
             /** Letter */
             letter: string | null;
             /** Grade Points */
@@ -872,6 +891,15 @@ export interface components {
             /** Final Exam */
             final_exam?: number | null;
         };
+        /** GradeSheet */
+        GradeSheet: {
+            /** Closed */
+            closed: boolean;
+            /** Editable */
+            editable: boolean;
+            /** Rows */
+            rows: components["schemas"]["GradeSheetRow"][];
+        };
         /** GradeSheetRow */
         GradeSheetRow: {
             /** Registration Id */
@@ -890,6 +918,8 @@ export interface components {
             final_exam: number | null;
             /** Total */
             total: number;
+            /** Admitted */
+            admitted: boolean;
             /** Letter */
             letter: string | null;
         };
@@ -6138,7 +6168,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GradeSheetRow"][];
+                    "application/json": components["schemas"]["GradeSheet"];
                 };
             };
             /** @description Bad Request */
@@ -6227,7 +6257,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["GradeSheetRow"][];
+                    "application/json": components["schemas"]["GradeSheet"];
                 };
             };
             /** @description Bad Request */
@@ -6300,6 +6330,91 @@ export interface operations {
             query?: never;
             header?: never;
             path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StudentGrades"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Content */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    student_grades_api_v1_students__student_id__grades_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                student_id: number;
+            };
             cookie?: never;
         };
         requestBody?: never;
