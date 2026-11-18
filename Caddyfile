@@ -1,0 +1,6 @@
+{$DOMAIN} {
+	encode gzip
+	# The chat WebSocket goes straight to the backend; the Next.js BFF cannot tunnel the upgrade.
+	reverse_proxy /api/v1/chat/ws backend:8000
+	reverse_proxy frontend:3000
+}
