@@ -33,9 +33,7 @@ class ChatThread(Base):
 class ChatMessage(Base):
     __tablename__ = "chat_messages"
     __table_args__ = (
-        CheckConstraint(
-            "body IS NOT NULL OR attachment_path IS NOT NULL", name="has_content"
-        ),
+        CheckConstraint("body IS NOT NULL OR attachment_path IS NOT NULL", name="has_content"),
     )
     id: Mapped[int] = mapped_column(primary_key=True)
     thread_id: Mapped[int] = mapped_column(

@@ -145,7 +145,10 @@ async def list_threads(offset: int, limit: int) -> Page[ThreadOut]:
     async def operation(db: AsyncSession):
         total = await db.scalar(select(func.count()).select_from(ChatThread)) or 0
         rows = await db.scalars(
-            select(ChatThread).order_by(ChatThread.last_message_at.desc()).offset(offset).limit(limit)
+            select(ChatThread)
+            .order_by(ChatThread.last_message_at.desc())
+            .offset(offset)
+            .limit(limit)
         )
         items = []
         for thread in rows:
@@ -159,8 +162,8 @@ async def list_threads(offset: int, limit: int) -> Page[ThreadOut]:
 async def _list_messages(thread_id: int, offset: int, limit: int) -> Page[MessageOut]:
     async def operation(db: AsyncSession):
         await repo.require(db, ChatThread, thread_id)
-        count_query = select(func.count()).select_from(ChatMessage).where(
-            ChatMessage.thread_id == thread_id
+        count_query = (
+            select(func.count()).select_from(ChatMessage).where(ChatMessage.thread_id == thread_id)
         )
         total = await db.scalar(count_query) or 0
         rows = await db.scalars(

@@ -39,9 +39,7 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint("id", name="pk_chat_threads"),
         sa.UniqueConstraint("user_id", name="uq_chat_threads_user_id"),
     )
-    op.create_index(
-        "ix_chat_threads_user_id", "chat_threads", ["user_id"], unique=False
-    )
+    op.create_index("ix_chat_threads_user_id", "chat_threads", ["user_id"], unique=False)
     op.create_table(
         "chat_messages",
         sa.Column("id", sa.Integer(), nullable=False),
@@ -71,9 +69,7 @@ def upgrade() -> None:
         ),
         sa.PrimaryKeyConstraint("id", name="pk_chat_messages"),
     )
-    op.create_index(
-        "ix_chat_messages_thread_id", "chat_messages", ["thread_id"], unique=False
-    )
+    op.create_index("ix_chat_messages_thread_id", "chat_messages", ["thread_id"], unique=False)
 
 
 def downgrade() -> None:
