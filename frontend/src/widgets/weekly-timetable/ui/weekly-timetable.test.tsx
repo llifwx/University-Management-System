@@ -1,10 +1,21 @@
-import { render, screen, within } from "@testing-library/react";
+import { render as rtlRender, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { NextIntlClientProvider } from "next-intl";
+import type { ReactElement } from "react";
 import { describe, expect, it, vi } from "vitest";
 
+import messages from "../../../../messages/en.json";
 import type { TimetableEvent } from "../lib/layout";
 
 import { WeeklyTimetable } from "./weekly-timetable";
+
+function render(ui: ReactElement) {
+  return rtlRender(
+    <NextIntlClientProvider locale="en" messages={messages}>
+      {ui}
+    </NextIntlClientProvider>,
+  );
+}
 
 const meeting = (id: string, day: number, start = "10:00:00", end = "11:30:00"): TimetableEvent => ({
   id,

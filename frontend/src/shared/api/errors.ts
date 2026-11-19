@@ -14,16 +14,21 @@ export class ApiError extends Error {
   }
 }
 
-export const NETWORK_ERROR_MESSAGE = "Could not reach the server. Check your connection and try again.";
-
-/** Backend `error.message` is shown unless the caller has a clearer sentence for that code. */
-export function getErrorMessage(error: unknown, byCode: Record<string, string> = {}): string {
+/** Backend `error.message` is shown unless a translated sentence exists for that code. `byCode` overrides take priority over the shared `errors.*` dictionary. */
+export function getErrorMessage(
+  error: unknown,
+  hasCode: (code: string) => boolean,
+  translateCode: (code: string) => string,
+  networkErrorMessage: string,
+  byCode: Record<string, string> = {},
+): string {
   if (error instanceof ApiError) {
     if (byCode[error.code]) return byCode[error.code];
+    if (hasCode(error.code)) return translateCode(error.code);
     const detail = error.details.find((d) => d.message)?.message;
     return detail ? `${error.message} ${detail}` : error.message;
   }
-  return NETWORK_ERROR_MESSAGE;
+  return networkErrorMessage;
 }
 
 /** Puts FastAPI 422 details on matching form fields; returns false when nothing matched. */

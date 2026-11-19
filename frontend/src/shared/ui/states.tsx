@@ -2,9 +2,10 @@
 
 import type { UseQueryResult } from "@tanstack/react-query";
 import { AlertCircle, Inbox, LucideIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { ReactNode } from "react";
 
-import { getErrorMessage } from "@/shared/api";
+import { useApiErrorMessage } from "@/shared/api";
 
 import { Button } from "./button";
 import { Skeleton } from "./skeleton";
@@ -21,13 +22,15 @@ export function EmptyState({ title, description, icon: Icon = Inbox, action }: {
 }
 
 export function ErrorState({ error, onRetry }: { error: unknown; onRetry?: () => void }) {
+  const t = useTranslations("common");
+  const getMessage = useApiErrorMessage();
   return (
     <div role="alert" className="flex flex-col items-center gap-3 rounded-lg border px-6 py-10 text-center">
       <AlertCircle className="text-destructive size-8" aria-hidden />
-      <p className="max-w-md text-sm">{getErrorMessage(error)}</p>
+      <p className="max-w-md text-sm">{getMessage(error)}</p>
       {onRetry && (
         <Button variant="outline" size="sm" onClick={onRetry}>
-          Try again
+          {t("tryAgain")}
         </Button>
       )}
     </div>
@@ -35,8 +38,9 @@ export function ErrorState({ error, onRetry }: { error: unknown; onRetry?: () =>
 }
 
 export function ListSkeleton({ rows = 4 }: { rows?: number }) {
+  const t = useTranslations("common");
   return (
-    <div className="space-y-3" role="status" aria-label="Loading">
+    <div className="space-y-3" role="status" aria-label={t("loading")}>
       {Array.from({ length: rows }, (_, index) => (
         <Skeleton key={index} className="h-14 w-full" />
       ))}

@@ -1,0 +1,1058 @@
+{
+  "app": {
+    "root": {
+      "title": "Университетті басқару жүйесі",
+      "description": "Пәндерге тіркелу, сабақ кестесі және оқу процесін басқару."
+    },
+    "titles": {
+      "admin": "Әкімшілік",
+      "transcript": "Транскрипт",
+      "login": "Кіру",
+      "adminSections": "Секциялар",
+      "adminSemesters": "Семестрлер",
+      "studentAttestation": "Студент аттестациясы",
+      "sectionGrades": "Секция бағалары",
+      "adminStaff": "Қызметкерлер",
+      "schedule": "Сабақ кестесі",
+      "adminStudents": "Студенттер",
+      "studentTranscript": "Студент транскрипті",
+      "courseDetails": "Пән туралы ақпарат",
+      "adminRegistrations": "Тіркеулер",
+      "adminSupport": "Қолдау көрсету чаты",
+      "adminCourses": "Пәндер",
+      "profile": "Профиль",
+      "courseCatalog": "Пәндер каталогы",
+      "dashboard": "Басты бет",
+      "myCourses": "Менің пәндерім",
+      "attestation": "Аттестация",
+      "teacherSchedule": "Сабақ кестесі",
+      "teacherDashboard": "Оқытушы панелі",
+      "sectionDetails": "Секция туралы ақпарат",
+      "notFoundTitle": "Бет табылмады"
+    },
+    "notFound": {
+      "heading": "404: Бет табылмады",
+      "description": "Бұл бет жоқ немесе басқа мекенжайға көшірілген.",
+      "action": "Басты бетке өту"
+    },
+    "error": {
+      "heading": "Бірдеңе дұрыс болмады",
+      "description": "Университет қызметі уақытша қолжетімсіз болуы мүмкін. Қайталап көріңіз."
+    },
+    "dashboardError": {
+      "heading": "Бұл бетті жүктеу мүмкін болмады",
+      "description": "Қайталап көріңіз. Қате қайталанса, университет қызметі қолжетімсіз болуы мүмкін."
+    }
+  },
+  "entities": {
+    "registration": {
+      "errors": {
+        "scheduleConflict": "Бұл секция сіздің кестеңіздегі сабақпен уақыты бойынша қабаттасады.",
+        "duplicateRegistration": "Сіз бұл секцияға бұрыннан тіркелгенсіз.",
+        "sectionFull": "Бұл секцияда бос орын жоқ.",
+        "registrationClosed": "Бұл семестрге тіркелу жабық.",
+        "semesterMismatch": "Бұл секция басқа семестрге жатады.",
+        "inactiveStudent": "Бұл студенттің аккаунты белсенді емес.",
+        "unscheduledSection": "Бұл секцияда әлі сабақ кестесі жоқ, сондықтан тіркелу мүмкін емес.",
+        "adminScheduleConflict": "Бұл секция студенттің кестесіндегі сабақпен уақыты бойынша қабаттасады.",
+        "adminDuplicateRegistration": "Бұл студент осы секцияға бұрыннан тіркелген."
+      },
+      "status": {
+        "enrolled": "Тіркелген",
+        "pending": "Қаралуда",
+        "rejected": "Қабылданбады",
+        "cancelled": "Болдырылмады"
+      }
+    },
+    "chat": {
+      "attachment": "Тіркеме"
+    },
+    "courseSection": {
+      "unassigned": "Тағайындалмаған",
+      "instructorNumber": "Оқытушы №{id}",
+      "noMeetingsScheduled": "Сабақтар жоспарланбаған"
+    },
+    "user": {
+      "role": {
+        "student": "Студент",
+        "teacher": "Оқытушы",
+        "admin": "Әкімші"
+      }
+    }
+  },
+  "common": {
+    "language": "Тіл",
+    "close": "Жабу",
+    "cancel": "Бас тарту",
+    "working": "Орындалуда…",
+    "saving": "Сақталуда…",
+    "loading": "Жүктелуде",
+    "previous": "Алдыңғы",
+    "next": "Келесі",
+    "pageOfResults": "{page} / {pageCount} бет · барлығы: {total}",
+    "tryAgain": "Қайталау",
+    "skipToContent": "Мазмұнға өту",
+    "networkError": "Серверге қосылу мүмкін болмады. Байланысты тексеріп, қайта көріңіз."
+  },
+  "errors": {
+    "INTERNAL_ERROR": "Күтпеген сервер қатесі орын алды.",
+    "VALIDATION_ERROR": "Сұранысты тексеру сәтсіз аяқталды.",
+    "HTTP_ERROR": "Сұранысты орындау мүмкін болмады.",
+    "INTEGRITY_CONFLICT": "Өзгеріс деректер шектеуін бұзады.",
+    "DATABASE_UNAVAILABLE": "Дерекқорға сұраныс орындалмады; кейінірек қайталаңыз.",
+    "UNKNOWN_ERROR": "Бірдеңе дұрыс болмады.",
+    "FORBIDDEN": "Бұл әрекетке рұқсатыңыз жоқ.",
+    "NOT_FOUND": "Табылмады.",
+    "NULL_NOT_ALLOWED": "Міндетті өріс толтырылмаған.",
+    "TRANSACTION_RETRY": "Қатар жүрген өзгеріс; сұранысты қайталаңыз.",
+    "INVALID_TOKEN": "Токен жарамсыз немесе мерзімі өтті.",
+    "INVALID_CREDENTIALS": "Деректер қате немесе сеанс күші жойылған.",
+    "INVALID_CURRENT_PASSWORD": "Ағымдағы құпия сөз қате көрсетілді.",
+    "USE_STUDENTS_ENDPOINT": "Студенттерді студенттер бетінен қосыңыз және басқарыңыз.",
+    "SELF_DEACTIVATION": "Ағымдағы әкімшіні өшіруге болмайды.",
+    "TOO_MANY_ATTEMPTS": "Кіру әрекеті тым көп сәтсіз болды. 15 минуттан кейін қайталаңыз.",
+    "ADMIN_HAS_NO_THREAD": "Әкімшілер тек бар болған хабарласуларда жауап береді.",
+    "UNSUPPORTED_MEDIA_TYPE": "Бұл файл түріне қолдау көрсетілмейді.",
+    "EMPTY_FILE": "Жүктелген файл бос.",
+    "FILE_TOO_LARGE": "Файл тым үлкен.",
+    "EMPTY_MESSAGE": "Хабарлама жазыңыз немесе файл тіркеңіз.",
+    "ATTACHMENT_NOT_FOUND": "Бұл хабарламаның тіркемесі жоқ.",
+    "INVALID_TEACHER": "Тағайындалған пайдаланушы белсенді оқытушы болуы керек.",
+    "INVALID_MEETINGS": "Секцияның сабақ уақыттары қабаттасады.",
+    "SECTION_HAS_HISTORY": "Тіркеу тарихы бар секцияны ауыстыруға болмайды.",
+    "CAPACITY_BELOW_ENROLLMENT": "Сыйымдылық тіркелген студенттер санынан аз болмауы керек.",
+    "SECTION_HAS_ENROLLMENTS": "Сабақ уақытын өзгерту алдында қолданыстағы тіркеулерді болдырмаңыз.",
+    "INVALID_INTERVAL": "Басталу күні аяқталу күнінен бұрын болуы керек.",
+    "PHOTO_NOT_FOUND": "Бұл студенттің суреті жоқ.",
+    "STUDENT_NOT_FOUND": "Студент профилі табылмады.",
+    "INACTIVE_STUDENT": "Студент аккаунты белсенді емес.",
+    "SEMESTER_MISMATCH": "Секция басқа семестрге жатады.",
+    "REGISTRATION_CLOSED": "Семестрге тіркелу жабық.",
+    "DUPLICATE_REGISTRATION": "Студент бұрыннан тіркелген.",
+    "SECTION_FULL": "Бұл секцияда бос орын жоқ.",
+    "SCHEDULE_CONFLICT": "Таңдалған секция қолданыстағы сабақпен уақыты бойынша қабаттасады.",
+    "UNSCHEDULED_SECTION": "Секцияда сабақ кестесі белгіленбеген.",
+    "INVALID_STATUS": "Тіркеу үшін «Тіркеу» әрекетін қолданыңыз.",
+    "NOT_ADMITTED": "Студент бұл секцияға жіберілмеген.",
+    "NOT_ENROLLED": "Бұл секцияға тіркелмеген.",
+    "GRADING_CLOSED": "Семестр аяқталды; бағаны өзгерту үшін әкімшіге хабарласыңыз."
+  },
+  "features": {
+    "authByEmail": {
+      "form": {
+        "emailLabel": "Электрондық пошта",
+        "passwordLabel": "Құпия сөз",
+        "showPassword": "Құпия сөзді көрсету",
+        "hidePassword": "Құпия сөзді жасыру",
+        "signingIn": "Кіру орындалуда…",
+        "signIn": "Кіру"
+      },
+      "validation": {
+        "emailInvalid": "Жарамды электрондық пошта мекенжайын енгізіңіз.",
+        "passwordRequired": "Құпия сөзді енгізіңіз."
+      },
+      "errors": {
+        "invalidCredentials": "Email немесе құпия сөз қате, не бұл тіркелгі белсенді емес."
+      }
+    },
+    "cancelRegistration": {
+      "button": {
+        "label": "Тіркеуді болдырмау"
+      },
+      "dialog": {
+        "title": "Бұл тіркеуді болдырмайсыз ба?",
+        "description": "Сіз «{courseLabel}» пәнінен шығасыз, орныңыз босатылады. Орын қалса, кейінірек қайта тіркеле аласыз.",
+        "confirmLabel": "Тіркеуді болдырмау",
+        "cancelLabel": "Тіркеуді сақтау"
+      },
+      "toast": {
+        "success": "Тіркеу болдырылмады."
+      }
+    },
+    "editProfile": {
+      "avatarUpload": {
+        "changePhoto": "Фотоны өзгерту",
+        "save": "Сақтау",
+        "saving": "Сақталуда…",
+        "cancel": "Бас тарту",
+        "toast": {
+          "success": "Фото жаңартылды."
+        },
+        "errors": {
+          "unsupportedMediaType": "JPEG, PNG немесе WebP форматындағы суретті жүктеңіз.",
+          "fileTooLarge": "Фото өлшемі 5 МБ-тан аспауы керек."
+        }
+      },
+      "contactForm": {
+        "title": "Байланыс деректері",
+        "description": "Өзіңіз өзгерте алатын жалғыз дерек осы. Қалғанын тек университет әкімшісі арқылы өзгертуге болады.",
+        "loginEmailLabel": "Кіру үшін email",
+        "personalEmailLabel": "Жеке email",
+        "phoneNumberLabel": "Телефон нөмірі",
+        "save": "Сақтау",
+        "saving": "Сақталуда…",
+        "toast": {
+          "success": "Байланыс деректері жаңартылды."
+        },
+        "validation": {
+          "phoneMax": "Ең көбі 20 таңба.",
+          "phoneFormat": "6–20 сан, бос орын, +, - немесе жақша қолданыңыз.",
+          "emailInvalid": "Жарамды электрондық пошта мекенжайын енгізіңіз."
+        }
+      }
+    },
+    "manageCourse": {
+      "form": {
+        "codeLabel": "Пән коды",
+        "titleLabel": "Атауы",
+        "creditsLabel": "Кредиттер",
+        "ectsLabel": "ECTS (міндетті емес)",
+        "descriptionLabel": "Сипаттама (міндетті емес)",
+        "saveChanges": "Өзгерістерді сақтау",
+        "createCourse": "Пән құру"
+      },
+      "dialog": {
+        "editTitle": "{code} өзгерту",
+        "addTitle": "Пән қосу"
+      },
+      "delete": {
+        "button": "Жою",
+        "title": "{code} жойылсын ба?",
+        "description": "Бұл пән біржола жойылады. Пәнге секциялар сілтеме жасап тұрса, жою қабылданбайды.",
+        "confirmLabel": "Пәнді жою",
+        "errors": {
+          "integrityConflict": "Бұл пәнде әлі де секциялар бар, сондықтан оны жоюға болмайды."
+        }
+      },
+      "toast": {
+        "updated": "Пән жаңартылды.",
+        "created": "Пән құрылды.",
+        "deleted": "Пән жойылды."
+      },
+      "validation": {
+        "codeRequired": "Пән кодын енгізіңіз.",
+        "codeMax": "Ең көбі 30 таңба.",
+        "titleRequired": "Атауын енгізіңіз.",
+        "titleMax": "Ең көбі 200 таңба.",
+        "creditsRequired": "Кредит санын енгізіңіз.",
+        "creditsInt": "Бүтін сан енгізіңіз.",
+        "creditsRange": "Кредит саны 1-ден 30-ға дейін болуы керек.",
+        "ectsInt": "Бүтін сан енгізіңіз.",
+        "ectsRange": "ECTS 1-ден 60-қа дейін болуы керек."
+      },
+      "errors": {
+        "duplicateCode": "Бұл кодпен пән бұрыннан бар."
+      }
+    },
+    "manageSection": {
+      "form": {
+        "courseLabel": "Пән",
+        "chooseCourse": "Пәнді таңдаңыз",
+        "semesterLabel": "Семестр",
+        "chooseSemester": "Семестрді таңдаңыз",
+        "sectionNumberLabel": "Секция нөмірі",
+        "capacityLabel": "Сыйымдылық",
+        "teacherLabel": "Оқытушы",
+        "unassigned": "Тағайындалмаған",
+        "meetingsLegend": "Апталық сабақтар",
+        "meetingsLockedHint": "Студенттер тіркелген, сондықтан жүйе осы сабақтардың өзгеруіне жол бермейді.",
+        "dayLabel": "Күн",
+        "startLabel": "Басталуы",
+        "endLabel": "Аяқталуы",
+        "removeMeeting": "{index}-сабақты өшіру",
+        "addMeeting": "Сабақ қосу",
+        "saveChanges": "Өзгерістерді сақтау",
+        "createSection": "Секция құру"
+      },
+      "dialog": {
+        "editTitle": "{number} секциясын өзгерту",
+        "addTitle": "Секция қосу"
+      },
+      "delete": {
+        "button": "Жою",
+        "title": "{number} секциясы жойылсын ба?",
+        "description": "Бұл секция мен оның сабақтары біржола жойылады. Секцияға тіркеулер сілтеме жасап тұрса, жою қабылданбайды.",
+        "confirmLabel": "Секцияны жою",
+        "errors": {
+          "integrityConflict": "Бұл секцияда тіркеу тарихы бар, сондықтан оны жоюға болмайды."
+        }
+      },
+      "toast": {
+        "updated": "Секция жаңартылды.",
+        "created": "Секция құрылды.",
+        "deleted": "Секция жойылды."
+      },
+      "errors": {
+        "duplicateNumber": "Бұл пәнде осы семестрде дәл осындай нөмірлі секция бұрыннан бар."
+      },
+      "validation": {
+        "startTimeRequired": "Басталу уақытын таңдаңыз.",
+        "endTimeRequired": "Аяқталу уақытын таңдаңыз.",
+        "endAfterStart": "Аяқталу уақыты басталу уақытынан кейін болуы керек.",
+        "courseRequired": "Пәнді таңдаңыз.",
+        "semesterRequired": "Семестрді таңдаңыз.",
+        "sectionNumberRequired": "Секция нөмірін енгізіңіз.",
+        "sectionNumberMax": "Ең көбі 20 таңба.",
+        "capacityRequired": "Сыйымдылықты енгізіңіз.",
+        "capacityInt": "Бүтін сан енгізіңіз.",
+        "capacityPositive": "Сыйымдылық кемінде 1 болуы керек.",
+        "meetingsMin": "Кемінде бір апталық сабақ қосыңыз.",
+        "meetingsMax": "Ең көбі 30 сабақ."
+      }
+    },
+    "manageStudent": {
+      "actions": {
+        "deactivate": "Белсенсіздендіру",
+        "deactivateTitle": "{name} белсенсіздендірілсін бе?",
+        "deactivateDescription": "Тіркелгі енді жүйеге кіре алмайды, студенттің барлық тіркеулері болдырылмайды. Тарих сақталады. Қайта белсендіру тіркеулерді қалпына келтірмейді.",
+        "deactivateConfirmLabel": "Студентті белсенсіздендіру",
+        "reactivate": "Қайта белсендіру"
+      },
+      "toast": {
+        "deactivated": "Студент белсенсіздендірілді.",
+        "reactivated": "Студент қайта белсендірілді.",
+        "updated": "Студент деректері жаңартылды.",
+        "created": "Студент құрылды."
+      },
+      "dialog": {
+        "editTitle": "{name} өзгерту",
+        "addTitle": "Студент қосу"
+      },
+      "errors": {
+        "duplicateEmail": "Бұл электрондық пошта мекенжайы бұрыннан қолданылып жатыр."
+      },
+      "form": {
+        "lastNameLabel": "Тегі",
+        "firstNameLabel": "Аты",
+        "patronymicLabel": "Әкесінің аты (міндетті емес)",
+        "loginEmailLabel": "Кіру үшін email",
+        "initialPasswordLabel": "Бастапқы құпия сөз",
+        "initialPasswordHint": "Кемінде 12 таңба.",
+        "academicRecordHeading": "Оқу деректері",
+        "studentIdPrefix": "Студент ID",
+        "studentIdSuffix": "тұрақты болып тағайындалды.",
+        "enrollmentYearLabel": "Қабылдану жылы",
+        "enrollmentYearHint": "Оның соңғы екі саны студент ID-ін бастайды, мысалы 24ID…; ID-ді кейін өзгерту мүмкін емес.",
+        "programLabel": "Бағдарлама (міндетті емес)",
+        "yearLevelLabel": "Оқу курсы",
+        "admissionYearLabel": "Түсу жылы (міндетті емес)",
+        "admissionYearHint": "Формат: ЖЖЖЖ-ЖЖЖЖ",
+        "studyFormLabel": "Оқу нысаны (міндетті емес)",
+        "studyFormPlaceholder": "Бакалавриат (4 жыл)",
+        "advisorLabel": "Куратор (міндетті емес)",
+        "winterAdmissionLabel": "Қысқы қабылдау",
+        "notSet": "Белгіленбеген",
+        "yes": "Иә",
+        "no": "Жоқ",
+        "needsDormitoryLabel": "Жатақхана қажет",
+        "personalInfoHeading": "Жеке мәліметтер",
+        "birthDateLabel": "Туған күні (міндетті емес)",
+        "genderLabel": "Жынысы",
+        "male": "Ер",
+        "female": "Әйел",
+        "maritalStatusLabel": "Отбасы жағдайы",
+        "single": "Бойдақ",
+        "married": "Үйленген/Тұрмыста",
+        "divorced": "Ажырасқан",
+        "widowed": "Жесір",
+        "nationalityLabel": "Ұлты (міндетті емес)",
+        "citizenshipLabel": "Азаматтығы (міндетті емес)",
+        "residentLabel": "Резидент",
+        "contactDetailsHeading": "Байланыс деректері",
+        "contactDetailsHint": "Студент бұларды өзі де өзгерте алады.",
+        "personalEmailLabel": "Жеке email (міндетті емес)",
+        "phoneNumberLabel": "Телефон нөмірі (міндетті емес)",
+        "saveChanges": "Өзгерістерді сақтау",
+        "createStudent": "Студент құру"
+      },
+      "validation": {
+        "emailInvalid": "Жарамды электрондық пошта мекенжайын енгізіңіз.",
+        "emailMax": "Ең көбі 150 таңба.",
+        "lastNameRequired": "Тегін енгізіңіз.",
+        "maxLength100": "Ең көбі 100 таңба.",
+        "firstNameRequired": "Атын енгізіңіз.",
+        "maxLength80": "Ең көбі 80 таңба.",
+        "yearLevelRequired": "Оқу курсын енгізіңіз.",
+        "wholeNumber": "Бүтін сан енгізіңіз.",
+        "yearLevelRange": "Курс 1-ден 8-ге дейін болуы керек.",
+        "phoneFormat": "6–20 сан, бос орын, +, - немесе жақша қолданыңыз.",
+        "admissionYearFormat": "ЖЖЖЖ-ЖЖЖЖ форматын қолданыңыз.",
+        "passwordMin": "Кемінде 12 таңба.",
+        "passwordMax": "Ең көбі 128 таңба.",
+        "enrollmentYearRequired": "Қабылдану жылын енгізіңіз.",
+        "enrollmentYearMin": "2000 жылдан бастап жылды қолданыңыз.",
+        "enrollmentYearMax": "{max} жылына дейінгі жылды қолданыңыз."
+      }
+    },
+    "registerForSection": {
+      "defaultLabel": "Тіркелу",
+      "registering": "Тіркелуде…",
+      "toast": {
+        "success": "Сіз бұл секцияға тіркелдіңіз."
+      }
+    },
+    "changePassword": {
+      "form": {
+        "currentPasswordLabel": "Ағымдағы құпия сөз",
+        "newPasswordLabel": "Жаңа құпия сөз",
+        "newPasswordHint": "Кемінде 12 таңба.",
+        "confirmPasswordLabel": "Жаңа құпия сөзді қайталаңыз",
+        "showPasswords": "Құпия сөздерді көрсету",
+        "submitLabel": "Құпия сөзді өзгерту"
+      },
+      "toast": {
+        "success": "Құпия сөз өзгертілді. Басқа құрылғылардағы сеанстар аяқталды."
+      },
+      "validation": {
+        "currentPasswordRequired": "Ағымдағы құпия сөзді енгізіңіз.",
+        "passwordTooShort": "Кемінде 12 таңба қолданыңыз.",
+        "passwordTooLong": "Көбі 128 таңба қолданыңыз.",
+        "passwordsMismatch": "Құпия сөздер сәйкес келмейді."
+      }
+    },
+    "editGrades": {
+      "fields": {
+        "attestation1": "1-аттестация",
+        "attestation2": "2-аттестация",
+        "finalExam": "Қорытынды емтихан"
+      },
+      "table": {
+        "caption": "Баға ведомосі",
+        "id": "ID",
+        "student": "Студент",
+        "total": "Жиыны",
+        "grade": "Баға"
+      },
+      "notAdmittedBadge": "Жіберілмеген",
+      "notAdmittedTitle": "Аттестациялар қосындысы {min}-ден төмен",
+      "fieldAriaLabel": "{name} үшін {field}",
+      "emptyTitle": "Әзірше тіркелген студент жоқ",
+      "closedBanner": {
+        "adminEditable": "Семестр аяқталды. Оқытушылар бұл бағаларды енді өзгерте алмайды; әкімші ретінде сіз әлі өзгерте аласыз.",
+        "locked": "Семестр аяқталғандықтан, бағалар құлыпталған. Түзету үшін әкімшіге хабарласыңыз."
+      },
+      "toast": {
+        "saved": "Бағалар сақталды."
+      },
+      "errors": {
+        "notAdmitted": "Қорытынды емтихан бағасы үшін кемінде {min} аттестация баллы қажет."
+      },
+      "validation": {
+        "markRange": "{name}: «{field}» 0-ден {max}-ге дейін болуы керек.",
+        "notAdmitted": "{name} қорытынды емтиханға жіберілмеген."
+      },
+      "saveLabel": "Бағаларды сақтау",
+      "discardLabel": "Өзгерістерден бас тарту",
+      "helperText": "Қорытынды емтихан {min}+ аттестация баллы жиналғанда ашылады. Әріптік баға қорытынды емтихан енгізілгеннен кейін көрінеді; семестр соңына дейін ол енгізілмесе, F қойылады."
+    },
+    "logout": {
+      "signOut": "Шығу",
+      "everywhereButton": "Барлық құрылғыдан шығу",
+      "confirmTitle": "Барлық құрылғыдан шығу керек пе?",
+      "confirmDescription": "Осы есептік жазбаның барлық сеанстары, соның ішінде осы сеанс та, аяқталады. Қайта кіру қажет болады."
+    },
+    "manageRegistration": {
+      "validation": {
+        "chooseStudent": "Студентті таңдаңыз.",
+        "chooseSection": "Секцияны таңдаңыз."
+      },
+      "toast": {
+        "enrolled": "Студент тіркелді.",
+        "statusUpdated": "Мәртебе жаңартылды."
+      },
+      "form": {
+        "studentLabel": "Студент",
+        "chooseStudent": "Студентті таңдаңыз",
+        "sectionLabel": "Секция",
+        "chooseSection": "Секцияны таңдаңыз",
+        "submitLabel": "Студентті тіркеу"
+      },
+      "dialog": {
+        "title": "Студентті тіркеу",
+        "description": "Студенттің өз тіркелуіндегідей кесте, сыйымдылық және семестр тексерулері орындалады."
+      },
+      "status": {
+        "pending": "Қарастырылуда",
+        "rejected": "Қабылданбады",
+        "cancelled": "Болдырылмады"
+      },
+      "statusAriaLabel": "{id} тіркеуінің мәртебесін өзгерту",
+      "setStatusPlaceholder": "Мәртебені орнату…",
+      "enrollButton": "Тіркеу"
+    },
+    "manageSemester": {
+      "openAriaLabel": "{name} тіркеуге ашық",
+      "toast": {
+        "deleted": "Семестр жойылды.",
+        "updated": "Семестр жаңартылды.",
+        "created": "Семестр құрылды."
+      },
+      "deleteButton": "Жою",
+      "deleteConfirmTitle": "{name} жойылсын ба?",
+      "deleteConfirmDescription": "Семестр толығымен жойылады. Оған секциялар немесе тіркеулер сілтеме жасаса, жою орындалмайды.",
+      "deleteConfirmLabel": "Семестрді жою",
+      "errors": {
+        "integrityConflict": "Бұл семестрге әлі секциялар немесе тіркеулер сілтеме жасайды, сондықтан оны жою мүмкін емес.",
+        "nameInUse": "Бұл атаудағы семестр бұрыннан бар."
+      },
+      "validation": {
+        "nameRequired": "Атауын енгізіңіз.",
+        "nameTooLong": "Көбі 80 таңба қолданыңыз.",
+        "startDateRequired": "Басталу күнін таңдаңыз.",
+        "endDateRequired": "Аяқталу күнін таңдаңыз.",
+        "endAfterStart": "Аяқталу күні басталу күнінен кейін болуы керек."
+      },
+      "fields": {
+        "name": "Атауы",
+        "startDate": "Басталу күні",
+        "endDate": "Аяқталу күні",
+        "openForRegistration": "Тіркеуге ашық"
+      },
+      "saveChangesLabel": "Өзгерістерді сақтау",
+      "createLabel": "Семестр құру",
+      "editDialogTitle": "{name} өңдеу",
+      "addDialogTitle": "Семестр қосу"
+    },
+    "manageStaff": {
+      "validation": {
+        "tooShort": "Кемінде {min} таңба қолданыңыз.",
+        "tooLong": "Көбі {max} таңба қолданыңыз.",
+        "fullNameRequired": "Толық атын енгізіңіз.",
+        "phoneFormat": "Цифрларды, бос орындарды, +, - және жақшаларды қолданыңыз.",
+        "emailInvalid": "Жарамды электрондық пошта мекенжайын енгізіңіз."
+      },
+      "fields": {
+        "fullName": "Толық аты",
+        "title": "Лауазымы (міндетті емес)",
+        "department": "Бөлім (міндетті емес)",
+        "office": "Кабинет (міндетті емес)",
+        "phone": "Телефон (міндетті емес)",
+        "email": "Электрондық пошта",
+        "initialPassword": "Бастапқы құпия сөз",
+        "passwordHint": "Кемінде 12 таңба.",
+        "role": "Рөлі",
+        "newPassword": "Жаңа құпия сөз"
+      },
+      "roles": {
+        "teacher": "Оқытушы",
+        "administrator": "Әкімші"
+      },
+      "toast": {
+        "accountCreated": "Есептік жазба құрылды.",
+        "profileSaved": "Профиль сақталды.",
+        "passwordReset": "Құпия сөз өзгертілді. Есептік жазбаның сеанстары аяқталды."
+      },
+      "errors": {
+        "emailInUse": "Бұл электрондық пошта мекенжайы қолданыста."
+      },
+      "createSubmitLabel": "Есептік жазба құру",
+      "createDialogTitle": "Қызметкер қосу",
+      "saveProfileSubmitLabel": "Профильді сақтау",
+      "editProfileDialogTitle": "{email} профилін өңдеу",
+      "resetPasswordSubmitLabel": "Құпия сөзді өзгерту",
+      "resetPasswordDialogTitle": "{email} үшін құпия сөзді өзгерту",
+      "resetPasswordDialogDescription": "Бұл есептік жазбаның барлық сеанстары тоқтатылады.",
+      "activeAriaLabel": "{email} белсенді"
+    },
+    "selectSemester": {
+      "label": "Семестр",
+      "allOption": "Барлық семестрлер",
+      "closedSuffix": " (жабық)"
+    }
+  },
+  "widgets": {
+    "appShell": {
+      "mainNavLabel": "Негізгі навигация",
+      "mobileNavDescription": "Негізгі навигация",
+      "brand": "Университет порталы",
+      "expandSidebar": "Бүйір панелін жаю",
+      "collapseSidebar": "Бүйір панелін жию",
+      "collapse": "Жию",
+      "openNavigation": "Навигация мәзірін ашу",
+      "accountMenuFor": "{email} есептік жазбасының мәзірі",
+      "theme": {
+        "label": "Тема",
+        "light": "Ашық",
+        "dark": "Қараңғы",
+        "system": "Жүйелік"
+      },
+      "nav": {
+        "dashboard": "Басқару тақтасы",
+        "courseCatalog": "Пәндер каталогы",
+        "myCourses": "Менің пәндерім",
+        "schedule": "Сабақ кестесі",
+        "attestation": "Аттестация",
+        "transcript": "Транскрипт",
+        "profile": "Профиль",
+        "teachingSchedule": "Сабақ беру кестесі",
+        "overview": "Шолу",
+        "students": "Студенттер",
+        "courses": "Пәндер",
+        "sections": "Секциялар",
+        "semesters": "Семестрлер",
+        "registrations": "Тіркеулер",
+        "staff": "Қызметкерлер",
+        "supportChat": "Қолдау көрсету чаты"
+      }
+    },
+    "courseCatalog": {
+      "searchLabel": "Іздеу",
+      "searchPlaceholder": "Атауы немесе коды",
+      "seatsAvailable": "Бос орын бар",
+      "emptyTitle": "Пәндер табылмады",
+      "emptyDescription": "Басқа іздеу сөзін немесе семестрді таңдап көріңіз.",
+      "credits": "{count, plural, other {# кредит}}",
+      "sectionsCount": "{count, plural, other {# секция}}",
+      "seatsLeft": "{seats} орын бос",
+      "noSectionsListed": "Секциялар көрсетілмеген"
+    },
+    "courseSections": {
+      "sectionNumber": "{number}-секция",
+      "enrolled": "Тіркелген",
+      "registrationClosed": "Тіркеу жабық",
+      "seatsRemaining": "{capacity} орыннан {remaining} бос",
+      "sectionFull": "Секция толды",
+      "register": "Тіркелу",
+      "credits": "{count, plural, other {# кредит}}",
+      "availableSectionsHeading": "Қолжетімді секциялар",
+      "emptyTitle": "Секциялар жоқ",
+      "emptyDescription": "Бұл пәнде таңдалған семестрге арналған секциялар жоқ."
+    },
+    "enrollmentTable": {
+      "columns": {
+        "course": "Пән",
+        "section": "Секция",
+        "semester": "Семестр",
+        "weeklyMeetings": "Апталық сабақтар",
+        "status": "Мәртебе",
+        "registered": "Тіркелген күні",
+        "actions": "Әрекеттер"
+      },
+      "thisSectionFallback": "осы секцияны",
+      "allStatuses": "Барлық мәртебелер",
+      "emptyTitle": "Тіркеулер табылмады",
+      "emptyDescription": "Секцияға тіркелу үшін каталогты шолыңыз.",
+      "openCatalog": "Каталогты ашу",
+      "caption": "Сіздің пәндерге тіркелулеріңіз"
+    },
+    "supportChat": {
+      "unsupportedFileType": "JPEG, PNG, WebP, GIF суретін немесе PDF файлын тіркеңіз.",
+      "fileTooLarge": "Тіркемелер 15 МБ-тан аспауы керек.",
+      "contactAdministration": "Әкімшілікпен хабарласу",
+      "dialogLabel": "Қолдау көрсету чаты",
+      "exitFullscreen": "Толық экраннан шығу",
+      "expandFullscreen": "Толық экранға жаю",
+      "closeChat": "Чатты жабу",
+      "emptyMessages": "Әкімшілікке сұрақ қойыңыз, сізге осында жауап береді.",
+      "removeAttachment": "Тіркемені өшіру",
+      "attachFile": "Файл немесе фото тіркеу",
+      "composerPlaceholder": "Сұрағыңызды жазыңыз…",
+      "send": "Жіберу"
+    },
+    "weeklyTimetable": {
+      "eventDescription": "{code} {title}, {section}, {day} {start} – {end}",
+      "section": "{number}-секция",
+      "chooseDay": "Күнді таңдау",
+      "noClassesOnDay": "{day}: сабақ жоқ.",
+      "emptyTitle": "Сабақ кестесінде әзірге ештеңе жоқ",
+      "defaultEmptyMessage": "Бұл семестрге жоспарланған сабақтар жоқ.",
+      "when": "Уақыты",
+      "instructor": "Оқытушы"
+    }
+  },
+  "pages": {
+    "adminDashboard": {
+      "title": "Әкімшілік",
+      "description": "Университет бойынша жалпы статистика.",
+      "stats": {
+        "students": "Студенттер",
+        "courses": "Пәндер",
+        "sections": "Секциялар",
+        "registrations": "Тіркеулер",
+        "activeSemester": "Белсенді семестр",
+        "noActiveSemester": "Жоқ"
+      },
+      "chart": {
+        "byStatusTitle": "Тіркеулер мәртебесі бойынша",
+        "seatFillTitle": "Семестр бойынша орындардың толтырылуы",
+        "statusLabels": {
+          "enrolled": "Тіркелген",
+          "pending": "Күтілуде",
+          "rejected": "Қабылданбады",
+          "cancelled": "Болдырылмады"
+        }
+      }
+    },
+    "adminSupportChat": {
+      "title": "Қолдау чаты",
+      "description": "Студенттер мен оқытушылар әкімшілікке жіберген сұрақтар.",
+      "empty": {
+        "noConversations": {
+          "title": "Әзірге әңгімелер жоқ",
+          "description": "Жаңа сұрақтар түскен сайын осында көрінеді."
+        },
+        "selectConversation": {
+          "title": "Әңгімені таңдаңыз",
+          "description": "Оқу және жауап беру үшін сол жақтан әңгімені таңдаңыз."
+        }
+      },
+      "attachFile": "Файл немесе фото тіркеу",
+      "removeAttachment": "Тіркемені жою",
+      "replyPlaceholder": "Жауабыңызды жазыңыз…",
+      "send": "Жіберу",
+      "errors": {
+        "unsupportedFileType": "JPEG, PNG, WebP, GIF суретін немесе PDF файлын тіркеңіз.",
+        "fileTooLarge": "Тіркеме өлшемі 15 МБ-тан аспауы керек."
+      }
+    },
+    "courseCatalog": {
+      "title": "Пәндер каталогы",
+      "description": "Пәнді тауып, оның секцияларын салыстырып, тіркеліңіз."
+    },
+    "courseDetails": {
+      "breadcrumbs": {
+        "courseCatalog": "Пәндер каталогы",
+        "courseDetails": "Пән туралы"
+      }
+    },
+    "registrationsManagement": {
+      "title": "Тіркеулер",
+      "description": "Университет бойынша барлық тіркеу жазбалары.",
+      "enrollStudent": "Студентті тіркеу",
+      "filters": {
+        "section": "Секция",
+        "allSections": "Барлық секциялар",
+        "status": "Мәртебе",
+        "allStatuses": "Барлық мәртебелер",
+        "student": "Студент",
+        "studentPlaceholder": "Аты-жөні, email немесе студент нөмірі"
+      },
+      "statusLabels": {
+        "enrolled": "Тіркелген",
+        "pending": "Күтілуде",
+        "rejected": "Қабылданбады",
+        "cancelled": "Болдырылмады"
+      },
+      "empty": {
+        "title": "Тіркеулер табылмады"
+      },
+      "table": {
+        "caption": "Тіркеулер",
+        "columns": {
+          "student": "Студент",
+          "section": "Секция",
+          "semester": "Семестр",
+          "registered": "Тіркелген күні",
+          "status": "Мәртебе",
+          "actions": "Әрекеттер"
+        }
+      }
+    },
+    "sectionManagement": {
+      "title": "Секциялар",
+      "description": "Семестр ішіндегі пән секциялары: оқытушы, сыйымдылық және апталық сабақтар.",
+      "addSection": "Секция қосу",
+      "columns": {
+        "course": "Пән",
+        "section": "Секция",
+        "semester": "Семестр",
+        "teacher": "Оқытушы",
+        "meetings": "Сабақтар",
+        "seats": "Орындар",
+        "actions": "Әрекеттер"
+      },
+      "unassigned": "Тағайындалмаған",
+      "gradesLink": "Бағалар",
+      "edit": "Өзгерту",
+      "empty": {
+        "title": "Секциялар табылмады"
+      },
+      "table": {
+        "caption": "Пән секциялары"
+      },
+      "grades": {
+        "titleWithCourse": "{code} · Секция {number} · Бағалар",
+        "titleFallback": "Бағалар",
+        "breadcrumbs": {
+          "sections": "Секциялар",
+          "grades": "Бағалар"
+        }
+      }
+    },
+    "semesterManagement": {
+      "title": "Семестрлер",
+      "description": "Оқу мерзімдері. Тіркеу тек ашық семестрлерде қабылданады.",
+      "addSemester": "Семестр қосу",
+      "columns": {
+        "name": "Атауы",
+        "starts": "Басталуы",
+        "ends": "Аяқталуы",
+        "openForRegistration": "Тіркеуге ашық",
+        "actions": "Әрекеттер"
+      },
+      "edit": "Өзгерту",
+      "empty": {
+        "title": "Әзірге семестрлер жоқ"
+      },
+      "table": {
+        "caption": "Семестрлер"
+      }
+    },
+    "studentDashboard": {
+      "welcomeBack": "Қайта келуіңізбен, {name}",
+      "findCourses": "Пәндерді табу",
+      "empty": {
+        "noSemesters": {
+          "title": "Әзірге семестрлер жоқ",
+          "description": "Университет семестрді жариялаған кезде, мұнда сабақтарыңыз көрінеді."
+        }
+      },
+      "stats": {
+        "currentSemester": "Ағымдағы семестр",
+        "enrolledSections": "Тіркелген секциялар",
+        "weeklyClasses": "Апталық сабақтар"
+      },
+      "thisWeek": "Осы апта",
+      "fullSchedule": "Толық кесте",
+      "timetableEmpty": "Бұл семестрде сіз ешбір сабаққа тіркелмегенсіз.",
+      "upcomingClasses": "Алдағы сабақтар",
+      "nothingUpcoming": "Алдағы сабақтар жоқ."
+    },
+    "teacherDashboard": {
+      "dashboard": {
+        "title": "Оқытушы панелі",
+        "description": "Сізге тағайындалған секциялар және олардың толтырылуы.",
+        "stats": {
+          "assignedSections": "Тағайындалған секциялар",
+          "enrolledStudents": "Тіркелген студенттер",
+          "courses": "Пәндер"
+        },
+        "columns": {
+          "course": "Пән",
+          "section": "Секция",
+          "weeklyMeetings": "Апталық сабақтар",
+          "enrolled": "Тіркелген"
+        },
+        "sectionFallback": "Секция {id}",
+        "empty": {
+          "title": "Тағайындалған секциялар жоқ",
+          "description": "Мұнда әкімші тағайындаған секциялар көрінеді."
+        },
+        "table": {
+          "caption": "Сізге тағайындалған секциялар"
+        }
+      },
+      "schedule": {
+        "title": "Оқытушы кестесі",
+        "description": "Уақыт университеттің жергілікті уақыты бойынша көрсетілген.",
+        "sectionFallback": "Секция {id}",
+        "timetableEmpty": "Бұл семестрде сізге тағайындалған секциялар жоқ."
+      },
+      "section": {
+        "titleWithCourse": "{code} · Секция {number}",
+        "titleFallback": "Секция туралы мәлімет",
+        "breadcrumbs": {
+          "dashboard": "Оқытушы панелі",
+          "section": "Секция"
+        },
+        "weeklyMeetings": "Апталық сабақтар",
+        "enrollment": "Тіркеу",
+        "enrollmentSummary": "Тіркелген: {enrolled} · {capacity} орыннан {remaining} бос",
+        "studentsAndGrades": "Студенттер және бағалар"
+      }
+    },
+    "courseManagement": {
+      "title": "Пәндер",
+      "description": "Оқу пәндерінің каталогы.",
+      "addCourse": "Пән қосу",
+      "search": "Іздеу",
+      "searchPlaceholder": "Атауы немесе коды",
+      "columns": {
+        "code": "Коды",
+        "title": "Атауы",
+        "credits": "Кредиттер",
+        "actions": "Әрекеттер"
+      },
+      "edit": "Өзгерту",
+      "empty": "Пәндер табылмады",
+      "caption": "Пәндер"
+    },
+    "forbidden": {
+      "title": "403: Қолжетімділік жоқ",
+      "description": "Бұл бетті көруге сіздің рұқсатыңыз жоқ.",
+      "backToDashboard": "Басқару тақтасына өту"
+    },
+    "login": {
+      "subtitle": "Университет есептік жазбаңызбен кіріңіз",
+      "sessionExpired": "Сеанс аяқталды. Қайта кіріңіз.",
+      "serviceUnavailable": "Университет қызметі қазіргі уақытта қолжетімсіз. Сәл кейінірек қайталап көріңіз."
+    },
+    "myCourses": {
+      "title": "Менің пәндерім",
+      "description": "Семестрлер бойынша тіркеулеріңіз."
+    },
+    "mySchedule": {
+      "title": "Апталық сабақ кестесі",
+      "description": "Уақыт кампустың жергілікті уақыты бойынша көрсетілген.",
+      "noSemesters": "Әзірге семестрлер жоқ",
+      "emptyMessage": "Бұл семестрде сіз ешбір пәнге тіркелмегенсіз."
+    },
+    "profile": {
+      "title": "Профиль",
+      "description": "Есептік жазба деректеріңіз және кіру қауіпсіздігі.",
+      "notSet": "Көрсетілмеген",
+      "yes": "Иә",
+      "no": "Жоқ",
+      "genders": {
+        "male": "Ер",
+        "female": "Әйел"
+      },
+      "maritalStatuses": {
+        "single": "Бойдақ",
+        "married": "Некеде",
+        "divorced": "Ажырасқан",
+        "widowed": "Жесір"
+      },
+      "account": {
+        "title": "Есептік жазба",
+        "description": "Бұл деректерді өзгерту үшін университет әкімшісіне хабарласыңыз."
+      },
+      "personal": {
+        "title": "Жеке мәліметтер",
+        "description": "Университет әкімшісі енгізеді.",
+        "lastName": "Тегі",
+        "firstName": "Аты",
+        "patronymic": "Әкесінің аты",
+        "birthDate": "Туған күні",
+        "gender": "Жынысы",
+        "maritalStatus": "Отбасы жағдайы",
+        "nationality": "Ұлты",
+        "citizenship": "Азаматтығы",
+        "resident": "Резидент"
+      },
+      "academic": {
+        "title": "Академиялық мәліметтер",
+        "description": "Университет әкімшісі енгізеді.",
+        "studentId": "Студент нөмірі",
+        "role": "Рөлі",
+        "program": "Білім беру бағдарламасы",
+        "yearLevel": "Оқу курсы",
+        "admissionYear": "Түскен жылы",
+        "studyForm": "Оқу нысаны",
+        "advisor": "Кураторы",
+        "needsDormitory": "Жатақхана қажет",
+        "winterAdmission": "Қысқы қабылдау"
+      },
+      "fields": {
+        "fullName": "Толық аты-жөні",
+        "role": "Рөлі",
+        "title": "Лауазымы",
+        "department": "Бөлім",
+        "email": "Email",
+        "phone": "Телефон",
+        "office": "Кабинет"
+      },
+      "sessions": {
+        "title": "Сеанстар",
+        "description": "Құрылғыңызды жоғалттыңыз ба немесе ортақ компьютерден кірдіңіз бе? Барлық сеансты, соның ішінде осыны да, бірден аяқтаңыз."
+      },
+      "password": {
+        "title": "Құпия сөз",
+        "description": "Оны ауыстырғанда сіз осы жерде жүйеде қаласыз, ал басқа құрылғыларда сеанс аяқталады."
+      }
+    },
+    "staffManagement": {
+      "title": "Қызметкерлер",
+      "description": "Оқытушылар мен әкімшілердің есептік жазбалары.",
+      "addStaff": "Қызметкер қосу",
+      "columns": {
+        "name": "Аты",
+        "email": "Email",
+        "role": "Рөлі",
+        "active": "Белсенді",
+        "actions": "Әрекеттер"
+      },
+      "noName": "Аты көрсетілмеген",
+      "editProfile": "Профильді өзгерту",
+      "changePassword": "Құпия сөзді ауыстыру",
+      "empty": "Қызметкер есептік жазбалары жоқ",
+      "caption": "Қызметкер есептік жазбалары"
+    },
+    "studentGrades": {
+      "gradesTable": {
+        "columns": {
+          "code": "Коды",
+          "title": "Атауы"
+        },
+        "summaryLine": "Алынған кредиттер: {creditsTaken}. Есептелген кредиттер: {creditsEarned}. Алынған ECTS: {ectsTaken}. Есептелген ECTS: {ectsEarned}. GPA: {gpa}."
+      },
+      "studentCard": {
+        "program": "Бағдарлама",
+        "notSet": "Көрсетілмеген",
+        "id": "ID",
+        "student": "Студент",
+        "yearOfStudy": "Оқу курсы"
+      },
+      "attestation": {
+        "title": "Аттестация",
+        "description": "Пәндер бойынша баллдар, соңғы семестрден бастап. Емтиханға жіберілу үшін аттестация бойынша кемінде 30 балл қажет.",
+        "crumbStudents": "Студенттер",
+        "crumbAttestation": "Аттестация",
+        "transcript": "Транскрипт",
+        "empty": "Әзірге пәндер жоқ",
+        "columns": {
+          "attestation1": "1-аттестация / 30",
+          "attestation2": "2-аттестация / 30",
+          "finalExam": "Қорытынды емтихан / 40",
+          "letter": "Әріп"
+        },
+        "notAdmitted": "Жіберілмеген"
+      },
+      "transcript": {
+        "title": "Транскрипт",
+        "crumbStudents": "Студенттер",
+        "crumbTranscript": "Транскрипт",
+        "attestation": "Аттестация",
+        "print": "Басып шығару / PDF",
+        "empty": "Әзірге пәндер жоқ",
+        "columns": {
+          "credits": "Кредиттер",
+          "ects": "ECTS",
+          "score": "Балл",
+          "letter": "Әріп",
+          "gpa": "GPA",
+          "traditional": "Дәстүрлі баға"
+        }
+      }
+    },
+    "studentManagement": {
+      "title": "Студенттер",
+      "description": "Студент есептік жазбаларын құру, өзгерту және белсенділігін доғару.",
+      "addStudent": "Студент қосу",
+      "search": "Іздеу",
+      "searchPlaceholder": "Аты, email немесе студент нөмірі",
+      "columns": {
+        "name": "Аты",
+        "email": "Email",
+        "program": "Бағдарлама",
+        "year": "Курс",
+        "account": "Есептік жазба",
+        "actions": "Әрекеттер"
+      },
+      "notSet": "Көрсетілмеген",
+      "active": "Белсенді",
+      "inactive": "Белсенді емес",
+      "grades": "Бағалар",
+      "details": "Толығырақ",
+      "edit": "Өзгерту",
+      "fields": {
+        "email": "Email",
+        "program": "Бағдарлама",
+        "yearLevel": "Оқу курсы",
+        "account": "Есептік жазба"
+      },
+      "empty": "Студенттер табылмады",
+      "caption": "Студенттер"
+    }
+  }
+}

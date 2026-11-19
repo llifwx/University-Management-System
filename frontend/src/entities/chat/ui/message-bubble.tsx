@@ -1,12 +1,15 @@
 import { Paperclip } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { cn } from "@/shared/lib/utils";
 
 import type { ChatMessage } from "../model/types";
 
 export function MessageBubble({ message, isMine }: { message: ChatMessage; isMine: boolean }) {
+  const t = useTranslations("entities.chat");
   const isImage = message.attachment_content_type?.startsWith("image/") ?? false;
   const attachmentHref = message.attachment_url ? `/api/proxy${message.attachment_url}` : null;
+  const attachmentName = message.attachment_name ?? t("attachment");
 
   return (
     <div className={cn("flex", isMine ? "justify-end" : "justify-start")}>
@@ -19,7 +22,7 @@ export function MessageBubble({ message, isMine }: { message: ChatMessage; isMin
         {attachmentHref && isImage && (
           <a href={attachmentHref} target="_blank" rel="noreferrer" className="mb-1 block">
             {/* eslint-disable-next-line @next/next/no-img-element -- same-origin BFF-proxied attachment */}
-            <img src={attachmentHref} alt={message.attachment_name ?? "Attachment"} className="max-h-48 rounded-lg object-cover" />
+            <img src={attachmentHref} alt={attachmentName} className="max-h-48 rounded-lg object-cover" />
           </a>
         )}
         {attachmentHref && !isImage && (
@@ -33,7 +36,7 @@ export function MessageBubble({ message, isMine }: { message: ChatMessage; isMin
             )}
           >
             <Paperclip className="size-3.5 shrink-0" aria-hidden />
-            <span className="truncate">{message.attachment_name ?? "Attachment"}</span>
+            <span className="truncate">{attachmentName}</span>
           </a>
         )}
         {message.body && <p className="break-words whitespace-pre-wrap">{message.body}</p>}

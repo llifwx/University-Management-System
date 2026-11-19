@@ -2,18 +2,18 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Camera } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { Student, studentQueries } from "@/entities/student";
-import { getErrorMessage } from "@/shared/api";
+import { useApiErrorMessage } from "@/shared/api";
 import { Button } from "@/shared/ui/button";
 
 import { uploadMyPhoto } from "../api/profile-mutations";
 
 const MAX_BYTES = 5 * 1024 * 1024;
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"];
-const MESSAGES = { UNSUPPORTED_MEDIA_TYPE: "Upload a JPEG, PNG, or WebP image.", FILE_TOO_LARGE: "Photo must be 5 MB or smaller." };
 
 function initials(fullName: string): string {
   return fullName
@@ -25,6 +25,9 @@ function initials(fullName: string): string {
 }
 
 export function AvatarUpload({ student }: { student: Student }) {
+  const t = useTranslations("features.editProfile.avatarUpload");
+  const getMessage = useApiErrorMessage();
+  const MESSAGES = { UNSUPPORTED_MEDIA_TYPE: t("errors.unsupportedMediaType"), FILE_TOO_LARGE: t("errors.fileTooLarge") };
   const queryClient = useQueryClient();
   // Same query key as the page's own fetch, so dataUpdatedAt ticks forward the instant the upload invalidates it.
   const { dataUpdatedAt } = useQuery(studentQueries.me());
@@ -41,7 +44,7 @@ export function AvatarUpload({ student }: { student: Student }) {
   const mutation = useMutation({
     mutationFn: uploadMyPhoto,
     onSuccess: async () => {
-      toast.success("Photo updated.");
+      toast.success(t("toast.success"));
       setPendingFile(null);
       setPreviewUrl((current) => {
         if (current) URL.revokeObjectURL(current);
@@ -49,7 +52,7 @@ export function AvatarUpload({ student }: { student: Student }) {
       });
       await queryClient.invalidateQueries({ queryKey: studentQueries.all });
     },
-    onError: (error) => toast.error(getErrorMessage(error, MESSAGES)),
+    onError: (error) => toast.error(getMessage(error, MESSAGES)),
   });
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
@@ -96,7 +99,7 @@ export function AvatarUpload({ student }: { student: Student }) {
           className="absolute -right-1 -bottom-1 h-8 w-8 rounded-full shadow"
           onClick={() => inputRef.current?.click()}
           disabled={mutation.isPending}
-          aria-label="Change photo"
+          aria-label={t("changePhoto")}
         >
           <Camera className="h-4 w-4" />
         </Button>
@@ -105,10 +108,10 @@ export function AvatarUpload({ student }: { student: Student }) {
       {pendingFile && (
         <div className="flex gap-2">
           <Button type="button" size="sm" onClick={() => mutation.mutate(pendingFile)} disabled={mutation.isPending}>
-            {mutation.isPending ? "Saving…" : "Save"}
+            {mutation.isPending ? t("saving") : t("save")}
           </Button>
           <Button type="button" size="sm" variant="outline" onClick={cancel} disabled={mutation.isPending}>
-            Cancel
+            {t("cancel")}
           </Button>
         </div>
       )}

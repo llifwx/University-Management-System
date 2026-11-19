@@ -1,6 +1,7 @@
 "use client";
 
 import { CalendarX } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 import { WEEKDAYS, formatTime, toMeetingDay, toMinutes } from "@/shared/lib/time";
@@ -13,9 +14,17 @@ import { TimetableEvent, layoutDayEvents, visibleHours } from "../lib/layout";
 
 const HOUR_HEIGHT = 56;
 
-const describe = (e: TimetableEvent) => `${e.code} ${e.title}, section ${e.section}, ${WEEKDAYS[e.day]} ${formatTime(e.start)} to ${formatTime(e.end)}`;
-
 function WeekGrid({ events, onSelect }: { events: TimetableEvent[]; onSelect: (event: TimetableEvent) => void }) {
+  const t = useTranslations("widgets.weeklyTimetable");
+  const describe = (e: TimetableEvent) =>
+    t("eventDescription", {
+      code: e.code,
+      title: e.title,
+      section: t("section", { number: e.section }),
+      day: WEEKDAYS[e.day],
+      start: formatTime(e.start),
+      end: formatTime(e.end),
+    });
   const { first, last } = visibleHours(events);
   const hours = Array.from({ length: last - first }, (_, index) => first + index);
   const height = hours.length * HOUR_HEIGHT;
@@ -71,11 +80,12 @@ function WeekGrid({ events, onSelect }: { events: TimetableEvent[]; onSelect: (e
 }
 
 function DayView({ events, onSelect }: { events: TimetableEvent[]; onSelect: (event: TimetableEvent) => void }) {
+  const t = useTranslations("widgets.weeklyTimetable");
   const [day, setDay] = useState(() => toMeetingDay(new Date()));
   const dayEvents = events.filter((event) => event.day === day).sort((a, b) => toMinutes(a.start) - toMinutes(b.start));
   return (
     <div data-testid="day-view" className="space-y-3 lg:hidden">
-      <div role="group" aria-label="Choose a day" className="grid grid-cols-7 gap-1">
+      <div role="group" aria-label={t("chooseDay")} className="grid grid-cols-7 gap-1">
         {WEEKDAYS.map((name, index) => (
           <Button
             key={name}
@@ -91,7 +101,7 @@ function DayView({ events, onSelect }: { events: TimetableEvent[]; onSelect: (ev
         ))}
       </div>
       {dayEvents.length === 0 ? (
-        <p className="text-muted-foreground rounded-lg border border-dashed p-6 text-center text-sm">No classes on {WEEKDAYS[day]}.</p>
+        <p className="text-muted-foreground rounded-lg border border-dashed p-6 text-center text-sm">{t("noClassesOnDay", { day: WEEKDAYS[day] })}</p>
       ) : (
         <ul className="space-y-2">
           {dayEvents.map((event) => (
@@ -104,7 +114,7 @@ function DayView({ events, onSelect }: { events: TimetableEvent[]; onSelect: (ev
                   {event.code} · {event.title}
                 </span>
                 <span className="text-muted-foreground block text-xs">
-                  Section {event.section}
+                  {t("section", { number: event.section })}
                   {event.instructor && ` · ${event.instructor}`}
                 </span>
               </button>
@@ -116,9 +126,10 @@ function DayView({ events, onSelect }: { events: TimetableEvent[]; onSelect: (ev
   );
 }
 
-export function WeeklyTimetable({ events, emptyMessage = "No classes scheduled for this semester." }: { events: TimetableEvent[]; emptyMessage?: string }) {
+export function WeeklyTimetable({ events, emptyMessage }: { events: TimetableEvent[]; emptyMessage?: string }) {
+  const t = useTranslations("widgets.weeklyTimetable");
   const [selected, setSelected] = useState<TimetableEvent | null>(null);
-  if (events.length === 0) return <EmptyState icon={CalendarX} title="Nothing on the timetable" description={emptyMessage} />;
+  if (events.length === 0) return <EmptyState icon={CalendarX} title={t("emptyTitle")} description={emptyMessage ?? t("defaultEmptyMessage")} />;
   return (
     <>
       <WeekGrid events={events} onSelect={setSelected} />
@@ -131,16 +142,16 @@ export function WeeklyTimetable({ events, emptyMessage = "No classes scheduled f
                 <DialogTitle>
                   {selected.code} · {selected.title}
                 </DialogTitle>
-                <DialogDescription>Section {selected.section}</DialogDescription>
+                <DialogDescription>{t("section", { number: selected.section })}</DialogDescription>
               </DialogHeader>
               <dl className={cn("grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm")}>
-                <dt className="text-muted-foreground">When</dt>
+                <dt className="text-muted-foreground">{t("when")}</dt>
                 <dd className="tabular-nums">
                   {WEEKDAYS[selected.day]} {formatTime(selected.start)}–{formatTime(selected.end)}
                 </dd>
                 {selected.instructor && (
                   <>
-                    <dt className="text-muted-foreground">Instructor</dt>
+                    <dt className="text-muted-foreground">{t("instructor")}</dt>
                     <dd>{selected.instructor}</dd>
                   </>
                 )}

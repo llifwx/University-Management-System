@@ -2,6 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Paperclip, Send } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { ChangeEvent, KeyboardEvent, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 
@@ -14,7 +15,7 @@ import {
   useChatSocket,
 } from "@/entities/chat";
 import { useSessionUser } from "@/entities/user";
-import { getErrorMessage } from "@/shared/api";
+import { useApiErrorMessage } from "@/shared/api";
 import { cn } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";
 import { PageHeader } from "@/shared/ui/page-header";
@@ -23,12 +24,10 @@ import { Textarea } from "@/shared/ui/textarea";
 
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif", "application/pdf"];
 const MAX_BYTES = 15 * 1024 * 1024;
-const MESSAGES = {
-  UNSUPPORTED_MEDIA_TYPE: "Attach a JPEG, PNG, WebP, GIF image or PDF.",
-  FILE_TOO_LARGE: "Attachments must be 15 MB or smaller.",
-};
 
 export function AdminSupportChatPage({ wsUrl }: { wsUrl: string }) {
+  const t = useTranslations("pages.adminSupportChat");
+  const getMessage = useApiErrorMessage();
   const user = useSessionUser();
   const queryClient = useQueryClient();
   const [selectedId, setSelectedId] = useState<number | null>(null);
@@ -90,15 +89,21 @@ export function AdminSupportChatPage({ wsUrl }: { wsUrl: string }) {
       setBody("");
       setPendingFile(null);
     },
-    onError: (error) => toast.error(getErrorMessage(error, MESSAGES)),
+    onError: (error) =>
+      toast.error(
+        getMessage(error, {
+          UNSUPPORTED_MEDIA_TYPE: t("errors.unsupportedFileType"),
+          FILE_TOO_LARGE: t("errors.fileTooLarge"),
+        }),
+      ),
   });
 
   function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     event.target.value = "";
     if (!file) return;
-    if (!ACCEPTED_TYPES.includes(file.type)) return toast.error(MESSAGES.UNSUPPORTED_MEDIA_TYPE);
-    if (file.size > MAX_BYTES) return toast.error(MESSAGES.FILE_TOO_LARGE);
+    if (!ACCEPTED_TYPES.includes(file.type)) return toast.error(t("errors.unsupportedFileType"));
+    if (file.size > MAX_BYTES) return toast.error(t("errors.fileTooLarge"));
     setPendingFile(file);
   }
 
@@ -119,7 +124,7 @@ export function AdminSupportChatPage({ wsUrl }: { wsUrl: string }) {
 
   return (
     <div className="flex h-[calc(100vh-7rem)] flex-col">
-      <PageHeader title="Support chat" description="Questions students and teachers have sent to administration." />
+      <PageHeader title={t("title")} description={t("description")} />
       <div className="flex min-h-0 flex-1 overflow-hidden rounded-lg border">
         <aside className="w-72 shrink-0 overflow-y-auto border-r">
           {threads.isError ? (
@@ -129,7 +134,7 @@ export function AdminSupportChatPage({ wsUrl }: { wsUrl: string }) {
               <ListSkeleton />
             </div>
           ) : rows.length === 0 ? (
-            <EmptyState title="No conversations yet" description="Questions will show up here as they come in." />
+            <EmptyState title={t("empty.noConversations.title")} description={t("empty.noConversations.description")} />
           ) : (
             <ul className="space-y-1 p-2">
               {rows.map((thread) => (
@@ -156,7 +161,7 @@ export function AdminSupportChatPage({ wsUrl }: { wsUrl: string }) {
         <section className="flex min-w-0 flex-1 flex-col">
           {selectedThread === null ? (
             <div className="flex flex-1 items-center justify-center p-6">
-              <EmptyState title="Select a conversation" description="Pick a thread on the left to read and reply." />
+              <EmptyState title={t("empty.selectConversation.title")} description={t("empty.selectConversation.description")} />
             </div>
           ) : (
             <>
@@ -173,7 +178,7 @@ export function AdminSupportChatPage({ wsUrl }: { wsUrl: string }) {
                 {pendingFile && (
                   <div className="bg-muted mb-2 flex items-center justify-between rounded-md px-2 py-1 text-xs">
                     <span className="truncate">{pendingFile.name}</span>
-                    <button type="button" onClick={() => setPendingFile(null)} aria-label="Remove attachment">
+                    <button type="button" onClick={() => setPendingFile(null)} aria-label={t("removeAttachment")}>
                       ×
                     </button>
                   </div>
@@ -185,7 +190,7 @@ export function AdminSupportChatPage({ wsUrl }: { wsUrl: string }) {
                     size="icon"
                     className="size-9 shrink-0"
                     onClick={() => fileInputRef.current?.click()}
-                    aria-label="Attach a file or photo"
+                    aria-label={t("attachFile")}
                   >
                     <Paperclip className="size-4" aria-hidden />
                   </Button>
@@ -193,7 +198,7 @@ export function AdminSupportChatPage({ wsUrl }: { wsUrl: string }) {
                     value={body}
                     onChange={(event) => setBody(event.target.value)}
                     onKeyDown={handleComposerKeyDown}
-                    placeholder="Type your reply…"
+                    placeholder={t("replyPlaceholder")}
                     className="max-h-32 min-h-9 flex-1 resize-none py-2"
                     rows={1}
                   />
@@ -203,7 +208,7 @@ export function AdminSupportChatPage({ wsUrl }: { wsUrl: string }) {
                     className="size-9 shrink-0"
                     onClick={submitReply}
                     disabled={reply.isPending || (!body.trim() && !pendingFile)}
-                    aria-label="Send"
+                    aria-label={t("send")}
                   >
                     <Send className="size-4" aria-hidden />
                   </Button>

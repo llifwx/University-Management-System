@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import { apiError, json, stubLocation } from "../../../tests/utils";
 
 import { apiRequest, fetchAllPages } from "./client";
-import { ApiError, applyFieldErrors, getErrorMessage, NETWORK_ERROR_MESSAGE } from "./errors";
+import { ApiError, applyFieldErrors, getErrorMessage } from "./errors";
 
 describe("apiRequest", () => {
   it("calls the BFF, not FastAPI, and skips empty query values", async () => {
@@ -47,11 +47,14 @@ describe("fetchAllPages", () => {
 });
 
 describe("error helpers", () => {
-  it("prefers a code-specific message, then the backend's, and never exposes a TypeError", () => {
+  it("prefers an override, then the translated code, then the backend's, and never exposes a TypeError", () => {
+    const hasCode = (code: string) => code === "SCHEDULE_CONFLICT";
+    const translateCode = (code: string) => `translated:${code}`;
     const error = new ApiError(409, "SCHEDULE_CONFLICT", "Backend text");
-    expect(getErrorMessage(error, { SCHEDULE_CONFLICT: "Mapped" })).toBe("Mapped");
-    expect(getErrorMessage(error)).toBe("Backend text");
-    expect(getErrorMessage(new TypeError("fetch failed"))).toBe(NETWORK_ERROR_MESSAGE);
+    expect(getErrorMessage(error, hasCode, translateCode, "offline", { SCHEDULE_CONFLICT: "Mapped" })).toBe("Mapped");
+    expect(getErrorMessage(error, hasCode, translateCode, "offline")).toBe("translated:SCHEDULE_CONFLICT");
+    expect(getErrorMessage(new ApiError(409, "UNKNOWN_CODE", "Backend text"), hasCode, translateCode, "offline")).toBe("Backend text");
+    expect(getErrorMessage(new TypeError("fetch failed"), hasCode, translateCode, "offline")).toBe("offline");
   });
 
   it("maps FastAPI 422 locations onto form fields", () => {

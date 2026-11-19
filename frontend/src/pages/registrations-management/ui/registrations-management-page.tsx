@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { ClipboardList, Plus } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
 import { courseQueries } from "@/entities/course";
@@ -12,6 +13,7 @@ import { semesterQueries } from "@/entities/semester";
 import { studentQueries } from "@/entities/student";
 import { EnrollStudentDialog, RegistrationActions } from "@/features/manage-registration";
 import { SemesterSelect, useSemesterParam } from "@/features/select-semester";
+import { useDateFnsLocale } from "@/shared/i18n";
 import { useClientPagination } from "@/shared/lib/use-client-pagination";
 import { Button } from "@/shared/ui/button";
 import { Column, DataTable, PaginationControls } from "@/shared/ui/data-table";
@@ -21,7 +23,11 @@ import { NativeSelect } from "@/shared/ui/native-select";
 import { PageHeader } from "@/shared/ui/page-header";
 import { EmptyState, QueryState } from "@/shared/ui/states";
 
+const STATUS_LABEL_KEYS: Record<string, string> = { Enrolled: "enrolled", Pending: "pending", Rejected: "rejected", Cancelled: "cancelled" };
+
 export function RegistrationsManagementPage() {
+  const t = useTranslations("pages.registrationsManagement");
+  const dateLocale = useDateFnsLocale();
   const { semesters, semesterId, setSemesterId } = useSemesterParam({ defaultToAll: true });
   const [sectionId, setSectionId] = useState<number | undefined>();
   const [status, setStatus] = useState("");
@@ -56,18 +62,18 @@ export function RegistrationsManagementPage() {
   const pagination = useClientPagination(filtered);
 
   const columns: Column<Registration>[] = [
-    { header: "Student", cell: (row) => <span className="font-medium">{studentById.get(row.student_id)?.full_name ?? `#${row.student_id}`}</span> },
+    { header: t("table.columns.student"), cell: (row) => <span className="font-medium">{studentById.get(row.student_id)?.full_name ?? `#${row.student_id}`}</span> },
     {
-      header: "Section",
+      header: t("table.columns.section"),
       cell: (row) => {
         const section = sectionById.get(row.section_id);
         return section ? `${courseById.get(section.course_id)?.course_code ?? ""} · ${section.section_number}` : "…";
       },
     },
-    { header: "Semester", cell: (row) => semesterById.get(row.semester_id)?.name ?? "…" },
-    { header: "Registered", cell: (row) => format(new Date(row.registered_at), "MMM d, yyyy") },
-    { header: "Status", cell: (row) => <RegistrationStatusBadge status={row.status} /> },
-    { header: "Actions", cell: (row) => <RegistrationActions registration={row} /> },
+    { header: t("table.columns.semester"), cell: (row) => semesterById.get(row.semester_id)?.name ?? "…" },
+    { header: t("table.columns.registered"), cell: (row) => format(new Date(row.registered_at), "MMM d, yyyy", { locale: dateLocale }) },
+    { header: t("table.columns.status"), cell: (row) => <RegistrationStatusBadge status={row.status} /> },
+    { header: t("table.columns.actions"), cell: (row) => <RegistrationActions registration={row} /> },
   ];
 
   const sectionOptions = (sections.data ?? []).filter((s) => semesterId === undefined || s.semester_id === semesterId);
@@ -75,8 +81,8 @@ export function RegistrationsManagementPage() {
   return (
     <>
       <PageHeader
-        title="Registrations"
-        description="Every enrollment record across the university."
+        title={t("title")}
+        description={t("description")}
         actions={
           students.data &&
           sections.data && (
@@ -85,7 +91,7 @@ export function RegistrationsManagementPage() {
               trigger={
                 <Button>
                   <Plus aria-hidden />
-                  Enroll student
+                  {t("enrollStudent")}
                 </Button>
               }
             />
@@ -103,9 +109,9 @@ export function RegistrationsManagementPage() {
           allowAll
         />
         <div className="space-y-1.5">
-          <Label htmlFor="section-filter">Section</Label>
+          <Label htmlFor="section-filter">{t("filters.section")}</Label>
           <NativeSelect id="section-filter" className="sm:w-56" value={sectionId ?? ""} onChange={(event) => setSectionId(event.target.value ? Number(event.target.value) : undefined)}>
-            <option value="">All sections</option>
+            <option value="">{t("filters.allSections")}</option>
             {sectionOptions.map((section) => (
               <option key={section.section_id} value={section.section_id}>
                 {sectionLabel(section)}
@@ -114,26 +120,28 @@ export function RegistrationsManagementPage() {
           </NativeSelect>
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="registration-status">Status</Label>
+          <Label htmlFor="registration-status">{t("filters.status")}</Label>
           <NativeSelect id="registration-status" className="sm:w-40" value={status} onChange={(event) => setStatus(event.target.value)}>
-            <option value="">All statuses</option>
+            <option value="">{t("filters.allStatuses")}</option>
             {REGISTRATION_STATUSES.map((value) => (
-              <option key={value}>{value}</option>
+              <option key={value} value={value}>
+                {t(`statusLabels.${STATUS_LABEL_KEYS[value]}`)}
+              </option>
             ))}
           </NativeSelect>
         </div>
         <div className="min-w-0 flex-1 basis-56 space-y-1.5">
-          <Label htmlFor="registration-student">Student</Label>
-          <Input id="registration-student" type="search" placeholder="Name, email or student ID" value={studentTerm} onChange={(event) => setStudentTerm(event.target.value)} />
+          <Label htmlFor="registration-student">{t("filters.student")}</Label>
+          <Input id="registration-student" type="search" placeholder={t("filters.studentPlaceholder")} value={studentTerm} onChange={(event) => setStudentTerm(event.target.value)} />
         </div>
       </div>
       <QueryState query={registrations}>
         {() =>
           filtered.length === 0 ? (
-            <EmptyState icon={ClipboardList} title="No registrations found" />
+            <EmptyState icon={ClipboardList} title={t("empty.title")} />
           ) : (
             <>
-              <DataTable caption="Registrations" columns={columns} rows={pagination.pageItems} rowKey={(row) => row.registration_id} />
+              <DataTable caption={t("table.caption")} columns={columns} rows={pagination.pageItems} rowKey={(row) => row.registration_id} />
               <PaginationControls page={pagination.page} pageCount={pagination.pageCount} total={pagination.total} onPageChange={pagination.setPage} />
             </>
           )

@@ -1,0 +1,1058 @@
+{
+  "app": {
+    "root": {
+      "title": "University Management System",
+      "description": "Course registration, timetables and academic administration."
+    },
+    "titles": {
+      "admin": "Administration",
+      "transcript": "Transcript",
+      "login": "Sign in",
+      "adminSections": "Sections",
+      "adminSemesters": "Semesters",
+      "studentAttestation": "Student attestation",
+      "sectionGrades": "Section grades",
+      "adminStaff": "Staff",
+      "schedule": "Schedule",
+      "adminStudents": "Students",
+      "studentTranscript": "Student transcript",
+      "courseDetails": "Course details",
+      "adminRegistrations": "Registrations",
+      "adminSupport": "Support chat",
+      "adminCourses": "Courses",
+      "profile": "Profile",
+      "courseCatalog": "Course catalog",
+      "dashboard": "Dashboard",
+      "myCourses": "My courses",
+      "attestation": "Attestation",
+      "teacherSchedule": "Teaching schedule",
+      "teacherDashboard": "Teaching dashboard",
+      "sectionDetails": "Section details",
+      "notFoundTitle": "Page not found"
+    },
+    "notFound": {
+      "heading": "404: Page not found",
+      "description": "This page does not exist or has moved.",
+      "action": "Go to my dashboard"
+    },
+    "error": {
+      "heading": "Something went wrong",
+      "description": "The university service may be unavailable. Please try again."
+    },
+    "dashboardError": {
+      "heading": "This page could not be loaded",
+      "description": "Please try again. If it keeps happening, the university service may be unavailable."
+    }
+  },
+  "entities": {
+    "registration": {
+      "errors": {
+        "scheduleConflict": "This section overlaps with an existing class in your schedule.",
+        "duplicateRegistration": "You are already enrolled in this section.",
+        "sectionFull": "This section is full: no seats remain.",
+        "registrationClosed": "Registration is closed for this semester.",
+        "semesterMismatch": "This section belongs to a different semester.",
+        "inactiveStudent": "This student account is inactive.",
+        "unscheduledSection": "This section has no meeting schedule yet, so it cannot be joined.",
+        "adminScheduleConflict": "This section overlaps with an existing class in the student's schedule.",
+        "adminDuplicateRegistration": "This student is already enrolled in this section."
+      },
+      "status": {
+        "enrolled": "Enrolled",
+        "pending": "Pending",
+        "rejected": "Rejected",
+        "cancelled": "Cancelled"
+      }
+    },
+    "chat": {
+      "attachment": "Attachment"
+    },
+    "courseSection": {
+      "unassigned": "Unassigned",
+      "instructorNumber": "Instructor #{id}",
+      "noMeetingsScheduled": "No meetings scheduled"
+    },
+    "user": {
+      "role": {
+        "student": "Student",
+        "teacher": "Teacher",
+        "admin": "Administrator"
+      }
+    }
+  },
+  "common": {
+    "language": "Language",
+    "close": "Close",
+    "cancel": "Cancel",
+    "working": "Working…",
+    "saving": "Saving…",
+    "loading": "Loading",
+    "previous": "Previous",
+    "next": "Next",
+    "pageOfResults": "Page {page} of {pageCount} · {total} results",
+    "tryAgain": "Try again",
+    "skipToContent": "Skip to content",
+    "networkError": "Could not reach the server. Check your connection and try again."
+  },
+  "errors": {
+    "INTERNAL_ERROR": "An unexpected server error occurred.",
+    "VALIDATION_ERROR": "Request validation failed.",
+    "HTTP_ERROR": "The request could not be completed.",
+    "INTEGRITY_CONFLICT": "The change violates a data constraint.",
+    "DATABASE_UNAVAILABLE": "Database request failed; retry later.",
+    "UNKNOWN_ERROR": "Something went wrong.",
+    "FORBIDDEN": "You don't have permission to do this.",
+    "NOT_FOUND": "Not found.",
+    "NULL_NOT_ALLOWED": "A required field is missing.",
+    "TRANSACTION_RETRY": "Concurrent change; retry the request.",
+    "INVALID_TOKEN": "Invalid or expired token.",
+    "INVALID_CREDENTIALS": "Invalid credentials or revoked session.",
+    "INVALID_CURRENT_PASSWORD": "Current password is incorrect.",
+    "USE_STUDENTS_ENDPOINT": "Create and manage students through the students page.",
+    "SELF_DEACTIVATION": "Cannot deactivate the current administrator.",
+    "TOO_MANY_ATTEMPTS": "Too many failed sign-in attempts. Try again in 15 minutes.",
+    "ADMIN_HAS_NO_THREAD": "Admins reply within an existing thread.",
+    "UNSUPPORTED_MEDIA_TYPE": "That file type isn't supported.",
+    "EMPTY_FILE": "The uploaded file is empty.",
+    "FILE_TOO_LARGE": "The file is too large.",
+    "EMPTY_MESSAGE": "Write a message or attach a file.",
+    "ATTACHMENT_NOT_FOUND": "This message has no attachment.",
+    "INVALID_TEACHER": "Assigned user must be an active teacher.",
+    "INVALID_MEETINGS": "Section meetings overlap each other.",
+    "SECTION_HAS_HISTORY": "Cannot move a section with registration history.",
+    "CAPACITY_BELOW_ENROLLMENT": "Capacity cannot be below the enrolled count.",
+    "SECTION_HAS_ENROLLMENTS": "Cancel existing enrollments before replacing meeting times.",
+    "INVALID_INTERVAL": "The start date must precede the end date.",
+    "PHOTO_NOT_FOUND": "No photo set for this student.",
+    "STUDENT_NOT_FOUND": "Student profile not found.",
+    "INACTIVE_STUDENT": "Student account is inactive.",
+    "SEMESTER_MISMATCH": "Section belongs to another semester.",
+    "REGISTRATION_CLOSED": "Semester registration is closed.",
+    "DUPLICATE_REGISTRATION": "Already enrolled.",
+    "SECTION_FULL": "No seats remain in this section.",
+    "SCHEDULE_CONFLICT": "The requested section overlaps with an existing class.",
+    "UNSCHEDULED_SECTION": "Section has no meeting schedule.",
+    "INVALID_STATUS": "Use the enrollment action to enroll.",
+    "NOT_ADMITTED": "Student has not been admitted to this section.",
+    "NOT_ENROLLED": "Not enrolled in this section.",
+    "GRADING_CLOSED": "The semester has ended; ask an administrator to change grades."
+  },
+  "features": {
+    "authByEmail": {
+      "form": {
+        "emailLabel": "Email",
+        "passwordLabel": "Password",
+        "showPassword": "Show password",
+        "hidePassword": "Hide password",
+        "signingIn": "Signing in…",
+        "signIn": "Sign in"
+      },
+      "validation": {
+        "emailInvalid": "Enter a valid email address.",
+        "passwordRequired": "Enter your password."
+      },
+      "errors": {
+        "invalidCredentials": "Incorrect email or password, or this account is inactive."
+      }
+    },
+    "cancelRegistration": {
+      "button": {
+        "label": "Cancel registration"
+      },
+      "dialog": {
+        "title": "Cancel this registration?",
+        "description": "You will leave {courseLabel} and your seat is released. You can register again later only if seats remain.",
+        "confirmLabel": "Cancel registration",
+        "cancelLabel": "Keep registration"
+      },
+      "toast": {
+        "success": "Registration cancelled."
+      }
+    },
+    "editProfile": {
+      "avatarUpload": {
+        "changePhoto": "Change photo",
+        "save": "Save",
+        "saving": "Saving…",
+        "cancel": "Cancel",
+        "toast": {
+          "success": "Photo updated."
+        },
+        "errors": {
+          "unsupportedMediaType": "Upload a JPEG, PNG, or WebP image.",
+          "fileTooLarge": "Photo must be 5 MB or smaller."
+        }
+      },
+      "contactForm": {
+        "title": "Contact details",
+        "description": "The only details you can change yourself. Everything else needs a university administrator.",
+        "loginEmailLabel": "Login email",
+        "personalEmailLabel": "Personal email",
+        "phoneNumberLabel": "Phone number",
+        "save": "Save",
+        "saving": "Saving…",
+        "toast": {
+          "success": "Contact details updated."
+        },
+        "validation": {
+          "phoneMax": "Use at most 20 characters.",
+          "phoneFormat": "Use 6–20 digits, spaces, +, -, or parentheses.",
+          "emailInvalid": "Enter a valid email address."
+        }
+      }
+    },
+    "manageCourse": {
+      "form": {
+        "codeLabel": "Course code",
+        "titleLabel": "Title",
+        "creditsLabel": "Credits",
+        "ectsLabel": "ECTS (optional)",
+        "descriptionLabel": "Description (optional)",
+        "saveChanges": "Save changes",
+        "createCourse": "Create course"
+      },
+      "dialog": {
+        "editTitle": "Edit {code}",
+        "addTitle": "Add course"
+      },
+      "delete": {
+        "button": "Delete",
+        "title": "Delete {code}?",
+        "description": "This permanently removes the course. It is refused while sections still reference it.",
+        "confirmLabel": "Delete course",
+        "errors": {
+          "integrityConflict": "This course still has sections, so it cannot be deleted."
+        }
+      },
+      "toast": {
+        "updated": "Course updated.",
+        "created": "Course created.",
+        "deleted": "Course deleted."
+      },
+      "validation": {
+        "codeRequired": "Enter a course code.",
+        "codeMax": "Use at most 30 characters.",
+        "titleRequired": "Enter a title.",
+        "titleMax": "Use at most 200 characters.",
+        "creditsRequired": "Enter the credits.",
+        "creditsInt": "Use a whole number.",
+        "creditsRange": "Credits must be between 1 and 30.",
+        "ectsInt": "Use a whole number.",
+        "ectsRange": "ECTS must be between 1 and 60."
+      },
+      "errors": {
+        "duplicateCode": "A course with this code already exists."
+      }
+    },
+    "manageSection": {
+      "form": {
+        "courseLabel": "Course",
+        "chooseCourse": "Choose a course",
+        "semesterLabel": "Semester",
+        "chooseSemester": "Choose a semester",
+        "sectionNumberLabel": "Section number",
+        "capacityLabel": "Capacity",
+        "teacherLabel": "Teacher",
+        "unassigned": "Unassigned",
+        "meetingsLegend": "Weekly meetings",
+        "meetingsLockedHint": "Students are enrolled, so the backend refuses changes to these meetings.",
+        "dayLabel": "Day",
+        "startLabel": "Start",
+        "endLabel": "End",
+        "removeMeeting": "Remove meeting {index}",
+        "addMeeting": "Add meeting",
+        "saveChanges": "Save changes",
+        "createSection": "Create section"
+      },
+      "dialog": {
+        "editTitle": "Edit section {number}",
+        "addTitle": "Add section"
+      },
+      "delete": {
+        "button": "Delete",
+        "title": "Delete section {number}?",
+        "description": "This permanently removes the section and its meetings. It is refused while registrations reference it.",
+        "confirmLabel": "Delete section",
+        "errors": {
+          "integrityConflict": "This section has registration history, so it cannot be deleted."
+        }
+      },
+      "toast": {
+        "updated": "Section updated.",
+        "created": "Section created.",
+        "deleted": "Section deleted."
+      },
+      "errors": {
+        "duplicateNumber": "This course already has a section with that number in this semester."
+      },
+      "validation": {
+        "startTimeRequired": "Choose a start time.",
+        "endTimeRequired": "Choose an end time.",
+        "endAfterStart": "The end time must be after the start time.",
+        "courseRequired": "Choose a course.",
+        "semesterRequired": "Choose a semester.",
+        "sectionNumberRequired": "Enter a section number.",
+        "sectionNumberMax": "Use at most 20 characters.",
+        "capacityRequired": "Enter the capacity.",
+        "capacityInt": "Use a whole number.",
+        "capacityPositive": "Capacity must be at least 1.",
+        "meetingsMin": "Add at least one weekly meeting.",
+        "meetingsMax": "Use at most 30 meetings."
+      }
+    },
+    "manageStudent": {
+      "actions": {
+        "deactivate": "Deactivate",
+        "deactivateTitle": "Deactivate {name}?",
+        "deactivateDescription": "The account can no longer sign in and all of the student's registrations are cancelled. History is retained. Reactivating does not restore the registrations.",
+        "deactivateConfirmLabel": "Deactivate student",
+        "reactivate": "Reactivate"
+      },
+      "toast": {
+        "deactivated": "Student deactivated.",
+        "reactivated": "Student reactivated.",
+        "updated": "Student updated.",
+        "created": "Student created."
+      },
+      "dialog": {
+        "editTitle": "Edit {name}",
+        "addTitle": "Add student"
+      },
+      "errors": {
+        "duplicateEmail": "This email address is already in use."
+      },
+      "form": {
+        "lastNameLabel": "Last name",
+        "firstNameLabel": "First name",
+        "patronymicLabel": "Patronymic (optional)",
+        "loginEmailLabel": "Login email",
+        "initialPasswordLabel": "Initial password",
+        "initialPasswordHint": "At least 12 characters.",
+        "academicRecordHeading": "Academic record",
+        "studentIdPrefix": "Student ID",
+        "studentIdSuffix": "is permanent.",
+        "enrollmentYearLabel": "Enrollment year",
+        "enrollmentYearHint": "Its last two digits start the student ID, e.g. 24ID…; the ID cannot be changed later.",
+        "programLabel": "Program (optional)",
+        "yearLevelLabel": "Year level",
+        "admissionYearLabel": "Admission year (optional)",
+        "admissionYearHint": "Format: YYYY-YYYY",
+        "studyFormLabel": "Study form (optional)",
+        "studyFormPlaceholder": "Bachelor's (4 years)",
+        "advisorLabel": "Advisor (optional)",
+        "winterAdmissionLabel": "Winter admission",
+        "notSet": "Not set",
+        "yes": "Yes",
+        "no": "No",
+        "needsDormitoryLabel": "Needs dormitory",
+        "personalInfoHeading": "Personal information",
+        "birthDateLabel": "Date of birth (optional)",
+        "genderLabel": "Gender",
+        "male": "Male",
+        "female": "Female",
+        "maritalStatusLabel": "Marital status",
+        "single": "Single",
+        "married": "Married",
+        "divorced": "Divorced",
+        "widowed": "Widowed",
+        "nationalityLabel": "Nationality (optional)",
+        "citizenshipLabel": "Citizenship (optional)",
+        "residentLabel": "Resident",
+        "contactDetailsHeading": "Contact details",
+        "contactDetailsHint": "The student can also change these themselves.",
+        "personalEmailLabel": "Personal email (optional)",
+        "phoneNumberLabel": "Phone number (optional)",
+        "saveChanges": "Save changes",
+        "createStudent": "Create student"
+      },
+      "validation": {
+        "emailInvalid": "Enter a valid email address.",
+        "emailMax": "Use at most 150 characters.",
+        "lastNameRequired": "Enter the last name.",
+        "maxLength100": "Use at most 100 characters.",
+        "firstNameRequired": "Enter the first name.",
+        "maxLength80": "Use at most 80 characters.",
+        "yearLevelRequired": "Enter the year level.",
+        "wholeNumber": "Use a whole number.",
+        "yearLevelRange": "Year must be between 1 and 8.",
+        "phoneFormat": "Use 6–20 digits, spaces, +, -, or parentheses.",
+        "admissionYearFormat": "Use the format YYYY-YYYY.",
+        "passwordMin": "Use at least 12 characters.",
+        "passwordMax": "Use at most 128 characters.",
+        "enrollmentYearRequired": "Enter the enrollment year.",
+        "enrollmentYearMin": "Use a year from 2000.",
+        "enrollmentYearMax": "Use a year up to {max}."
+      }
+    },
+    "registerForSection": {
+      "defaultLabel": "Register",
+      "registering": "Registering…",
+      "toast": {
+        "success": "You are registered for this section."
+      }
+    },
+    "changePassword": {
+      "form": {
+        "currentPasswordLabel": "Current password",
+        "newPasswordLabel": "New password",
+        "newPasswordHint": "At least 12 characters.",
+        "confirmPasswordLabel": "Repeat new password",
+        "showPasswords": "Show passwords",
+        "submitLabel": "Change password"
+      },
+      "toast": {
+        "success": "Password changed. Your other devices were signed out."
+      },
+      "validation": {
+        "currentPasswordRequired": "Enter your current password.",
+        "passwordTooShort": "Use at least 12 characters.",
+        "passwordTooLong": "Use at most 128 characters.",
+        "passwordsMismatch": "Passwords do not match."
+      }
+    },
+    "editGrades": {
+      "fields": {
+        "attestation1": "Attestation 1",
+        "attestation2": "Attestation 2",
+        "finalExam": "Final exam"
+      },
+      "table": {
+        "caption": "Grade sheet",
+        "id": "ID",
+        "student": "Student",
+        "total": "Total",
+        "grade": "Grade"
+      },
+      "notAdmittedBadge": "Not admitted",
+      "notAdmittedTitle": "Attestations total below {min}",
+      "fieldAriaLabel": "{field} for {name}",
+      "emptyTitle": "No students enrolled yet",
+      "closedBanner": {
+        "adminEditable": "The semester has ended. Teachers can no longer change these grades; as an administrator you still can.",
+        "locked": "The semester has ended, so grades are locked. Ask an administrator for corrections."
+      },
+      "toast": {
+        "saved": "Grades saved."
+      },
+      "errors": {
+        "notAdmitted": "A final exam mark needs at least {min} attestation points."
+      },
+      "validation": {
+        "markRange": "{name}: {field} must be between 0 and {max}.",
+        "notAdmitted": "{name} is not admitted to the final exam."
+      },
+      "saveLabel": "Save grades",
+      "discardLabel": "Discard changes",
+      "helperText": "The final exam opens at {min}+ attestation points. A letter grade appears once the final exam is entered; with no final by the end of the semester it is an F."
+    },
+    "logout": {
+      "signOut": "Sign out",
+      "everywhereButton": "Sign out everywhere",
+      "confirmTitle": "Sign out on all devices?",
+      "confirmDescription": "Every session of this account ends, including this one. You will need to sign in again."
+    },
+    "manageRegistration": {
+      "validation": {
+        "chooseStudent": "Choose a student.",
+        "chooseSection": "Choose a section."
+      },
+      "toast": {
+        "enrolled": "Student enrolled.",
+        "statusUpdated": "Status updated."
+      },
+      "form": {
+        "studentLabel": "Student",
+        "chooseStudent": "Choose a student",
+        "sectionLabel": "Section",
+        "chooseSection": "Choose a section",
+        "submitLabel": "Enroll student"
+      },
+      "dialog": {
+        "title": "Enroll a student",
+        "description": "Runs the same schedule, capacity and semester checks as a student's own registration."
+      },
+      "status": {
+        "pending": "Pending",
+        "rejected": "Rejected",
+        "cancelled": "Cancelled"
+      },
+      "statusAriaLabel": "Change status of registration {id}",
+      "setStatusPlaceholder": "Set status…",
+      "enrollButton": "Enroll"
+    },
+    "manageSemester": {
+      "openAriaLabel": "{name} open for registration",
+      "toast": {
+        "deleted": "Semester deleted.",
+        "updated": "Semester updated.",
+        "created": "Semester created."
+      },
+      "deleteButton": "Delete",
+      "deleteConfirmTitle": "Delete {name}?",
+      "deleteConfirmDescription": "This permanently removes the semester. It is refused while sections or registrations reference it.",
+      "deleteConfirmLabel": "Delete semester",
+      "errors": {
+        "integrityConflict": "This semester still has sections or registrations, so it cannot be deleted.",
+        "nameInUse": "A semester with this name already exists."
+      },
+      "validation": {
+        "nameRequired": "Enter a name.",
+        "nameTooLong": "Use at most 80 characters.",
+        "startDateRequired": "Choose a start date.",
+        "endDateRequired": "Choose an end date.",
+        "endAfterStart": "The end date must be after the start date."
+      },
+      "fields": {
+        "name": "Name",
+        "startDate": "Start date",
+        "endDate": "End date",
+        "openForRegistration": "Open for registration"
+      },
+      "saveChangesLabel": "Save changes",
+      "createLabel": "Create semester",
+      "editDialogTitle": "Edit {name}",
+      "addDialogTitle": "Add semester"
+    },
+    "manageStaff": {
+      "validation": {
+        "tooShort": "Use at least {min} characters.",
+        "tooLong": "Use at most {max} characters.",
+        "fullNameRequired": "Enter a full name.",
+        "phoneFormat": "Use digits, spaces, +, - and parentheses.",
+        "emailInvalid": "Enter a valid email address."
+      },
+      "fields": {
+        "fullName": "Full name",
+        "title": "Title (optional)",
+        "department": "Department (optional)",
+        "office": "Office (optional)",
+        "phone": "Phone (optional)",
+        "email": "Email",
+        "initialPassword": "Initial password",
+        "passwordHint": "At least 12 characters.",
+        "role": "Role",
+        "newPassword": "New password"
+      },
+      "roles": {
+        "teacher": "Teacher",
+        "administrator": "Administrator"
+      },
+      "toast": {
+        "accountCreated": "Account created.",
+        "profileSaved": "Profile saved.",
+        "passwordReset": "Password changed. The account's sessions were signed out."
+      },
+      "errors": {
+        "emailInUse": "This email address is already in use."
+      },
+      "createSubmitLabel": "Create account",
+      "createDialogTitle": "Add staff account",
+      "saveProfileSubmitLabel": "Save profile",
+      "editProfileDialogTitle": "Edit profile of {email}",
+      "resetPasswordSubmitLabel": "Change password",
+      "resetPasswordDialogTitle": "Change password for {email}",
+      "resetPasswordDialogDescription": "All of this account's sessions are revoked.",
+      "activeAriaLabel": "{email} active"
+    },
+    "selectSemester": {
+      "label": "Semester",
+      "allOption": "All semesters",
+      "closedSuffix": " (closed)"
+    }
+  },
+  "widgets": {
+    "appShell": {
+      "mainNavLabel": "Main",
+      "mobileNavDescription": "Main navigation",
+      "brand": "University Portal",
+      "expandSidebar": "Expand sidebar",
+      "collapseSidebar": "Collapse sidebar",
+      "collapse": "Collapse",
+      "openNavigation": "Open navigation",
+      "accountMenuFor": "Account menu for {email}",
+      "theme": {
+        "label": "Theme",
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System"
+      },
+      "nav": {
+        "dashboard": "Dashboard",
+        "courseCatalog": "Course catalog",
+        "myCourses": "My courses",
+        "schedule": "Schedule",
+        "attestation": "Attestation",
+        "transcript": "Transcript",
+        "profile": "Profile",
+        "teachingSchedule": "Teaching schedule",
+        "overview": "Overview",
+        "students": "Students",
+        "courses": "Courses",
+        "sections": "Sections",
+        "semesters": "Semesters",
+        "registrations": "Registrations",
+        "staff": "Staff",
+        "supportChat": "Support chat"
+      }
+    },
+    "courseCatalog": {
+      "searchLabel": "Search",
+      "searchPlaceholder": "Name or code",
+      "seatsAvailable": "Seats available",
+      "emptyTitle": "No courses found",
+      "emptyDescription": "Try a different search or semester.",
+      "credits": "{count, plural, one {# credit} other {# credits}}",
+      "sectionsCount": "{count, plural, one {# section} other {# sections}}",
+      "seatsLeft": "{seats} seats left",
+      "noSectionsListed": "No sections listed"
+    },
+    "courseSections": {
+      "sectionNumber": "Section {number}",
+      "enrolled": "Enrolled",
+      "registrationClosed": "Registration closed",
+      "seatsRemaining": "{remaining} of {capacity} seats remaining",
+      "sectionFull": "Section full",
+      "register": "Register",
+      "credits": "{count, plural, one {# credit} other {# credits}}",
+      "availableSectionsHeading": "Available sections",
+      "emptyTitle": "No sections",
+      "emptyDescription": "This course has no sections for the selected semester."
+    },
+    "enrollmentTable": {
+      "columns": {
+        "course": "Course",
+        "section": "Section",
+        "semester": "Semester",
+        "weeklyMeetings": "Weekly meetings",
+        "status": "Status",
+        "registered": "Registered",
+        "actions": "Actions"
+      },
+      "thisSectionFallback": "this section",
+      "allStatuses": "All statuses",
+      "emptyTitle": "No registrations found",
+      "emptyDescription": "Browse the catalog to register for a section.",
+      "openCatalog": "Open catalog",
+      "caption": "Your course registrations"
+    },
+    "supportChat": {
+      "unsupportedFileType": "Attach a JPEG, PNG, WebP, GIF image or PDF.",
+      "fileTooLarge": "Attachments must be 15 MB or smaller.",
+      "contactAdministration": "Contact administration",
+      "dialogLabel": "Support chat",
+      "exitFullscreen": "Exit fullscreen",
+      "expandFullscreen": "Expand to fullscreen",
+      "closeChat": "Close chat",
+      "emptyMessages": "Ask the administration a question, and they'll reply here.",
+      "removeAttachment": "Remove attachment",
+      "attachFile": "Attach a file or photo",
+      "composerPlaceholder": "Type your question…",
+      "send": "Send"
+    },
+    "weeklyTimetable": {
+      "eventDescription": "{code} {title}, {section}, {day} {start} to {end}",
+      "section": "Section {number}",
+      "chooseDay": "Choose a day",
+      "noClassesOnDay": "No classes on {day}.",
+      "emptyTitle": "Nothing on the timetable",
+      "defaultEmptyMessage": "No classes scheduled for this semester.",
+      "when": "When",
+      "instructor": "Instructor"
+    }
+  },
+  "pages": {
+    "adminDashboard": {
+      "title": "Administration",
+      "description": "University-wide totals.",
+      "stats": {
+        "students": "Students",
+        "courses": "Courses",
+        "sections": "Sections",
+        "registrations": "Registrations",
+        "activeSemester": "Active semester",
+        "noActiveSemester": "None"
+      },
+      "chart": {
+        "byStatusTitle": "Registrations by status",
+        "seatFillTitle": "Seats filled by semester",
+        "statusLabels": {
+          "enrolled": "Enrolled",
+          "pending": "Pending",
+          "rejected": "Rejected",
+          "cancelled": "Cancelled"
+        }
+      }
+    },
+    "adminSupportChat": {
+      "title": "Support chat",
+      "description": "Questions students and teachers have sent to administration.",
+      "empty": {
+        "noConversations": {
+          "title": "No conversations yet",
+          "description": "Questions will show up here as they come in."
+        },
+        "selectConversation": {
+          "title": "Select a conversation",
+          "description": "Pick a thread on the left to read and reply."
+        }
+      },
+      "attachFile": "Attach a file or photo",
+      "removeAttachment": "Remove attachment",
+      "replyPlaceholder": "Type your reply…",
+      "send": "Send",
+      "errors": {
+        "unsupportedFileType": "Attach a JPEG, PNG, WebP, GIF image or PDF.",
+        "fileTooLarge": "Attachments must be 15 MB or smaller."
+      }
+    },
+    "courseCatalog": {
+      "title": "Course catalog",
+      "description": "Find a course, compare its sections and register."
+    },
+    "courseDetails": {
+      "breadcrumbs": {
+        "courseCatalog": "Course catalog",
+        "courseDetails": "Course details"
+      }
+    },
+    "registrationsManagement": {
+      "title": "Registrations",
+      "description": "Every enrollment record across the university.",
+      "enrollStudent": "Enroll student",
+      "filters": {
+        "section": "Section",
+        "allSections": "All sections",
+        "status": "Status",
+        "allStatuses": "All statuses",
+        "student": "Student",
+        "studentPlaceholder": "Name, email or student ID"
+      },
+      "statusLabels": {
+        "enrolled": "Enrolled",
+        "pending": "Pending",
+        "rejected": "Rejected",
+        "cancelled": "Cancelled"
+      },
+      "empty": {
+        "title": "No registrations found"
+      },
+      "table": {
+        "caption": "Registrations",
+        "columns": {
+          "student": "Student",
+          "section": "Section",
+          "semester": "Semester",
+          "registered": "Registered",
+          "status": "Status",
+          "actions": "Actions"
+        }
+      }
+    },
+    "sectionManagement": {
+      "title": "Sections",
+      "description": "Offerings of a course in a semester, with teacher, capacity and weekly meetings.",
+      "addSection": "Add section",
+      "columns": {
+        "course": "Course",
+        "section": "Section",
+        "semester": "Semester",
+        "teacher": "Teacher",
+        "meetings": "Meetings",
+        "seats": "Seats",
+        "actions": "Actions"
+      },
+      "unassigned": "Unassigned",
+      "gradesLink": "Grades",
+      "edit": "Edit",
+      "empty": {
+        "title": "No sections found"
+      },
+      "table": {
+        "caption": "Course sections"
+      },
+      "grades": {
+        "titleWithCourse": "{code} · Section {number} · Grades",
+        "titleFallback": "Grades",
+        "breadcrumbs": {
+          "sections": "Sections",
+          "grades": "Grades"
+        }
+      }
+    },
+    "semesterManagement": {
+      "title": "Semesters",
+      "description": "Academic terms. Registration is only accepted in terms that are open.",
+      "addSemester": "Add semester",
+      "columns": {
+        "name": "Name",
+        "starts": "Starts",
+        "ends": "Ends",
+        "openForRegistration": "Open for registration",
+        "actions": "Actions"
+      },
+      "edit": "Edit",
+      "empty": {
+        "title": "No semesters yet"
+      },
+      "table": {
+        "caption": "Semesters"
+      }
+    },
+    "studentDashboard": {
+      "welcomeBack": "Welcome back, {name}",
+      "findCourses": "Find courses",
+      "empty": {
+        "noSemesters": {
+          "title": "No semesters yet",
+          "description": "Once the university publishes a semester, your classes appear here."
+        }
+      },
+      "stats": {
+        "currentSemester": "Current semester",
+        "enrolledSections": "Enrolled sections",
+        "weeklyClasses": "Weekly classes"
+      },
+      "thisWeek": "This week",
+      "fullSchedule": "Full schedule",
+      "timetableEmpty": "You are not enrolled in any class this semester.",
+      "upcomingClasses": "Upcoming classes",
+      "nothingUpcoming": "Nothing coming up."
+    },
+    "teacherDashboard": {
+      "dashboard": {
+        "title": "Teaching dashboard",
+        "description": "Your assigned sections and enrollment.",
+        "stats": {
+          "assignedSections": "Assigned sections",
+          "enrolledStudents": "Enrolled students",
+          "courses": "Courses"
+        },
+        "columns": {
+          "course": "Course",
+          "section": "Section",
+          "weeklyMeetings": "Weekly meetings",
+          "enrolled": "Enrolled"
+        },
+        "sectionFallback": "Section {id}",
+        "empty": {
+          "title": "No assigned sections",
+          "description": "Sections assigned to you by an administrator appear here."
+        },
+        "table": {
+          "caption": "Your assigned sections"
+        }
+      },
+      "schedule": {
+        "title": "Teaching schedule",
+        "description": "Times are shown in campus-local time.",
+        "sectionFallback": "Section {id}",
+        "timetableEmpty": "You have no assigned sections this semester."
+      },
+      "section": {
+        "titleWithCourse": "{code} · Section {number}",
+        "titleFallback": "Section details",
+        "breadcrumbs": {
+          "dashboard": "Teaching dashboard",
+          "section": "Section"
+        },
+        "weeklyMeetings": "Weekly meetings",
+        "enrollment": "Enrollment",
+        "enrollmentSummary": "{enrolled} enrolled · {remaining} of {capacity} seats remaining",
+        "studentsAndGrades": "Students and grades"
+      }
+    },
+    "courseManagement": {
+      "title": "Courses",
+      "description": "The academic subject catalog.",
+      "addCourse": "Add course",
+      "search": "Search",
+      "searchPlaceholder": "Name or code",
+      "columns": {
+        "code": "Code",
+        "title": "Title",
+        "credits": "Credits",
+        "actions": "Actions"
+      },
+      "edit": "Edit",
+      "empty": "No courses found",
+      "caption": "Courses"
+    },
+    "forbidden": {
+      "title": "403: No access",
+      "description": "Your account does not have permission to view this page.",
+      "backToDashboard": "Go to my dashboard"
+    },
+    "login": {
+      "subtitle": "Sign in with your university account",
+      "sessionExpired": "Your session has ended. Please sign in again.",
+      "serviceUnavailable": "The university service is unavailable right now. Please try again shortly."
+    },
+    "myCourses": {
+      "title": "My courses",
+      "description": "Your registrations across semesters."
+    },
+    "mySchedule": {
+      "title": "Weekly schedule",
+      "description": "Times are shown in campus-local time.",
+      "noSemesters": "No semesters yet",
+      "emptyMessage": "You are not enrolled in any class this semester."
+    },
+    "profile": {
+      "title": "Profile",
+      "description": "Your account details and sign-in security.",
+      "notSet": "Not set",
+      "yes": "Yes",
+      "no": "No",
+      "genders": {
+        "male": "Male",
+        "female": "Female"
+      },
+      "maritalStatuses": {
+        "single": "Single",
+        "married": "Married",
+        "divorced": "Divorced",
+        "widowed": "Widowed"
+      },
+      "account": {
+        "title": "Account",
+        "description": "To change these details, contact a university administrator."
+      },
+      "personal": {
+        "title": "Personal information",
+        "description": "Set by a university administrator.",
+        "lastName": "Last name",
+        "firstName": "First name",
+        "patronymic": "Patronymic",
+        "birthDate": "Date of birth",
+        "gender": "Gender",
+        "maritalStatus": "Marital status",
+        "nationality": "Nationality",
+        "citizenship": "Citizenship",
+        "resident": "Resident"
+      },
+      "academic": {
+        "title": "Academic record",
+        "description": "Set by a university administrator.",
+        "studentId": "Student ID",
+        "role": "Role",
+        "program": "Academic program",
+        "yearLevel": "Year level",
+        "admissionYear": "Admission year",
+        "studyForm": "Study form",
+        "advisor": "Advisor",
+        "needsDormitory": "Needs dormitory",
+        "winterAdmission": "Winter admission"
+      },
+      "fields": {
+        "fullName": "Full name",
+        "role": "Role",
+        "title": "Title",
+        "department": "Department",
+        "email": "Email",
+        "phone": "Phone",
+        "office": "Office"
+      },
+      "sessions": {
+        "title": "Sessions",
+        "description": "Lost a device or signed in on a shared computer? End every session at once, including this one."
+      },
+      "password": {
+        "title": "Password",
+        "description": "Changing it keeps you signed in here and signs out your other devices."
+      }
+    },
+    "staffManagement": {
+      "title": "Staff",
+      "description": "Teacher and administrator accounts.",
+      "addStaff": "Add staff",
+      "columns": {
+        "name": "Name",
+        "email": "Email",
+        "role": "Role",
+        "active": "Active",
+        "actions": "Actions"
+      },
+      "noName": "No name",
+      "editProfile": "Edit profile",
+      "changePassword": "Change password",
+      "empty": "No staff accounts",
+      "caption": "Staff accounts"
+    },
+    "studentGrades": {
+      "gradesTable": {
+        "columns": {
+          "code": "Code",
+          "title": "Title"
+        },
+        "summaryLine": "Credits taken {creditsTaken}. Credits earned {creditsEarned}. ECTS taken {ectsTaken}. ECTS earned {ectsEarned}. GPA {gpa}."
+      },
+      "studentCard": {
+        "program": "Program",
+        "notSet": "Not set",
+        "id": "ID",
+        "student": "Student",
+        "yearOfStudy": "Year of study"
+      },
+      "attestation": {
+        "title": "Attestation",
+        "description": "Points per course, newest semester first. The final exam needs 30+ attestation points.",
+        "crumbStudents": "Students",
+        "crumbAttestation": "Attestation",
+        "transcript": "Transcript",
+        "empty": "No courses yet",
+        "columns": {
+          "attestation1": "Attestation 1 / 30",
+          "attestation2": "Attestation 2 / 30",
+          "finalExam": "Final exam / 40",
+          "letter": "Letter"
+        },
+        "notAdmitted": "Not admitted"
+      },
+      "transcript": {
+        "title": "Transcript",
+        "crumbStudents": "Students",
+        "crumbTranscript": "Transcript",
+        "attestation": "Attestation",
+        "print": "Print / PDF",
+        "empty": "No courses yet",
+        "columns": {
+          "credits": "Credits",
+          "ects": "ECTS",
+          "score": "Score",
+          "letter": "Letter",
+          "gpa": "GPA",
+          "traditional": "Traditional"
+        }
+      }
+    },
+    "studentManagement": {
+      "title": "Students",
+      "description": "Create, edit and deactivate student accounts.",
+      "addStudent": "Add student",
+      "search": "Search",
+      "searchPlaceholder": "Name, email or student ID",
+      "columns": {
+        "name": "Name",
+        "email": "Email",
+        "program": "Program",
+        "year": "Year",
+        "account": "Account",
+        "actions": "Actions"
+      },
+      "notSet": "Not set",
+      "active": "Active",
+      "inactive": "Inactive",
+      "grades": "Grades",
+      "details": "Details",
+      "edit": "Edit",
+      "fields": {
+        "email": "Email",
+        "program": "Program",
+        "yearLevel": "Year level",
+        "account": "Account"
+      },
+      "empty": "No students found",
+      "caption": "Students"
+    }
+  }
+}

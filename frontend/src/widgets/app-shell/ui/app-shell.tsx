@@ -2,14 +2,16 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { ChevronsLeft, ChevronsRight, Menu, Monitor, Moon, Sun, User as UserIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ReactNode, useEffect } from "react";
 
 import { studentQueries } from "@/entities/student";
-import { ROLE_LABELS, User, useSessionUser } from "@/entities/user";
+import { roleLabels, User, useSessionUser } from "@/entities/user";
 import { LogoutMenuItem } from "@/features/logout";
+import { LocaleMenuItems } from "@/shared/i18n";
 import { cn } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";
 import {
@@ -30,10 +32,12 @@ import { useSidebarStore } from "../model/sidebar-store";
 function NavLinks({ collapsed = false, onNavigate }: { collapsed?: boolean; onNavigate?: () => void }) {
   const user = useSessionUser();
   const pathname = usePathname() ?? ""; // Nullable only because a root pages/ folder exists.
+  const t = useTranslations("widgets.appShell");
   return (
-    <nav aria-label="Main" className="flex-1 space-y-1 overflow-y-auto p-3">
-      {NAVIGATION[user.role].map(({ href, label, icon: Icon }) => {
+    <nav aria-label={t("mainNavLabel")} className="flex-1 space-y-1 overflow-y-auto p-3">
+      {NAVIGATION[user.role].map(({ href, labelKey, icon: Icon }) => {
         const active = isActiveLink(pathname, href);
+        const label = t(`nav.${labelKey}`);
         return (
           <Link
             key={href}
@@ -58,12 +62,13 @@ function NavLinks({ collapsed = false, onNavigate }: { collapsed?: boolean; onNa
 }
 
 function BrandMark({ collapsed = false }: { collapsed?: boolean }) {
+  const t = useTranslations("widgets.appShell");
   return (
     <span className={cn("flex items-center gap-2 font-semibold", collapsed && "justify-center")}>
       <span className="bg-primary text-primary-foreground grid size-8 shrink-0 place-items-center rounded-md">
         <Brand className="size-4" aria-hidden />
       </span>
-      {!collapsed && <span className="truncate text-sm">University Portal</span>}
+      {!collapsed && <span className="truncate text-sm">{t("brand")}</span>}
     </span>
   );
 }
@@ -71,6 +76,7 @@ function BrandMark({ collapsed = false }: { collapsed?: boolean }) {
 function Sidebar() {
   const collapsed = useSidebarStore((state) => state.collapsed);
   const toggleCollapsed = useSidebarStore((state) => state.toggleCollapsed);
+  const t = useTranslations("widgets.appShell");
   return (
     <aside className={cn("bg-card sticky top-0 hidden h-dvh shrink-0 flex-col border-r transition-[width] lg:flex", collapsed ? "w-16" : "w-60")}>
       <div className={cn("flex h-14 items-center border-b px-4", collapsed && "justify-center px-0")}>
@@ -84,10 +90,10 @@ function Sidebar() {
           className="w-full"
           onClick={toggleCollapsed}
           aria-expanded={!collapsed}
-          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          aria-label={collapsed ? t("expandSidebar") : t("collapseSidebar")}
         >
           {collapsed ? <ChevronsRight aria-hidden /> : <ChevronsLeft aria-hidden />}
-          {!collapsed && "Collapse"}
+          {!collapsed && t("collapse")}
         </Button>
       </div>
     </aside>
@@ -97,6 +103,7 @@ function Sidebar() {
 function MobileDrawer() {
   const open = useSidebarStore((state) => state.mobileOpen);
   const setOpen = useSidebarStore((state) => state.setMobileOpen);
+  const t = useTranslations("widgets.appShell");
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent side="left" className="flex w-72 flex-col gap-0 p-0">
@@ -106,7 +113,7 @@ function MobileDrawer() {
               <BrandMark />
             </div>
           </SheetTitle>
-          <SheetDescription className="sr-only">Main navigation</SheetDescription>
+          <SheetDescription className="sr-only">{t("mobileNavDescription")}</SheetDescription>
         </SheetHeader>
         <NavLinks onNavigate={() => setOpen(false)} />
       </SheetContent>
@@ -138,10 +145,12 @@ function UserAvatar({ user }: { user: User }) {
 function UserMenu() {
   const user = useSessionUser();
   const { theme, setTheme } = useTheme();
+  const t = useTranslations("widgets.appShell");
+  const tUser = useTranslations("entities.user");
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="max-w-56" aria-label={`Account menu for ${user.email}`}>
+        <Button variant="ghost" size="sm" className="max-w-56" aria-label={t("accountMenuFor", { email: user.email })}>
           <UserAvatar user={user} />
           <span className="hidden truncate sm:inline">{user.email}</span>
         </Button>
@@ -149,31 +158,33 @@ function UserMenu() {
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel className="font-normal">
           <p className="truncate text-sm font-medium">{user.email}</p>
-          <p className="text-muted-foreground text-xs">{ROLE_LABELS[user.role]}</p>
+          <p className="text-muted-foreground text-xs">{roleLabels(tUser)[user.role]}</p>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <Link href="/profile">
             <UserIcon aria-hidden />
-            Profile
+            {t("nav.profile")}
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuLabel className="text-muted-foreground text-xs font-normal">Theme</DropdownMenuLabel>
+        <DropdownMenuLabel className="text-muted-foreground text-xs font-normal">{t("theme.label")}</DropdownMenuLabel>
         <DropdownMenuRadioGroup value={theme} onValueChange={setTheme}>
           <DropdownMenuRadioItem value="light">
             <Sun className="mr-2 size-4" aria-hidden />
-            Light
+            {t("theme.light")}
           </DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="dark">
             <Moon className="mr-2 size-4" aria-hidden />
-            Dark
+            {t("theme.dark")}
           </DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="system">
             <Monitor className="mr-2 size-4" aria-hidden />
-            System
+            {t("theme.system")}
           </DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
+        <DropdownMenuSeparator />
+        <LocaleMenuItems />
         <DropdownMenuSeparator />
         <LogoutMenuItem />
       </DropdownMenuContent>
@@ -183,19 +194,21 @@ function UserMenu() {
 
 export function AppShell({ children }: { children: ReactNode }) {
   const setMobileOpen = useSidebarStore((state) => state.setMobileOpen);
+  const t = useTranslations("widgets.appShell");
+  const tCommon = useTranslations("common");
   useEffect(() => {
     void useSidebarStore.persist.rehydrate();
   }, []);
   return (
     <div className="flex min-h-dvh">
       <a href="#main" className="focus:bg-card sr-only z-50 focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:rounded-md focus:px-3 focus:py-2 focus:shadow">
-        Skip to content
+        {tCommon("skipToContent")}
       </a>
       <Sidebar />
       <MobileDrawer />
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="bg-card/95 sticky top-0 z-30 flex h-14 items-center justify-between gap-3 border-b px-4 backdrop-blur">
-          <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Open navigation" onClick={() => setMobileOpen(true)}>
+          <Button variant="ghost" size="icon" className="lg:hidden" aria-label={t("openNavigation")} onClick={() => setMobileOpen(true)}>
             <Menu aria-hidden />
           </Button>
           <div className="lg:hidden">
