@@ -7,6 +7,7 @@ import { useMemo } from "react";
 
 import { courseQueries } from "@/entities/course";
 import { MeetingList, Section, sectionQueries } from "@/entities/course-section";
+import { roomQueries } from "@/entities/room";
 import { semesterQueries } from "@/entities/semester";
 import { userQueries } from "@/entities/user";
 import { DeleteSectionButton, SectionFormDialog, SectionFormOptions } from "@/features/manage-section";
@@ -23,16 +24,18 @@ export function SectionManagementPage() {
   const courses = useQuery(courseQueries.list());
   const allSemesters = useQuery(semesterQueries.list());
   const users = useQuery(userQueries.list());
+  const rooms = useQuery(roomQueries.list());
 
   const courseById = useMemo(() => new Map(courses.data?.map((c) => [c.course_id, c])), [courses.data]);
   const semesterById = useMemo(() => new Map(allSemesters.data?.map((s) => [s.semester_id, s])), [allSemesters.data]);
   const userById = useMemo(() => new Map(users.data?.map((u) => [u.id, u])), [users.data]);
+  const roomCodeById = useMemo(() => new Map(rooms.data?.map((r) => [r.room_id, r.code])), [rooms.data]);
   const options: SectionFormOptions | undefined = useMemo(
     () =>
-      courses.data && allSemesters.data && users.data
-        ? { courses: courses.data, semesters: allSemesters.data, teachers: users.data.filter((u) => u.role === "TEACHER" && u.is_active) }
+      courses.data && allSemesters.data && users.data && rooms.data
+        ? { courses: courses.data, semesters: allSemesters.data, teachers: users.data.filter((u) => u.role === "TEACHER" && u.is_active), rooms: rooms.data }
         : undefined,
-    [courses.data, allSemesters.data, users.data],
+    [courses.data, allSemesters.data, users.data, rooms.data],
   );
   const rows = sections.data ?? [];
   const pagination = useClientPagination(rows);
@@ -48,7 +51,7 @@ export function SectionManagementPage() {
     { header: "Section", cell: (section) => section.section_number },
     { header: "Semester", cell: (section) => semesterById.get(section.semester_id)?.name ?? "…" },
     { header: "Teacher", cell: (section) => (section.teacher_id === null ? "Unassigned" : <span className="break-all">{section.teacher_name ?? userById.get(section.teacher_id)?.email ?? "…"}</span>) },
-    { header: "Meetings", cell: (section) => <MeetingList meetings={section.meetings} /> },
+    { header: "Meetings", cell: (section) => <MeetingList meetings={section.meetings} roomCodeById={roomCodeById} /> },
     { header: "Seats", className: "tabular-nums", cell: (section) => `${section.enrolled_count} / ${section.capacity}` },
     {
       header: "Actions",

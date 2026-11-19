@@ -1,12 +1,12 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models import Course, CourseSection, Registration, SectionMeeting, User
+from app.models import Course, CourseSection, Registration, Room, SectionMeeting, User
 
 
 async def timetable_rows(db: AsyncSession, student_id: int, semester_id: int):
     return await db.execute(
-        select(Registration, CourseSection, Course, SectionMeeting, User.full_name)
+        select(Registration, CourseSection, Course, SectionMeeting, User.full_name, Room.code)
         .join(
             CourseSection,
             Registration.section_id == CourseSection.section_id,
@@ -17,6 +17,7 @@ async def timetable_rows(db: AsyncSession, student_id: int, semester_id: int):
             CourseSection.section_id == SectionMeeting.section_id,
         )
         .outerjoin(User, CourseSection.teacher_id == User.id)
+        .outerjoin(Room, SectionMeeting.room_id == Room.room_id)
         .where(
             Registration.student_id == student_id,
             Registration.semester_id == semester_id,

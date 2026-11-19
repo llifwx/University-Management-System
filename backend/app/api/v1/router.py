@@ -7,6 +7,7 @@ from app.modules.chat.router import router as chat_router
 from app.modules.courses.router import router as courses_router
 from app.modules.grades.router import router as grades_router
 from app.modules.registrations.router import router as registrations_router
+from app.modules.rooms.router import router as rooms_router
 from app.modules.schedules.router import router as schedules_router
 from app.modules.sections.router import router as sections_router
 from app.modules.semesters.router import router as semesters_router
@@ -22,6 +23,7 @@ for module_router in (
     students_router,
     courses_router,
     semesters_router,
+    rooms_router,
     sections_router,
     registrations_router,
     schedules_router,

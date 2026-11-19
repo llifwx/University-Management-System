@@ -9,6 +9,7 @@ class MeetingInput(Input):
     meeting_day: int = Field(ge=0, le=6, description="Monday=0 through Sunday=6")
     start_time: time
     end_time: time
+    room_id: int | None = Field(default=None, gt=0)
 
     @model_validator(mode="after")
     def interval(self):
@@ -24,6 +25,7 @@ class MeetingOut(Output):
     meeting_day: int
     start_time: time
     end_time: time
+    room_id: int | None
 
 
 class SectionCreate(Input):

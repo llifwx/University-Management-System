@@ -9,6 +9,7 @@ import { toast } from "sonner";
 
 import type { Course } from "@/entities/course";
 import { Section, sectionQueries } from "@/entities/course-section";
+import type { Room } from "@/entities/room";
 import type { Semester } from "@/entities/semester";
 import type { User } from "@/entities/user";
 import { applyFieldErrors, getErrorMessage } from "@/shared/api";
@@ -22,15 +23,20 @@ import { NativeSelect } from "@/shared/ui/native-select";
 import { createSection, updateSection } from "../api/section-mutations";
 import { SectionValues, sectionSchema } from "../model/section-schema";
 
-export type SectionFormOptions = { courses: Course[]; semesters: Semester[]; teachers: User[] };
+export type SectionFormOptions = { courses: Course[]; semesters: Semester[]; teachers: User[]; rooms: Room[] };
 
-const MESSAGES = { INTEGRITY_CONFLICT: "This course already has a section with that number in this semester." };
+const MESSAGES = {
+  INTEGRITY_CONFLICT: "This course already has a section with that number in this semester.",
+  ROOM_CONFLICT: "This room is already booked for an overlapping time slot.",
+  INACTIVE_ROOM: "This room is not active.",
+};
 const toId = (value: string) => (value ? Number(value) : NaN);
-const NEW_MEETING = { meeting_day: 0, start_time: "", end_time: "" };
+const toNullableId = (value: string) => (value ? Number(value) : null);
+const NEW_MEETING = { meeting_day: 0, start_time: "", end_time: "", room_id: null };
 
 export function SectionForm({ section, options, onDone }: { section?: Section; options: SectionFormOptions; onDone: () => void }) {
   const queryClient = useQueryClient();
-  const originalMeetings = section?.meetings.map((m) => ({ meeting_day: m.meeting_day, start_time: formatTime(m.start_time), end_time: formatTime(m.end_time) }));
+  const originalMeetings = section?.meetings.map((m) => ({ meeting_day: m.meeting_day, start_time: formatTime(m.start_time), end_time: formatTime(m.end_time), room_id: m.room_id }));
   const {
     register,
     control,
@@ -114,7 +120,7 @@ export function SectionForm({ section, options, onDone }: { section?: Section; o
         {meetings.fields.map((field, index) => {
           const rowErrors = errors.meetings?.[index];
           return (
-            <div key={field.id} className="grid grid-cols-2 items-start gap-2 rounded-md border p-3 sm:grid-cols-[1fr_1fr_1fr_auto]">
+            <div key={field.id} className="grid grid-cols-2 items-start gap-2 rounded-md border p-3 sm:grid-cols-[1fr_1fr_1fr_1fr_auto]">
               <FormField id={`meeting-${index}-day`} label="Day">
                 <NativeSelect id={`meeting-${index}-day`} {...register(`meetings.${index}.meeting_day`, { valueAsNumber: true })}>
                   {WEEKDAYS.map((day, dayIndex) => (
@@ -129,6 +135,19 @@ export function SectionForm({ section, options, onDone }: { section?: Section; o
               </FormField>
               <FormField id={`meeting-${index}-end`} label="End" error={rowErrors?.end_time?.message}>
                 <Input type="time" {...fieldProps(`meeting-${index}-end`, rowErrors?.end_time?.message)} {...register(`meetings.${index}.end_time`)} />
+              </FormField>
+              <FormField id={`meeting-${index}-room`} label="Room" error={rowErrors?.room_id?.message}>
+                <NativeSelect
+                  id={`meeting-${index}-room`}
+                  {...register(`meetings.${index}.room_id`, { setValueAs: toNullableId })}
+                >
+                  <option value="">No room</option>
+                  {options.rooms.map((room) => (
+                    <option key={room.room_id} value={room.room_id}>
+                      {room.code}
+                    </option>
+                  ))}
+                </NativeSelect>
               </FormField>
               <Button type="button" variant="ghost" size="icon" className="self-end" aria-label={`Remove meeting ${index + 1}`} disabled={meetings.fields.length === 1} onClick={() => meetings.remove(index)}>
                 <Trash2 aria-hidden />

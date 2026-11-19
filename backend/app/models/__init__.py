@@ -2,6 +2,7 @@ from app.modules.auth.models import AuthSession, LoginFailure, RefreshToken, Rol
 from app.modules.chat.models import ChatMessage, ChatThread
 from app.modules.courses.models import Course
 from app.modules.registrations.models import Registration
+from app.modules.rooms.models import Room
 from app.modules.sections.models import CourseSection, SectionMeeting
 from app.modules.semesters.models import Semester
 from app.modules.students.models import Student
@@ -15,6 +16,7 @@ __all__ = [
     "Student",
     "Course",
     "Semester",
+    "Room",
     "CourseSection",
     "SectionMeeting",
     "Registration",

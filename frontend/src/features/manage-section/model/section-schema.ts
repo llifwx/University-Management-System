@@ -5,6 +5,7 @@ const meetingSchema = z
     meeting_day: z.number().int().min(0).max(6),
     start_time: z.string().min(1, "Choose a start time."),
     end_time: z.string().min(1, "Choose an end time."),
+    room_id: z.number().int().positive().nullable(),
   })
   // "HH:MM" strings compare chronologically. The backend rejects overnight meetings.
   .refine((m) => !m.start_time || !m.end_time || m.start_time < m.end_time, { path: ["end_time"], message: "The end time must be after the start time." });

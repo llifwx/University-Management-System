@@ -14,5 +14,6 @@ export function scheduleToEvents(entries: ScheduleEntry[]): TimetableEvent[] {
     title: entry.course_title,
     section: entry.section_number,
     instructor: instructorLabel(entry),
+    room: entry.room_code ?? undefined,
   }));
 }

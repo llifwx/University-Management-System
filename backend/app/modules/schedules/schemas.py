@@ -14,6 +14,8 @@ class ScheduleEntry(BaseModel):
     meeting_day: int
     start_time: time
     end_time: time
+    room_id: int | None
+    room_code: str | None = None
 
 
 class ScheduleOut(BaseModel):
