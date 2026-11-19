@@ -107,6 +107,6 @@ describe("SectionForm", () => {
     vi.stubGlobal("fetch", async () => apiError(409, "CAPACITY_BELOW_ENROLLMENT", "Capacity cannot be below enrolled count."));
     renderWithClient(<SectionForm section={SECTION} options={OPTIONS} onDone={() => {}} />);
     await userEvent.click(screen.getByRole("button", { name: "Save changes" }));
-    expect(await screen.findByRole("alert")).toHaveTextContent("Capacity cannot be below enrolled count.");
+    expect(await screen.findByRole("alert")).toHaveTextContent("Capacity cannot be below the enrolled count.");
   });
 });

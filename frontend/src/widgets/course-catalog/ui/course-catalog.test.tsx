@@ -104,7 +104,7 @@ describe("CourseCatalog", () => {
   it("surfaces load failures with a retry", async () => {
     stubApi({ "GET /api/proxy/semesters": SEMESTERS, "GET /api/proxy/courses": () => apiError(503, "DATABASE_UNAVAILABLE", "Database request failed."), "GET /api/proxy/sections": [] });
     renderWithClient(<CourseCatalog />);
-    expect(await screen.findByText("Database request failed.")).toBeInTheDocument();
+    expect(await screen.findByText("Database request failed; retry later.")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Try again" })).toBeInTheDocument();
   });
 });

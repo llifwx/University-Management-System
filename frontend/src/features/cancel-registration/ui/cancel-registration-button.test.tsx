@@ -39,6 +39,6 @@ describe("CancelRegistrationButton", () => {
     renderWithClient(<CancelRegistrationButton registrationId={9} courseLabel="CS101" />);
     const dialog = await openDialog();
     await userEvent.click(dialog.getByRole("button", { name: "Cancel registration" }));
-    expect(await dialog.findByRole("alert")).toHaveTextContent("belongs to another student");
+    expect(await dialog.findByRole("alert")).toHaveTextContent("You don't have permission to do this.");
   });
 });
