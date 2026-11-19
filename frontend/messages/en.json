@@ -70,6 +70,7 @@
     "courseSection": {
       "unassigned": "Unassigned",
       "instructorNumber": "Instructor #{id}",
+      "roomNumber": "Room #{id}",
       "noMeetingsScheduled": "No meetings scheduled"
     },
     "user": {
@@ -131,6 +132,8 @@
     "DUPLICATE_REGISTRATION": "Already enrolled.",
     "SECTION_FULL": "No seats remain in this section.",
     "SCHEDULE_CONFLICT": "The requested section overlaps with an existing class.",
+    "ROOM_CONFLICT": "This room is already booked for an overlapping time slot.",
+    "INACTIVE_ROOM": "This room is not active.",
     "UNSCHEDULED_SECTION": "Section has no meeting schedule.",
     "INVALID_STATUS": "Use the enrollment action to enroll.",
     "NOT_ADMITTED": "Student has not been admitted to this section.",
@@ -259,6 +262,8 @@
         "dayLabel": "Day",
         "startLabel": "Start",
         "endLabel": "End",
+        "roomLabel": "Room",
+        "noRoom": "No room",
         "removeMeeting": "Remove meeting {index}",
         "addMeeting": "Add meeting",
         "saveChanges": "Save changes",
@@ -590,6 +595,7 @@
         "courses": "Courses",
         "sections": "Sections",
         "semesters": "Semesters",
+        "rooms": "Rooms",
         "registrations": "Registrations",
         "staff": "Staff",
         "supportChat": "Support chat"
@@ -657,7 +663,8 @@
       "emptyTitle": "Nothing on the timetable",
       "defaultEmptyMessage": "No classes scheduled for this semester.",
       "when": "When",
-      "instructor": "Instructor"
+      "instructor": "Instructor",
+      "room": "Room"
     }
   },
   "pages": {

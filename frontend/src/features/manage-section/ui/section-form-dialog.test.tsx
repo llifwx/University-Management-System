@@ -17,6 +17,7 @@ const OPTIONS = {
   courses: [{ course_id: 1, course_code: "CS101", course_title: "Programming", description: null, credits: 3, ects: null, created_at: "" }],
   semesters: [{ semester_id: 2, name: "Fall", start_date: "2026-09-01", end_date: "2026-12-20", is_active: true }],
   teachers: [{ id: 7, email: "t@example.edu", role: "TEACHER" as const, is_active: true }],
+  rooms: [{ room_id: 5, code: "R101", building: null, capacity: null, is_active: true }],
 };
 const SECTION = {
   section_id: 3,
@@ -28,17 +29,17 @@ const SECTION = {
   created_at: "",
   enrolled_count: 2,
   remaining_capacity: 8,
-  meetings: [{ id: 1, meeting_day: 0, start_time: "10:00:00", end_time: "11:00:00" }],
+  meetings: [{ id: 1, meeting_day: 0, start_time: "10:00:00", end_time: "11:00:00", room_id: null }],
 };
 
 describe("sectionSchema", () => {
-  const valid = { course_id: 1, semester_id: 2, section_number: "A", capacity: 5, teacher_id: null, meetings: [{ meeting_day: 0, start_time: "10:00", end_time: "11:00" }] };
+  const valid = { course_id: 1, semester_id: 2, section_number: "A", capacity: 5, teacher_id: null, meetings: [{ meeting_day: 0, start_time: "10:00", end_time: "11:00", room_id: null }] };
   it("accepts a valid section", () => {
     expect(sectionSchema.safeParse(valid).success).toBe(true);
   });
   it.each([
-    ["end before start", { meetings: [{ meeting_day: 0, start_time: "11:00", end_time: "10:00" }] }],
-    ["equal times", { meetings: [{ meeting_day: 0, start_time: "10:00", end_time: "10:00" }] }],
+    ["end before start", { meetings: [{ meeting_day: 0, start_time: "11:00", end_time: "10:00", room_id: null }] }],
+    ["equal times", { meetings: [{ meeting_day: 0, start_time: "10:00", end_time: "10:00", room_id: null }] }],
     ["no meetings", { meetings: [] }],
     ["zero capacity", { capacity: 0 }],
   ])("rejects %s", (_, change) => {
@@ -74,8 +75,8 @@ describe("SectionForm", () => {
       capacity: 20,
       teacher_id: 7,
       meetings: [
-        { meeting_day: 0, start_time: "09:00", end_time: "10:30" },
-        { meeting_day: 2, start_time: "09:00", end_time: "10:30" },
+        { meeting_day: 0, start_time: "09:00", end_time: "10:30", room_id: null },
+        { meeting_day: 2, start_time: "09:00", end_time: "10:30", room_id: null },
       ],
     });
   });

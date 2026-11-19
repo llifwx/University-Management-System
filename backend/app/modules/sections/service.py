@@ -6,7 +6,7 @@ from app.common.schemas import Page
 from app.common.service import values
 from app.common.transactions import transact
 from app.core.exceptions import AppError
-from app.models import Course, CourseSection, SectionMeeting, Semester, User
+from app.models import Course, CourseSection, Room, SectionMeeting, Semester, User
 from app.modules.auth.schemas import UserOut
 from app.modules.registrations import repository as registration_repo
 from app.modules.sections import repository as section_repo
@@ -64,7 +64,9 @@ async def get_section(identity: int) -> SectionOut:
     return await transact(operation)
 
 
-async def validate_section(db: AsyncSession, data: dict) -> None:
+async def validate_section(
+    db: AsyncSession, data: dict, *, exclude_section_id: int | None = None
+) -> None:
     await repo.require(db, Course, data["course_id"])
     await repo.require(db, Semester, data["semester_id"])
     if data["teacher_id"] is not None:
@@ -74,6 +76,19 @@ async def validate_section(db: AsyncSession, data: dict) -> None:
     meetings = data["meetings"]
     if any(overlaps(a, b) for i, a in enumerate(meetings) for b in meetings[i + 1 :]):
         raise AppError(400, "INVALID_MEETINGS", "Section meetings overlap each other.")
+    for meeting in meetings:
+        if meeting.room_id is None:
+            continue
+        room = await repo.require(db, Room, meeting.room_id)
+        if not room.is_active:
+            raise AppError(400, "INACTIVE_ROOM", "Room is not active.")
+        booked = await section_repo.room_meetings(
+            db, data["semester_id"], meeting.room_id, exclude_section_id=exclude_section_id
+        )
+        if any(overlaps(meeting, other) for other in booked):
+            raise AppError(
+                409, "ROOM_CONFLICT", "Room is already booked for an overlapping time slot."
+            )
 
 
 async def create_section(payload: SectionCreate) -> SectionOut:
@@ -127,7 +142,7 @@ async def patch_section(identity: int, payload: SectionPatch) -> SectionOut:
                 "meetings",
             )
         }
-        await validate_section(db, merged)
+        await validate_section(db, merged, exclude_section_id=identity)
         if "meetings" in data:
             # Delete first to allow replacement by an identical meeting under the unique key.
             section.meetings.clear()

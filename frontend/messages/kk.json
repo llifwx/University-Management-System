@@ -70,6 +70,7 @@
     "courseSection": {
       "unassigned": "Тағайындалмаған",
       "instructorNumber": "Оқытушы №{id}",
+      "roomNumber": "Бөлме №{id}",
       "noMeetingsScheduled": "Сабақтар жоспарланбаған"
     },
     "user": {
@@ -131,6 +132,8 @@
     "DUPLICATE_REGISTRATION": "Студент бұрыннан тіркелген.",
     "SECTION_FULL": "Бұл секцияда бос орын жоқ.",
     "SCHEDULE_CONFLICT": "Таңдалған секция қолданыстағы сабақпен уақыты бойынша қабаттасады.",
+    "ROOM_CONFLICT": "Бұл бөлме көрсетілген уақыт аралығында бос емес.",
+    "INACTIVE_ROOM": "Бұл бөлме белсенді емес.",
     "UNSCHEDULED_SECTION": "Секцияда сабақ кестесі белгіленбеген.",
     "INVALID_STATUS": "Тіркеу үшін «Тіркеу» әрекетін қолданыңыз.",
     "NOT_ADMITTED": "Студент бұл секцияға жіберілмеген.",
@@ -259,6 +262,8 @@
         "dayLabel": "Күн",
         "startLabel": "Басталуы",
         "endLabel": "Аяқталуы",
+        "roomLabel": "Бөлме",
+        "noRoom": "Бөлмесіз",
         "removeMeeting": "{index}-сабақты өшіру",
         "addMeeting": "Сабақ қосу",
         "saveChanges": "Өзгерістерді сақтау",
@@ -590,6 +595,7 @@
         "courses": "Пәндер",
         "sections": "Секциялар",
         "semesters": "Семестрлер",
+        "rooms": "Бөлмелер",
         "registrations": "Тіркеулер",
         "staff": "Қызметкерлер",
         "supportChat": "Қолдау көрсету чаты"
@@ -657,7 +663,8 @@
       "emptyTitle": "Сабақ кестесінде әзірге ештеңе жоқ",
       "defaultEmptyMessage": "Бұл семестрге жоспарланған сабақтар жоқ.",
       "when": "Уақыты",
-      "instructor": "Оқытушы"
+      "instructor": "Оқытушы",
+      "room": "Бөлме"
     }
   },
   "pages": {

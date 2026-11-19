@@ -14,6 +14,7 @@ const entry = (meeting_day: number, start_time: string): ScheduleEntry => ({
   meeting_day,
   start_time,
   end_time: "23:00:00",
+  room_id: null,
 });
 const TERM = { start_date: "2026-09-01", end_date: "2026-12-20" };
 const WEDNESDAY_NOON = new Date(2026, 10, 4, 12, 0);

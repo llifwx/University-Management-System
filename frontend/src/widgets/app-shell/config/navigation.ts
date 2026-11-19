@@ -1,4 +1,4 @@
-import { Award, BookOpen, CalendarDays, CalendarRange, ClipboardList, FileText, GraduationCap, HelpCircle, Layers, LayoutDashboard, LucideIcon, Shield, User as UserIcon, Users } from "lucide-react";
+import { Award, BookOpen, CalendarDays, CalendarRange, ClipboardList, DoorOpen, FileText, GraduationCap, HelpCircle, Layers, LayoutDashboard, LucideIcon, Shield, User as UserIcon, Users } from "lucide-react";
 
 import type { Role } from "@/entities/user";
 
@@ -30,6 +30,7 @@ export const NAVIGATION: Record<Role, NavItem[]> = {
     { labelKey: "courses", href: "/admin/courses", icon: BookOpen },
     { labelKey: "sections", href: "/admin/sections", icon: Layers },
     { labelKey: "semesters", href: "/admin/semesters", icon: CalendarRange },
+    { labelKey: "rooms", href: "/admin/rooms", icon: DoorOpen },
     { labelKey: "registrations", href: "/admin/registrations", icon: ClipboardList },
     { labelKey: "staff", href: "/admin/staff", icon: Shield },
     { labelKey: "supportChat", href: "/admin/support", icon: HelpCircle },

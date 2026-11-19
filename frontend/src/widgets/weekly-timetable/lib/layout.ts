@@ -10,6 +10,7 @@ export type TimetableEvent = {
   title: string;
   section: string;
   instructor?: string;
+  room?: string;
 };
 
 export type PlacedEvent = { event: TimetableEvent; column: number; columns: number };

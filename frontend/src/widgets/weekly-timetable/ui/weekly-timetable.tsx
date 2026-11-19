@@ -68,7 +68,7 @@ function WeekGrid({ events, onSelect }: { events: TimetableEvent[]; onSelect: (e
                   <span className="block truncate tabular-nums">
                     {formatTime(event.start)}–{formatTime(event.end)}
                   </span>
-                  {blockHeight > 60 && <span className="block truncate opacity-80">{event.title}</span>}
+                  {blockHeight > 60 && <span className="block truncate opacity-80">{event.room ? `${event.title} · ${event.room}` : event.title}</span>}
                 </button>
               );
             })}
@@ -116,6 +116,7 @@ function DayView({ events, onSelect }: { events: TimetableEvent[]; onSelect: (ev
                 <span className="text-muted-foreground block text-xs">
                   {t("section", { number: event.section })}
                   {event.instructor && ` · ${event.instructor}`}
+                  {event.room && ` · ${event.room}`}
                 </span>
               </button>
             </li>
@@ -153,6 +154,12 @@ export function WeeklyTimetable({ events, emptyMessage }: { events: TimetableEve
                   <>
                     <dt className="text-muted-foreground">{t("instructor")}</dt>
                     <dd>{selected.instructor}</dd>
+                  </>
+                )}
+                {selected.room && (
+                  <>
+                    <dt className="text-muted-foreground">{t("room")}</dt>
+                    <dd>{selected.room}</dd>
                   </>
                 )}
               </dl>

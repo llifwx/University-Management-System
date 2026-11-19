@@ -51,6 +51,22 @@ async def enrolled_meetings(db: AsyncSession, student_id: int, semester_id: int)
     ).all()
 
 
+async def room_meetings(
+    db: AsyncSession, semester_id: int, room_id: int, *, exclude_section_id: int | None = None
+):
+    query = (
+        select(SectionMeeting)
+        .join(CourseSection, CourseSection.section_id == SectionMeeting.section_id)
+        .where(
+            CourseSection.semester_id == semester_id,
+            SectionMeeting.room_id == room_id,
+        )
+    )
+    if exclude_section_id is not None:
+        query = query.where(CourseSection.section_id != exclude_section_id)
+    return (await db.scalars(query)).all()
+
+
 async def section_page(db: AsyncSession, offset: int, limit: int, **filters):
     count = (
         select(func.count(Registration.registration_id))

@@ -50,3 +50,6 @@ class SectionMeeting(Base):
     meeting_day: Mapped[int] = mapped_column(SmallInteger)
     start_time: Mapped[time]
     end_time: Mapped[time]
+    room_id: Mapped[int | None] = mapped_column(
+        ForeignKey("rooms.room_id", ondelete="SET NULL"), index=True
+    )

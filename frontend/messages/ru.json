@@ -70,6 +70,7 @@
     "courseSection": {
       "unassigned": "Не назначен",
       "instructorNumber": "Преподаватель №{id}",
+      "roomNumber": "Кабинет №{id}",
       "noMeetingsScheduled": "Занятия не запланированы"
     },
     "user": {
@@ -131,6 +132,8 @@
     "DUPLICATE_REGISTRATION": "Студент уже зачислен.",
     "SECTION_FULL": "В этой секции нет свободных мест.",
     "SCHEDULE_CONFLICT": "Выбранная секция пересекается по времени с уже имеющимся занятием.",
+    "ROOM_CONFLICT": "Этот кабинет уже занят в указанный промежуток времени.",
+    "INACTIVE_ROOM": "Этот кабинет не активен.",
     "UNSCHEDULED_SECTION": "У секции не задано расписание занятий.",
     "INVALID_STATUS": "Для зачисления используйте действие «Зачислить».",
     "NOT_ADMITTED": "Студент не допущен к этой секции.",
@@ -259,6 +262,8 @@
         "dayLabel": "День",
         "startLabel": "Начало",
         "endLabel": "Конец",
+        "roomLabel": "Кабинет",
+        "noRoom": "Без кабинета",
         "removeMeeting": "Удалить занятие {index}",
         "addMeeting": "Добавить занятие",
         "saveChanges": "Сохранить изменения",
@@ -590,6 +595,7 @@
         "courses": "Курсы",
         "sections": "Секции",
         "semesters": "Семестры",
+        "rooms": "Кабинеты",
         "registrations": "Регистрации",
         "staff": "Сотрудники",
         "supportChat": "Чат поддержки"
@@ -657,7 +663,8 @@
       "emptyTitle": "В расписании пока ничего нет",
       "defaultEmptyMessage": "На этот семестр занятия не запланированы.",
       "when": "Когда",
-      "instructor": "Преподаватель"
+      "instructor": "Преподаватель",
+      "room": "Кабинет"
     }
   },
   "pages": {

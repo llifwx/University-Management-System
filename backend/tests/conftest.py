@@ -20,7 +20,15 @@ from app.common import transactions  # noqa: E402
 from app.core.security import hash_password  # noqa: E402
 from app.db import session  # noqa: E402
 from app.main import app  # noqa: E402
-from app.models import Course, CourseSection, SectionMeeting, Semester, Student, User  # noqa: E402
+from app.models import (  # noqa: E402
+    Course,
+    CourseSection,
+    Room,
+    SectionMeeting,
+    Semester,
+    Student,
+    User,
+)
 from app.modules.auth import service as auth_service  # noqa: E402
 from app.modules.auth.schemas import UserOut  # noqa: E402
 
@@ -45,7 +53,8 @@ async def db_factory(monkeypatch):
             text(
                 "TRUNCATE login_failures, refresh_tokens, auth_sessions, "
                 "registrations, section_meetings, "
-                "course_sections, students, courses, semesters, users RESTART IDENTITY CASCADE"
+                "course_sections, students, courses, semesters, rooms, users "
+                "RESTART IDENTITY CASCADE"
             )
         )
     monkeypatch.setattr(transactions, "SessionFactory", factory)
@@ -99,7 +108,8 @@ async def data(db_factory):
             for i in range(2)
         ]
         course = Course(course_code="CS101", course_title="Programming", credits=3)
-        db.add_all([*students, *semesters, course])
+        rooms = [Room(code=f"R{i}", capacity=30) for i in range(2)]
+        db.add_all([*students, *semesters, course, *rooms])
         await db.flush()
 
         async def section(
@@ -141,6 +151,7 @@ async def data(db_factory):
             sections=[s.section_id for s in sections],
             semesters=[s.semester_id for s in semesters],
             course=course.course_id,
+            rooms=[r.room_id for r in rooms],
         )
 
 

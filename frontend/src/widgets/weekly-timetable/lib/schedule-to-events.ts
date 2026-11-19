@@ -17,5 +17,6 @@ export function scheduleToEvents(t: ReturnType<typeof useTranslations>, entries:
     title: entry.course_title,
     section: entry.section_number,
     instructor: instructorLabel(t, entry),
+    room: entry.room_code ?? undefined,
   }));
 }
