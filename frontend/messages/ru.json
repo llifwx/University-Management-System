@@ -8,6 +8,7 @@
       "admin": "Администрирование",
       "transcript": "Транскрипт",
       "login": "Вход",
+      "adminRooms": "Кабинеты",
       "adminSections": "Секции",
       "adminSemesters": "Семестры",
       "studentAttestation": "Аттестация студента",
@@ -246,6 +247,37 @@
       "errors": {
         "duplicateCode": "Курс с таким кодом уже существует."
       }
+    },
+    "manageRoom": {
+      "fields": {
+        "code": "Код кабинета",
+        "building": "Корпус (необязательно)",
+        "capacity": "Вместимость (необязательно)",
+        "active": "Активен"
+      },
+      "validation": {
+        "codeRequired": "Введите код кабинета.",
+        "codeTooLong": "Используйте не более 20 символов.",
+        "buildingTooLong": "Используйте не более 80 символов.",
+        "capacityPositive": "Вместимость должна быть не меньше 1."
+      },
+      "toast": {
+        "updated": "Кабинет обновлён.",
+        "created": "Кабинет создан.",
+        "deleted": "Кабинет удалён."
+      },
+      "errors": {
+        "codeInUse": "Кабинет с таким кодом уже существует."
+      },
+      "availableAriaLabel": "{code} доступен для назначения",
+      "deleteButton": "Удалить",
+      "deleteConfirmTitle": "Удалить {code}?",
+      "deleteConfirmDescription": "Это безвозвратно удалит кабинет. Занятия, назначенные на него, сохранят расписание, но потеряют привязку к кабинету.",
+      "deleteConfirmLabel": "Удалить кабинет",
+      "saveChangesLabel": "Сохранить изменения",
+      "createLabel": "Создать кабинет",
+      "editDialogTitle": "Изменить {code}",
+      "addDialogTitle": "Добавить кабинет"
     },
     "manageSection": {
       "form": {
@@ -753,6 +785,25 @@
           "status": "Статус",
           "actions": "Действия"
         }
+      }
+    },
+    "roomManagement": {
+      "title": "Кабинеты",
+      "description": "Аудитории, доступные для расписания. Неактивный кабинет нельзя назначить на новые занятия.",
+      "addRoom": "Добавить кабинет",
+      "columns": {
+        "code": "Код",
+        "building": "Корпус",
+        "capacity": "Вместимость",
+        "availableForAssignment": "Доступен для назначения",
+        "actions": "Действия"
+      },
+      "edit": "Изменить",
+      "empty": {
+        "title": "Кабинетов пока нет"
+      },
+      "table": {
+        "caption": "Кабинеты"
       }
     },
     "sectionManagement": {

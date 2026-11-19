@@ -1,6 +1,7 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import { Room, roomQueries } from "@/entities/room";
@@ -12,6 +13,7 @@ import { Switch } from "@/shared/ui/switch";
 import { deleteRoom, updateRoom } from "../api/room-mutations";
 
 export function RoomActiveSwitch({ room }: { room: Room }) {
+  const t = useTranslations("features.manageRoom");
   const getMessage = useApiErrorMessage();
   const queryClient = useQueryClient();
   const mutation = useMutation({
@@ -19,16 +21,24 @@ export function RoomActiveSwitch({ room }: { room: Room }) {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: roomQueries.all }),
     onError: (error) => toast.error(getMessage(error)),
   });
-  return <Switch checked={room.is_active} disabled={mutation.isPending} onCheckedChange={(checked) => mutation.mutate(checked)} aria-label={`${room.code} available for assignment`} />;
+  return (
+    <Switch
+      checked={room.is_active}
+      disabled={mutation.isPending}
+      onCheckedChange={(checked) => mutation.mutate(checked)}
+      aria-label={t("availableAriaLabel", { code: room.code })}
+    />
+  );
 }
 
 export function DeleteRoomButton({ room }: { room: Room }) {
+  const t = useTranslations("features.manageRoom");
   const getMessage = useApiErrorMessage();
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: () => deleteRoom(room.room_id),
     onSuccess: async () => {
-      toast.success("Room deleted.");
+      toast.success(t("toast.deleted"));
       await queryClient.invalidateQueries({ queryKey: roomQueries.all });
     },
   });
@@ -36,12 +46,12 @@ export function DeleteRoomButton({ room }: { room: Room }) {
     <ConfirmDialog
       trigger={
         <Button variant="ghost" size="sm">
-          Delete
+          {t("deleteButton")}
         </Button>
       }
-      title={`Delete ${room.code}?`}
-      description="This permanently removes the room. Meetings assigned to it keep their schedule but lose their room."
-      confirmLabel="Delete room"
+      title={t("deleteConfirmTitle", { code: room.code })}
+      description={t("deleteConfirmDescription")}
+      confirmLabel={t("deleteConfirmLabel")}
       isPending={mutation.isPending}
       error={mutation.isError ? getMessage(mutation.error) : undefined}
       onConfirm={(close) => mutation.mutate(undefined, { onSuccess: close })}
