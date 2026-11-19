@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { ReactNode } from "react";
 
 import { cn } from "@/shared/lib/utils";
@@ -45,18 +46,19 @@ export function DataTable<T>({ columns, rows, rowKey, caption }: { columns: Colu
 }
 
 export function PaginationControls({ page, pageCount, total, onPageChange }: { page: number; pageCount: number; total: number; onPageChange: (page: number) => void }) {
+  const t = useTranslations("common");
   if (pageCount <= 1) return null;
   return (
     <nav aria-label="Pagination" className="mt-4 flex items-center justify-between gap-3 text-sm">
       <span className="text-muted-foreground" aria-live="polite">
-        Page {page} of {pageCount} · {total} results
+        {t("pageOfResults", { page, pageCount, total })}
       </span>
       <div className="flex gap-2">
         <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => onPageChange(page - 1)}>
-          Previous
+          {t("previous")}
         </Button>
         <Button variant="outline" size="sm" disabled={page >= pageCount} onClick={() => onPageChange(page + 1)}>
-          Next
+          {t("next")}
         </Button>
       </div>
     </nav>

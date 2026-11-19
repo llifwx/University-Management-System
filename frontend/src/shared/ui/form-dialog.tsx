@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { ReactNode, useState } from "react";
 
 import { Button } from "./button";
@@ -24,10 +25,11 @@ export function FormDialog({ trigger, title, description, children }: { trigger:
 }
 
 export function FormSubmit({ isPending, label }: { isPending: boolean; label: string }) {
+  const t = useTranslations("common");
   return (
     <DialogFooter>
       <Button type="submit" disabled={isPending}>
-        {isPending ? "Saving…" : label}
+        {isPending ? t("saving") : label}
       </Button>
     </DialogFooter>
   );

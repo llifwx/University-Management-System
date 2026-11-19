@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
 
 import { roleHome } from "@/entities/user";
 import { getServerSession } from "@/entities/user/server";
 import { LoginPage } from "@/pages/login";
 
-export const metadata: Metadata = { title: "Sign in" };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("app.titles");
+  return { title: t("login") };
+}
 
 export default async function Page({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const { next, expired, error } = await searchParams;

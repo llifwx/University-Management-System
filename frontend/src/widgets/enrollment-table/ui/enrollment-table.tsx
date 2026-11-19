@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { ClipboardList } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
@@ -11,6 +12,7 @@ import { MeetingList, sectionQueries } from "@/entities/course-section";
 import { REGISTRATION_STATUSES, Registration, RegistrationStatusBadge, registrationQueries } from "@/entities/registration";
 import { CancelRegistrationButton } from "@/features/cancel-registration";
 import { SemesterSelect, useSemesterParam } from "@/features/select-semester";
+import { useDateFnsLocale } from "@/shared/i18n";
 import { Button } from "@/shared/ui/button";
 import { Column, DataTable } from "@/shared/ui/data-table";
 import { Label } from "@/shared/ui/label";
@@ -18,6 +20,8 @@ import { NativeSelect } from "@/shared/ui/native-select";
 import { EmptyState, QueryState } from "@/shared/ui/states";
 
 export function EnrollmentTable() {
+  const t = useTranslations("widgets.enrollmentTable");
+  const dateFnsLocale = useDateFnsLocale();
   const [status, setStatus] = useState("");
   const { semesters, semesterId, setSemesterId } = useSemesterParam({ defaultToAll: true });
   const registrations = useQuery(registrationQueries.mine(semesterId));
@@ -35,7 +39,7 @@ export function EnrollmentTable() {
 
   const columns: Column<Registration>[] = [
     {
-      header: "Course",
+      header: t("columns.course"),
       cell: (row) => {
         const course = courseOf(row);
         return course ? (
@@ -47,16 +51,16 @@ export function EnrollmentTable() {
         );
       },
     },
-    { header: "Section", cell: (row) => sectionById.get(row.section_id)?.section_number ?? "…" },
-    { header: "Semester", cell: (row) => semesterById.get(row.semester_id)?.name ?? "…" },
-    { header: "Weekly meetings", cell: (row) => <MeetingList meetings={sectionById.get(row.section_id)?.meetings ?? []} /> },
-    { header: "Status", cell: (row) => <RegistrationStatusBadge status={row.status} /> },
-    { header: "Registered", cell: (row) => format(new Date(row.registered_at), "MMM d, yyyy") },
+    { header: t("columns.section"), cell: (row) => sectionById.get(row.section_id)?.section_number ?? "…" },
+    { header: t("columns.semester"), cell: (row) => semesterById.get(row.semester_id)?.name ?? "…" },
+    { header: t("columns.weeklyMeetings"), cell: (row) => <MeetingList meetings={sectionById.get(row.section_id)?.meetings ?? []} /> },
+    { header: t("columns.status"), cell: (row) => <RegistrationStatusBadge status={row.status} /> },
+    { header: t("columns.registered"), cell: (row) => format(new Date(row.registered_at), "MMM d, yyyy", { locale: dateFnsLocale }) },
     {
-      header: "Actions",
+      header: t("columns.actions"),
       cell: (row) =>
         row.status === "Enrolled" || row.status === "Pending" ? (
-          <CancelRegistrationButton registrationId={row.registration_id} courseLabel={courseOf(row)?.course_code ?? "this section"} />
+          <CancelRegistrationButton registrationId={row.registration_id} courseLabel={courseOf(row)?.course_code ?? t("thisSectionFallback")} />
         ) : null,
     },
   ];
@@ -66,9 +70,9 @@ export function EnrollmentTable() {
       <div className="flex flex-wrap items-end gap-4">
         <SemesterSelect semesters={semesters} value={semesterId} onChange={setSemesterId} allowAll />
         <div className="space-y-1.5">
-          <Label htmlFor="status-filter">Status</Label>
+          <Label htmlFor="status-filter">{t("columns.status")}</Label>
           <NativeSelect id="status-filter" className="sm:w-40" value={status} onChange={(event) => setStatus(event.target.value)}>
-            <option value="">All statuses</option>
+            <option value="">{t("allStatuses")}</option>
             {REGISTRATION_STATUSES.map((value) => (
               <option key={value}>{value}</option>
             ))}
@@ -82,17 +86,17 @@ export function EnrollmentTable() {
             return (
               <EmptyState
                 icon={ClipboardList}
-                title="No registrations found"
-                description="Browse the catalog to register for a section."
+                title={t("emptyTitle")}
+                description={t("emptyDescription")}
                 action={
                   <Button asChild size="sm" className="mt-2">
-                    <Link href="/courses">Open catalog</Link>
+                    <Link href="/courses">{t("openCatalog")}</Link>
                   </Button>
                 }
               />
             );
           }
-          return <DataTable caption="Your course registrations" columns={columns} rows={rows} rowKey={(row) => row.registration_id} />;
+          return <DataTable caption={t("caption")} columns={columns} rows={rows} rowKey={(row) => row.registration_id} />;
         }}
       </QueryState>
     </div>

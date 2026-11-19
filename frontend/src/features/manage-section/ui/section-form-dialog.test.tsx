@@ -2,11 +2,16 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
+import { createTranslator } from "use-intl";
+
+import messages from "../../../../messages/en.json";
 import { apiError, json, renderWithClient } from "../../../../tests/utils";
 
-import { sectionSchema } from "../model/section-schema";
+import { buildSectionSchema } from "../model/section-schema";
 
 import { SectionForm } from "./section-form-dialog";
+
+const sectionSchema = buildSectionSchema(createTranslator({ locale: "en", messages, namespace: "features.manageSection" }) as Parameters<typeof buildSectionSchema>[0]);
 
 const OPTIONS = {
   courses: [{ course_id: 1, course_code: "CS101", course_title: "Programming", description: null, credits: 3, ects: null, created_at: "" }],
@@ -103,6 +108,6 @@ describe("SectionForm", () => {
     vi.stubGlobal("fetch", async () => apiError(409, "CAPACITY_BELOW_ENROLLMENT", "Capacity cannot be below enrolled count."));
     renderWithClient(<SectionForm section={SECTION} options={OPTIONS} onDone={() => {}} />);
     await userEvent.click(screen.getByRole("button", { name: "Save changes" }));
-    expect(await screen.findByRole("alert")).toHaveTextContent("Capacity cannot be below enrolled count.");
+    expect(await screen.findByRole("alert")).toHaveTextContent("Capacity cannot be below the enrolled count.");
   });
 });

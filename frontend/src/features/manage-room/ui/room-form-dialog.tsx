@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import { Room, roomQueries } from "@/entities/room";
-import { applyFieldErrors, getErrorMessage } from "@/shared/api";
+import { applyFieldErrors, useApiErrorMessage } from "@/shared/api";
 import { FormDialog, FormSubmit } from "@/shared/ui/form-dialog";
 import { FormError, FormField, fieldProps } from "@/shared/ui/form-field";
 import { Input } from "@/shared/ui/input";
@@ -32,9 +32,8 @@ type Input = z.input<typeof roomSchema>;
 type Output = z.output<typeof roomSchema>;
 const EMPTY: Input = { code: "", building: "", capacity: "", is_active: true };
 
-const MESSAGES = { INTEGRITY_CONFLICT: "A room with this code already exists." };
-
 export function RoomForm({ room, onDone }: { room?: Room; onDone: () => void }) {
+  const getMessage = useApiErrorMessage();
   const queryClient = useQueryClient();
   const {
     register,
@@ -72,7 +71,7 @@ export function RoomForm({ room, onDone }: { room?: Room; onDone: () => void }) 
         <input type="checkbox" className="size-4" {...register("is_active")} />
         Active
       </label>
-      {mutation.isError && <FormError message={getErrorMessage(mutation.error, MESSAGES)} />}
+      {mutation.isError && <FormError message={getMessage(mutation.error, { INTEGRITY_CONFLICT: "A room with this code already exists." })} />}
       <FormSubmit isPending={mutation.isPending} label={room ? "Save changes" : "Create room"} />
     </form>
   );

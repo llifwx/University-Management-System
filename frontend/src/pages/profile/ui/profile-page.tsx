@@ -1,9 +1,10 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 
 import { Student, studentQueries } from "@/entities/student";
-import { ROLE_LABELS, useSessionUser } from "@/entities/user";
+import { roleLabels, useSessionUser } from "@/entities/user";
 import { ChangePasswordForm } from "@/features/change-password";
 import { AvatarUpload, ContactDetailsForm } from "@/features/edit-profile";
 import { LogoutEverywhereButton } from "@/features/logout";
@@ -13,17 +14,11 @@ import { Input } from "@/shared/ui/input";
 import { PageHeader } from "@/shared/ui/page-header";
 import { QueryState } from "@/shared/ui/states";
 
-const GENDER_LABELS: Record<string, string> = { MALE: "Male", FEMALE: "Female" };
-const MARITAL_STATUS_LABELS: Record<string, string> = {
-  SINGLE: "Single",
-  MARRIED: "Married",
-  DIVORCED: "Divorced",
-  WIDOWED: "Widowed",
-};
+type ProfileTranslator = ReturnType<typeof useTranslations<"pages.profile">>;
 
-function yesNo(value: boolean | null | undefined): string {
-  if (value === null || value === undefined) return "Not set";
-  return value ? "Yes" : "No";
+function yesNo(t: ProfileTranslator, value: boolean | null | undefined): string {
+  if (value === null || value === undefined) return t("notSet");
+  return value ? t("yes") : t("no");
 }
 
 function ReadOnlyField({ id, label, value }: { id: string; label: string; value: string | number }) {
@@ -47,12 +42,12 @@ function Fields({ rows }: { rows: [string, string | number][] }) {
   );
 }
 
-function Details({ rows }: { rows: [string, string | number][] }) {
+function Details({ rows, t }: { rows: [string, string | number][]; t: ProfileTranslator }) {
   return (
     <Card className="shadow-sm">
       <CardHeader>
-        <CardTitle>Account</CardTitle>
-        <CardDescription>To change these details, contact a university administrator.</CardDescription>
+        <CardTitle>{t("account.title")}</CardTitle>
+        <CardDescription>{t("account.description")}</CardDescription>
       </CardHeader>
       <CardContent>
         <Fields rows={rows} />
@@ -62,48 +57,57 @@ function Details({ rows }: { rows: [string, string | number][] }) {
 }
 
 function PersonalInformationCard({ student }: { student: Student }) {
+  const t = useTranslations("pages.profile");
+  const genderLabels: Record<string, string> = { MALE: t("genders.male"), FEMALE: t("genders.female") };
+  const maritalStatusLabels: Record<string, string> = {
+    SINGLE: t("maritalStatuses.single"),
+    MARRIED: t("maritalStatuses.married"),
+    DIVORCED: t("maritalStatuses.divorced"),
+    WIDOWED: t("maritalStatuses.widowed"),
+  };
   return (
     <Card className="shadow-sm">
       <CardHeader>
-        <CardTitle className="text-base">Personal information</CardTitle>
-        <CardDescription>Set by a university administrator.</CardDescription>
+        <CardTitle className="text-base">{t("personal.title")}</CardTitle>
+        <CardDescription>{t("personal.description")}</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4 sm:grid-cols-2">
-        <ReadOnlyField id="last_name" label="Last name" value={student.last_name} />
-        <ReadOnlyField id="first_name" label="First name" value={student.first_name} />
-        <ReadOnlyField id="patronymic" label="Patronymic" value={student.patronymic ?? "Not set"} />
-        <ReadOnlyField id="birth_date" label="Date of birth" value={student.birth_date ?? "Not set"} />
-        <ReadOnlyField id="gender" label="Gender" value={student.gender ? GENDER_LABELS[student.gender] : "Not set"} />
+        <ReadOnlyField id="last_name" label={t("personal.lastName")} value={student.last_name} />
+        <ReadOnlyField id="first_name" label={t("personal.firstName")} value={student.first_name} />
+        <ReadOnlyField id="patronymic" label={t("personal.patronymic")} value={student.patronymic ?? t("notSet")} />
+        <ReadOnlyField id="birth_date" label={t("personal.birthDate")} value={student.birth_date ?? t("notSet")} />
+        <ReadOnlyField id="gender" label={t("personal.gender")} value={student.gender ? genderLabels[student.gender] : t("notSet")} />
         <ReadOnlyField
           id="marital_status"
-          label="Marital status"
-          value={student.marital_status ? MARITAL_STATUS_LABELS[student.marital_status] : "Not set"}
+          label={t("personal.maritalStatus")}
+          value={student.marital_status ? maritalStatusLabels[student.marital_status] : t("notSet")}
         />
-        <ReadOnlyField id="nationality" label="Nationality" value={student.nationality ?? "Not set"} />
-        <ReadOnlyField id="citizenship" label="Citizenship" value={student.citizenship ?? "Not set"} />
-        <ReadOnlyField id="is_resident" label="Resident" value={yesNo(student.is_resident)} />
+        <ReadOnlyField id="nationality" label={t("personal.nationality")} value={student.nationality ?? t("notSet")} />
+        <ReadOnlyField id="citizenship" label={t("personal.citizenship")} value={student.citizenship ?? t("notSet")} />
+        <ReadOnlyField id="is_resident" label={t("personal.resident")} value={yesNo(t, student.is_resident)} />
       </CardContent>
     </Card>
   );
 }
 
 function AcademicRecordCard({ student }: { student: Student }) {
+  const t = useTranslations("pages.profile");
   return (
     <Card className="shadow-sm">
       <CardHeader>
-        <CardTitle className="text-base">Academic record</CardTitle>
-        <CardDescription>Set by a university administrator.</CardDescription>
+        <CardTitle className="text-base">{t("academic.title")}</CardTitle>
+        <CardDescription>{t("academic.description")}</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4 sm:grid-cols-2">
-        <ReadOnlyField id="student_id" label="Student ID" value={student.student_number} />
-        <ReadOnlyField id="role" label="Role" value={ROLE_LABELS.STUDENT} />
-        <ReadOnlyField id="program" label="Academic program" value={student.program ?? "Not set"} />
-        <ReadOnlyField id="year_level" label="Year level" value={student.year_level} />
-        <ReadOnlyField id="admission_year" label="Admission year" value={student.admission_year ?? "Not set"} />
-        <ReadOnlyField id="study_form" label="Study form" value={student.study_form ?? "Not set"} />
-        <ReadOnlyField id="advisor" label="Advisor" value={student.advisor ?? "Not set"} />
-        <ReadOnlyField id="needs_dormitory" label="Needs dormitory" value={yesNo(student.needs_dormitory)} />
-        <ReadOnlyField id="winter_admission" label="Winter admission" value={yesNo(student.winter_admission)} />
+        <ReadOnlyField id="student_id" label={t("academic.studentId")} value={student.student_number} />
+        <ReadOnlyField id="role" label={t("academic.role")} value={roleLabels(t)["STUDENT"]} />
+        <ReadOnlyField id="program" label={t("academic.program")} value={student.program ?? t("notSet")} />
+        <ReadOnlyField id="year_level" label={t("academic.yearLevel")} value={student.year_level} />
+        <ReadOnlyField id="admission_year" label={t("academic.admissionYear")} value={student.admission_year ?? t("notSet")} />
+        <ReadOnlyField id="study_form" label={t("academic.studyForm")} value={student.study_form ?? t("notSet")} />
+        <ReadOnlyField id="advisor" label={t("academic.advisor")} value={student.advisor ?? t("notSet")} />
+        <ReadOnlyField id="needs_dormitory" label={t("academic.needsDormitory")} value={yesNo(t, student.needs_dormitory)} />
+        <ReadOnlyField id="winter_admission" label={t("academic.winterAdmission")} value={yesNo(t, student.winter_admission)} />
       </CardContent>
     </Card>
   );
@@ -134,31 +138,33 @@ function StudentProfile() {
 }
 
 export function ProfilePage() {
+  const t = useTranslations("pages.profile");
   const user = useSessionUser();
   return (
     <>
-      <PageHeader title="Profile" description="Your account details and sign-in security." />
+      <PageHeader title={t("title")} description={t("description")} />
       <div className="grid max-w-6xl items-start gap-6 lg:grid-cols-2">
         <div className="grid gap-6">
           {user.role === "STUDENT" ? (
             <StudentProfile />
           ) : (
             <Details
+              t={t}
               rows={[
-                ["Full name", user.full_name ?? "Not set"],
-                ["Role", ROLE_LABELS[user.role]],
-                ["Title", user.title ?? "Not set"],
-                ["Department", user.department ?? "Not set"],
-                ["Email", user.email],
-                ["Phone", user.phone ?? "Not set"],
-                ["Office", user.office ?? "Not set"],
+                [t("fields.fullName"), user.full_name ?? t("notSet")],
+                [t("fields.role"), roleLabels(t)[user.role]],
+                [t("fields.title"), user.title ?? t("notSet")],
+                [t("fields.department"), user.department ?? t("notSet")],
+                [t("fields.email"), user.email],
+                [t("fields.phone"), user.phone ?? t("notSet")],
+                [t("fields.office"), user.office ?? t("notSet")],
               ]}
             />
           )}
           <Card className="shadow-sm">
             <CardHeader>
-              <CardTitle>Sessions</CardTitle>
-              <CardDescription>Lost a device or signed in on a shared computer? End every session at once, including this one.</CardDescription>
+              <CardTitle>{t("sessions.title")}</CardTitle>
+              <CardDescription>{t("sessions.description")}</CardDescription>
             </CardHeader>
             <CardContent>
               <LogoutEverywhereButton />
@@ -167,8 +173,8 @@ export function ProfilePage() {
         </div>
         <Card className="shadow-sm">
           <CardHeader>
-            <CardTitle>Password</CardTitle>
-            <CardDescription>Changing it keeps you signed in here and signs out your other devices.</CardDescription>
+            <CardTitle>{t("password.title")}</CardTitle>
+            <CardDescription>{t("password.description")}</CardDescription>
           </CardHeader>
           <CardContent>
             <ChangePasswordForm />
