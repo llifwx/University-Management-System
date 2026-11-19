@@ -1,0 +1,1058 @@
+{
+  "app": {
+    "root": {
+      "title": "Система управления университетом",
+      "description": "Регистрация на курсы, расписание и администрирование учебного процесса."
+    },
+    "titles": {
+      "admin": "Администрирование",
+      "transcript": "Транскрипт",
+      "login": "Вход",
+      "adminSections": "Секции",
+      "adminSemesters": "Семестры",
+      "studentAttestation": "Аттестация студента",
+      "sectionGrades": "Оценки секции",
+      "adminStaff": "Сотрудники",
+      "schedule": "Расписание",
+      "adminStudents": "Студенты",
+      "studentTranscript": "Транскрипт студента",
+      "courseDetails": "Информация о курсе",
+      "adminRegistrations": "Регистрации",
+      "adminSupport": "Чат поддержки",
+      "adminCourses": "Курсы",
+      "profile": "Профиль",
+      "courseCatalog": "Каталог курсов",
+      "dashboard": "Главная",
+      "myCourses": "Мои курсы",
+      "attestation": "Аттестация",
+      "teacherSchedule": "Расписание занятий",
+      "teacherDashboard": "Панель преподавателя",
+      "sectionDetails": "Информация о секции",
+      "notFoundTitle": "Страница не найдена"
+    },
+    "notFound": {
+      "heading": "404: Страница не найдена",
+      "description": "Эта страница не существует или была перемещена.",
+      "action": "Перейти на главную"
+    },
+    "error": {
+      "heading": "Что-то пошло не так",
+      "description": "Сервис университета может быть временно недоступен. Попробуйте ещё раз."
+    },
+    "dashboardError": {
+      "heading": "Не удалось загрузить страницу",
+      "description": "Попробуйте ещё раз. Если ошибка повторяется, сервис университета может быть недоступен."
+    }
+  },
+  "entities": {
+    "registration": {
+      "errors": {
+        "scheduleConflict": "Эта секция пересекается по времени с уже имеющимся у вас занятием.",
+        "duplicateRegistration": "Вы уже зачислены в эту секцию.",
+        "sectionFull": "В этой секции нет свободных мест.",
+        "registrationClosed": "Регистрация на этот семестр закрыта.",
+        "semesterMismatch": "Эта секция относится к другому семестру.",
+        "inactiveStudent": "Аккаунт этого студента неактивен.",
+        "unscheduledSection": "У этой секции пока нет расписания занятий, поэтому записаться нельзя.",
+        "adminScheduleConflict": "Эта секция пересекается по времени с уже имеющимся занятием в расписании студента.",
+        "adminDuplicateRegistration": "Этот студент уже зачислен в эту секцию."
+      },
+      "status": {
+        "enrolled": "Зачислен",
+        "pending": "На рассмотрении",
+        "rejected": "Отклонено",
+        "cancelled": "Отменено"
+      }
+    },
+    "chat": {
+      "attachment": "Вложение"
+    },
+    "courseSection": {
+      "unassigned": "Не назначен",
+      "instructorNumber": "Преподаватель №{id}",
+      "noMeetingsScheduled": "Занятия не запланированы"
+    },
+    "user": {
+      "role": {
+        "student": "Студент",
+        "teacher": "Преподаватель",
+        "admin": "Администратор"
+      }
+    }
+  },
+  "common": {
+    "language": "Язык",
+    "close": "Закрыть",
+    "cancel": "Отмена",
+    "working": "Выполняется…",
+    "saving": "Сохранение…",
+    "loading": "Загрузка",
+    "previous": "Назад",
+    "next": "Далее",
+    "pageOfResults": "Страница {page} из {pageCount} · всего: {total}",
+    "tryAgain": "Повторить",
+    "skipToContent": "Перейти к содержимому",
+    "networkError": "Не удалось связаться с сервером. Проверьте соединение и попробуйте снова."
+  },
+  "errors": {
+    "INTERNAL_ERROR": "Произошла непредвиденная ошибка сервера.",
+    "VALIDATION_ERROR": "Ошибка проверки запроса.",
+    "HTTP_ERROR": "Не удалось выполнить запрос.",
+    "INTEGRITY_CONFLICT": "Изменение нарушает ограничение целостности данных.",
+    "DATABASE_UNAVAILABLE": "Запрос к базе данных не выполнен; повторите попытку позже.",
+    "UNKNOWN_ERROR": "Что-то пошло не так.",
+    "FORBIDDEN": "У вас нет прав для этого действия.",
+    "NOT_FOUND": "Не найдено.",
+    "NULL_NOT_ALLOWED": "Не заполнено обязательное поле.",
+    "TRANSACTION_RETRY": "Параллельное изменение; повторите запрос.",
+    "INVALID_TOKEN": "Недействительный или истёкший токен.",
+    "INVALID_CREDENTIALS": "Неверные учётные данные или сессия отозвана.",
+    "INVALID_CURRENT_PASSWORD": "Текущий пароль указан неверно.",
+    "USE_STUDENTS_ENDPOINT": "Создавайте и управляйте студентами через страницу студентов.",
+    "SELF_DEACTIVATION": "Нельзя деактивировать текущего администратора.",
+    "TOO_MANY_ATTEMPTS": "Слишком много неудачных попыток входа. Повторите через 15 минут.",
+    "ADMIN_HAS_NO_THREAD": "Администраторы отвечают в рамках существующего обращения.",
+    "UNSUPPORTED_MEDIA_TYPE": "Этот тип файла не поддерживается.",
+    "EMPTY_FILE": "Загруженный файл пуст.",
+    "FILE_TOO_LARGE": "Файл слишком большой.",
+    "EMPTY_MESSAGE": "Напишите сообщение или прикрепите файл.",
+    "ATTACHMENT_NOT_FOUND": "У этого сообщения нет вложения.",
+    "INVALID_TEACHER": "Назначенный пользователь должен быть активным преподавателем.",
+    "INVALID_MEETINGS": "Время занятий секции пересекается.",
+    "SECTION_HAS_HISTORY": "Нельзя перенести секцию с историей регистраций.",
+    "CAPACITY_BELOW_ENROLLMENT": "Вместимость не может быть меньше числа зачисленных студентов.",
+    "SECTION_HAS_ENROLLMENTS": "Перед изменением времени занятий отмените существующие зачисления.",
+    "INVALID_INTERVAL": "Дата начала должна предшествовать дате окончания.",
+    "PHOTO_NOT_FOUND": "У этого студента нет фотографии.",
+    "STUDENT_NOT_FOUND": "Профиль студента не найден.",
+    "INACTIVE_STUDENT": "Аккаунт студента неактивен.",
+    "SEMESTER_MISMATCH": "Секция относится к другому семестру.",
+    "REGISTRATION_CLOSED": "Регистрация на семестр закрыта.",
+    "DUPLICATE_REGISTRATION": "Студент уже зачислен.",
+    "SECTION_FULL": "В этой секции нет свободных мест.",
+    "SCHEDULE_CONFLICT": "Выбранная секция пересекается по времени с уже имеющимся занятием.",
+    "UNSCHEDULED_SECTION": "У секции не задано расписание занятий.",
+    "INVALID_STATUS": "Для зачисления используйте действие «Зачислить».",
+    "NOT_ADMITTED": "Студент не допущен к этой секции.",
+    "NOT_ENROLLED": "Не зачислен в эту секцию.",
+    "GRADING_CLOSED": "Семестр завершён; для изменения оценок обратитесь к администратору."
+  },
+  "features": {
+    "authByEmail": {
+      "form": {
+        "emailLabel": "Email",
+        "passwordLabel": "Пароль",
+        "showPassword": "Показать пароль",
+        "hidePassword": "Скрыть пароль",
+        "signingIn": "Выполняется вход…",
+        "signIn": "Войти"
+      },
+      "validation": {
+        "emailInvalid": "Введите корректный адрес электронной почты.",
+        "passwordRequired": "Введите пароль."
+      },
+      "errors": {
+        "invalidCredentials": "Неверный email или пароль, либо учётная запись отключена."
+      }
+    },
+    "cancelRegistration": {
+      "button": {
+        "label": "Отменить регистрацию"
+      },
+      "dialog": {
+        "title": "Отменить эту регистрацию?",
+        "description": "Вы покинете курс «{courseLabel}», и ваше место будет освобождено. Повторно зарегистрироваться можно будет позже, если останутся свободные места.",
+        "confirmLabel": "Отменить регистрацию",
+        "cancelLabel": "Сохранить регистрацию"
+      },
+      "toast": {
+        "success": "Регистрация отменена."
+      }
+    },
+    "editProfile": {
+      "avatarUpload": {
+        "changePhoto": "Изменить фото",
+        "save": "Сохранить",
+        "saving": "Сохранение…",
+        "cancel": "Отмена",
+        "toast": {
+          "success": "Фото обновлено."
+        },
+        "errors": {
+          "unsupportedMediaType": "Загрузите изображение в формате JPEG, PNG или WebP.",
+          "fileTooLarge": "Размер фото не должен превышать 5 МБ."
+        }
+      },
+      "contactForm": {
+        "title": "Контактные данные",
+        "description": "Единственные данные, которые вы можете изменить самостоятельно. Остальное — только через администратора университета.",
+        "loginEmailLabel": "Email для входа",
+        "personalEmailLabel": "Личный email",
+        "phoneNumberLabel": "Номер телефона",
+        "save": "Сохранить",
+        "saving": "Сохранение…",
+        "toast": {
+          "success": "Контактные данные обновлены."
+        },
+        "validation": {
+          "phoneMax": "Не более 20 символов.",
+          "phoneFormat": "Используйте 6–20 цифр, пробелы, +, - или скобки.",
+          "emailInvalid": "Введите корректный адрес электронной почты."
+        }
+      }
+    },
+    "manageCourse": {
+      "form": {
+        "codeLabel": "Код курса",
+        "titleLabel": "Название",
+        "creditsLabel": "Кредиты",
+        "ectsLabel": "ECTS (необязательно)",
+        "descriptionLabel": "Описание (необязательно)",
+        "saveChanges": "Сохранить изменения",
+        "createCourse": "Создать курс"
+      },
+      "dialog": {
+        "editTitle": "Редактировать {code}",
+        "addTitle": "Добавить курс"
+      },
+      "delete": {
+        "button": "Удалить",
+        "title": "Удалить {code}?",
+        "description": "Это необратимо удалит курс. Удаление будет отклонено, пока на курс ссылаются секции.",
+        "confirmLabel": "Удалить курс",
+        "errors": {
+          "integrityConflict": "У этого курса ещё есть секции, поэтому его нельзя удалить."
+        }
+      },
+      "toast": {
+        "updated": "Курс обновлён.",
+        "created": "Курс создан.",
+        "deleted": "Курс удалён."
+      },
+      "validation": {
+        "codeRequired": "Введите код курса.",
+        "codeMax": "Не более 30 символов.",
+        "titleRequired": "Введите название.",
+        "titleMax": "Не более 200 символов.",
+        "creditsRequired": "Введите количество кредитов.",
+        "creditsInt": "Введите целое число.",
+        "creditsRange": "Кредиты должны быть от 1 до 30.",
+        "ectsInt": "Введите целое число.",
+        "ectsRange": "ECTS должно быть от 1 до 60."
+      },
+      "errors": {
+        "duplicateCode": "Курс с таким кодом уже существует."
+      }
+    },
+    "manageSection": {
+      "form": {
+        "courseLabel": "Курс",
+        "chooseCourse": "Выберите курс",
+        "semesterLabel": "Семестр",
+        "chooseSemester": "Выберите семестр",
+        "sectionNumberLabel": "Номер секции",
+        "capacityLabel": "Вместимость",
+        "teacherLabel": "Преподаватель",
+        "unassigned": "Не назначен",
+        "meetingsLegend": "Еженедельные занятия",
+        "meetingsLockedHint": "Студенты уже зачислены, поэтому система не позволяет изменить расписание занятий.",
+        "dayLabel": "День",
+        "startLabel": "Начало",
+        "endLabel": "Конец",
+        "removeMeeting": "Удалить занятие {index}",
+        "addMeeting": "Добавить занятие",
+        "saveChanges": "Сохранить изменения",
+        "createSection": "Создать секцию"
+      },
+      "dialog": {
+        "editTitle": "Редактировать секцию {number}",
+        "addTitle": "Добавить секцию"
+      },
+      "delete": {
+        "button": "Удалить",
+        "title": "Удалить секцию {number}?",
+        "description": "Это необратимо удалит секцию и её занятия. Удаление будет отклонено, пока на секцию ссылаются регистрации.",
+        "confirmLabel": "Удалить секцию",
+        "errors": {
+          "integrityConflict": "У этой секции есть история регистраций, поэтому её нельзя удалить."
+        }
+      },
+      "toast": {
+        "updated": "Секция обновлена.",
+        "created": "Секция создана.",
+        "deleted": "Секция удалена."
+      },
+      "errors": {
+        "duplicateNumber": "В этом курсе уже есть секция с таким номером в этом семестре."
+      },
+      "validation": {
+        "startTimeRequired": "Выберите время начала.",
+        "endTimeRequired": "Выберите время окончания.",
+        "endAfterStart": "Время окончания должно быть позже времени начала.",
+        "courseRequired": "Выберите курс.",
+        "semesterRequired": "Выберите семестр.",
+        "sectionNumberRequired": "Введите номер секции.",
+        "sectionNumberMax": "Не более 20 символов.",
+        "capacityRequired": "Введите вместимость.",
+        "capacityInt": "Введите целое число.",
+        "capacityPositive": "Вместимость должна быть не менее 1.",
+        "meetingsMin": "Добавьте хотя бы одно еженедельное занятие.",
+        "meetingsMax": "Не более 30 занятий."
+      }
+    },
+    "manageStudent": {
+      "actions": {
+        "deactivate": "Деактивировать",
+        "deactivateTitle": "Деактивировать студента {name}?",
+        "deactivateDescription": "Учётная запись больше не сможет входить в систему, все регистрации студента будут отменены. История сохраняется. Повторная активация не восстанавливает регистрации.",
+        "deactivateConfirmLabel": "Деактивировать студента",
+        "reactivate": "Активировать"
+      },
+      "toast": {
+        "deactivated": "Студент деактивирован.",
+        "reactivated": "Студент активирован.",
+        "updated": "Данные студента обновлены.",
+        "created": "Студент создан."
+      },
+      "dialog": {
+        "editTitle": "Редактировать {name}",
+        "addTitle": "Добавить студента"
+      },
+      "errors": {
+        "duplicateEmail": "Этот адрес электронной почты уже используется."
+      },
+      "form": {
+        "lastNameLabel": "Фамилия",
+        "firstNameLabel": "Имя",
+        "patronymicLabel": "Отчество (необязательно)",
+        "loginEmailLabel": "Email для входа",
+        "initialPasswordLabel": "Первоначальный пароль",
+        "initialPasswordHint": "Не менее 12 символов.",
+        "academicRecordHeading": "Учебные данные",
+        "studentIdPrefix": "Студенческий ID",
+        "studentIdSuffix": "присвоен навсегда.",
+        "enrollmentYearLabel": "Год зачисления",
+        "enrollmentYearHint": "Его последние две цифры начинают студенческий ID, например 24ID…; изменить ID впоследствии нельзя.",
+        "programLabel": "Программа (необязательно)",
+        "yearLevelLabel": "Курс обучения",
+        "admissionYearLabel": "Год поступления (необязательно)",
+        "admissionYearHint": "Формат: ГГГГ-ГГГГ",
+        "studyFormLabel": "Форма обучения (необязательно)",
+        "studyFormPlaceholder": "Бакалавриат (4 года)",
+        "advisorLabel": "Куратор (необязательно)",
+        "winterAdmissionLabel": "Зимний набор",
+        "notSet": "Не задано",
+        "yes": "Да",
+        "no": "Нет",
+        "needsDormitoryLabel": "Нуждается в общежитии",
+        "personalInfoHeading": "Личная информация",
+        "birthDateLabel": "Дата рождения (необязательно)",
+        "genderLabel": "Пол",
+        "male": "Мужской",
+        "female": "Женский",
+        "maritalStatusLabel": "Семейное положение",
+        "single": "Не женат/не замужем",
+        "married": "Женат/замужем",
+        "divorced": "В разводе",
+        "widowed": "Вдовец/вдова",
+        "nationalityLabel": "Национальность (необязательно)",
+        "citizenshipLabel": "Гражданство (необязательно)",
+        "residentLabel": "Резидент",
+        "contactDetailsHeading": "Контактные данные",
+        "contactDetailsHint": "Студент также может изменить их самостоятельно.",
+        "personalEmailLabel": "Личный email (необязательно)",
+        "phoneNumberLabel": "Номер телефона (необязательно)",
+        "saveChanges": "Сохранить изменения",
+        "createStudent": "Создать студента"
+      },
+      "validation": {
+        "emailInvalid": "Введите корректный адрес электронной почты.",
+        "emailMax": "Не более 150 символов.",
+        "lastNameRequired": "Введите фамилию.",
+        "maxLength100": "Не более 100 символов.",
+        "firstNameRequired": "Введите имя.",
+        "maxLength80": "Не более 80 символов.",
+        "yearLevelRequired": "Введите курс обучения.",
+        "wholeNumber": "Введите целое число.",
+        "yearLevelRange": "Курс должен быть от 1 до 8.",
+        "phoneFormat": "Используйте 6–20 цифр, пробелы, +, - или скобки.",
+        "admissionYearFormat": "Используйте формат ГГГГ-ГГГГ.",
+        "passwordMin": "Не менее 12 символов.",
+        "passwordMax": "Не более 128 символов.",
+        "enrollmentYearRequired": "Введите год зачисления.",
+        "enrollmentYearMin": "Используйте год не ранее 2000.",
+        "enrollmentYearMax": "Используйте год не позднее {max}."
+      }
+    },
+    "registerForSection": {
+      "defaultLabel": "Зарегистрироваться",
+      "registering": "Регистрация…",
+      "toast": {
+        "success": "Вы зарегистрированы на эту секцию."
+      }
+    },
+    "changePassword": {
+      "form": {
+        "currentPasswordLabel": "Текущий пароль",
+        "newPasswordLabel": "Новый пароль",
+        "newPasswordHint": "Не менее 12 символов.",
+        "confirmPasswordLabel": "Повторите новый пароль",
+        "showPasswords": "Показать пароли",
+        "submitLabel": "Изменить пароль"
+      },
+      "toast": {
+        "success": "Пароль изменён. Остальные устройства вышли из системы."
+      },
+      "validation": {
+        "currentPasswordRequired": "Введите текущий пароль.",
+        "passwordTooShort": "Используйте не менее 12 символов.",
+        "passwordTooLong": "Используйте не более 128 символов.",
+        "passwordsMismatch": "Пароли не совпадают."
+      }
+    },
+    "editGrades": {
+      "fields": {
+        "attestation1": "Аттестация 1",
+        "attestation2": "Аттестация 2",
+        "finalExam": "Итоговый экзамен"
+      },
+      "table": {
+        "caption": "Ведомость оценок",
+        "id": "ID",
+        "student": "Студент",
+        "total": "Итого",
+        "grade": "Оценка"
+      },
+      "notAdmittedBadge": "Не допущен",
+      "notAdmittedTitle": "Сумма аттестаций ниже {min}",
+      "fieldAriaLabel": "{field} для {name}",
+      "emptyTitle": "Пока нет зачисленных студентов",
+      "closedBanner": {
+        "adminEditable": "Семестр завершён. Преподаватели больше не могут изменять эти оценки; вы как администратор — можете.",
+        "locked": "Семестр завершён, поэтому оценки заблокированы. Для исправлений обратитесь к администратору."
+      },
+      "toast": {
+        "saved": "Оценки сохранены."
+      },
+      "errors": {
+        "notAdmitted": "Для оценки за итоговый экзамен нужно набрать не менее {min} баллов по аттестациям."
+      },
+      "validation": {
+        "markRange": "{name}: «{field}» должно быть от 0 до {max}.",
+        "notAdmitted": "{name} не допущен(а) к итоговому экзамену."
+      },
+      "saveLabel": "Сохранить оценки",
+      "discardLabel": "Отменить изменения",
+      "helperText": "Итоговый экзамен открывается при наборе {min}+ баллов по аттестациям. Буквенная оценка появляется после внесения итогового экзамена; если он не внесён до конца семестра, выставляется F."
+    },
+    "logout": {
+      "signOut": "Выйти",
+      "everywhereButton": "Выйти на всех устройствах",
+      "confirmTitle": "Выйти на всех устройствах?",
+      "confirmDescription": "Все сеансы этой учётной записи завершатся, включая текущий. Потребуется войти снова."
+    },
+    "manageRegistration": {
+      "validation": {
+        "chooseStudent": "Выберите студента.",
+        "chooseSection": "Выберите секцию."
+      },
+      "toast": {
+        "enrolled": "Студент зачислен.",
+        "statusUpdated": "Статус обновлён."
+      },
+      "form": {
+        "studentLabel": "Студент",
+        "chooseStudent": "Выберите студента",
+        "sectionLabel": "Секция",
+        "chooseSection": "Выберите секцию",
+        "submitLabel": "Зачислить студента"
+      },
+      "dialog": {
+        "title": "Зачисление студента",
+        "description": "Выполняются те же проверки расписания, вместимости и семестра, что и при самостоятельной регистрации студента."
+      },
+      "status": {
+        "pending": "На рассмотрении",
+        "rejected": "Отклонено",
+        "cancelled": "Отменено"
+      },
+      "statusAriaLabel": "Изменить статус регистрации {id}",
+      "setStatusPlaceholder": "Установить статус…",
+      "enrollButton": "Зачислить"
+    },
+    "manageSemester": {
+      "openAriaLabel": "{name}: открыт для регистрации",
+      "toast": {
+        "deleted": "Семестр удалён.",
+        "updated": "Семестр обновлён.",
+        "created": "Семестр создан."
+      },
+      "deleteButton": "Удалить",
+      "deleteConfirmTitle": "Удалить {name}?",
+      "deleteConfirmDescription": "Семестр будет удалён безвозвратно. Удаление невозможно, если на него ссылаются секции или регистрации.",
+      "deleteConfirmLabel": "Удалить семестр",
+      "errors": {
+        "integrityConflict": "На этот семестр всё ещё ссылаются секции или регистрации, поэтому его нельзя удалить.",
+        "nameInUse": "Семестр с таким названием уже существует."
+      },
+      "validation": {
+        "nameRequired": "Введите название.",
+        "nameTooLong": "Используйте не более 80 символов.",
+        "startDateRequired": "Выберите дату начала.",
+        "endDateRequired": "Выберите дату окончания.",
+        "endAfterStart": "Дата окончания должна быть позже даты начала."
+      },
+      "fields": {
+        "name": "Название",
+        "startDate": "Дата начала",
+        "endDate": "Дата окончания",
+        "openForRegistration": "Открыт для регистрации"
+      },
+      "saveChangesLabel": "Сохранить изменения",
+      "createLabel": "Создать семестр",
+      "editDialogTitle": "Редактирование {name}",
+      "addDialogTitle": "Добавить семестр"
+    },
+    "manageStaff": {
+      "validation": {
+        "tooShort": "Используйте не менее {min} символов.",
+        "tooLong": "Используйте не более {max} символов.",
+        "fullNameRequired": "Введите полное имя.",
+        "phoneFormat": "Используйте цифры, пробелы, +, - и скобки.",
+        "emailInvalid": "Введите корректный адрес электронной почты."
+      },
+      "fields": {
+        "fullName": "Полное имя",
+        "title": "Должность (необязательно)",
+        "department": "Отдел (необязательно)",
+        "office": "Кабинет (необязательно)",
+        "phone": "Телефон (необязательно)",
+        "email": "Электронная почта",
+        "initialPassword": "Начальный пароль",
+        "passwordHint": "Не менее 12 символов.",
+        "role": "Роль",
+        "newPassword": "Новый пароль"
+      },
+      "roles": {
+        "teacher": "Преподаватель",
+        "administrator": "Администратор"
+      },
+      "toast": {
+        "accountCreated": "Учётная запись создана.",
+        "profileSaved": "Профиль сохранён.",
+        "passwordReset": "Пароль изменён. Сеансы учётной записи завершены."
+      },
+      "errors": {
+        "emailInUse": "Этот адрес электронной почты уже используется."
+      },
+      "createSubmitLabel": "Создать учётную запись",
+      "createDialogTitle": "Добавить сотрудника",
+      "saveProfileSubmitLabel": "Сохранить профиль",
+      "editProfileDialogTitle": "Редактирование профиля {email}",
+      "resetPasswordSubmitLabel": "Изменить пароль",
+      "resetPasswordDialogTitle": "Смена пароля для {email}",
+      "resetPasswordDialogDescription": "Все сеансы этой учётной записи будут завершены.",
+      "activeAriaLabel": "{email} активен"
+    },
+    "selectSemester": {
+      "label": "Семестр",
+      "allOption": "Все семестры",
+      "closedSuffix": " (закрыт)"
+    }
+  },
+  "widgets": {
+    "appShell": {
+      "mainNavLabel": "Основная навигация",
+      "mobileNavDescription": "Основная навигация",
+      "brand": "Портал университета",
+      "expandSidebar": "Развернуть боковую панель",
+      "collapseSidebar": "Свернуть боковую панель",
+      "collapse": "Свернуть",
+      "openNavigation": "Открыть меню навигации",
+      "accountMenuFor": "Меню аккаунта пользователя {email}",
+      "theme": {
+        "label": "Тема",
+        "light": "Светлая",
+        "dark": "Тёмная",
+        "system": "Системная"
+      },
+      "nav": {
+        "dashboard": "Панель управления",
+        "courseCatalog": "Каталог курсов",
+        "myCourses": "Мои курсы",
+        "schedule": "Расписание",
+        "attestation": "Аттестация",
+        "transcript": "Транскрипт",
+        "profile": "Профиль",
+        "teachingSchedule": "Расписание занятий",
+        "overview": "Обзор",
+        "students": "Студенты",
+        "courses": "Курсы",
+        "sections": "Секции",
+        "semesters": "Семестры",
+        "registrations": "Регистрации",
+        "staff": "Сотрудники",
+        "supportChat": "Чат поддержки"
+      }
+    },
+    "courseCatalog": {
+      "searchLabel": "Поиск",
+      "searchPlaceholder": "Название или код",
+      "seatsAvailable": "Есть свободные места",
+      "emptyTitle": "Курсы не найдены",
+      "emptyDescription": "Попробуйте изменить поисковый запрос или семестр.",
+      "credits": "{count, plural, one {# кредит} few {# кредита} many {# кредитов} other {# кредитов}}",
+      "sectionsCount": "{count, plural, one {# секция} few {# секции} many {# секций} other {# секций}}",
+      "seatsLeft": "{seats, plural, one {осталось # место} few {осталось # места} many {осталось # мест} other {осталось # мест}}",
+      "noSectionsListed": "Секции не указаны"
+    },
+    "courseSections": {
+      "sectionNumber": "Секция {number}",
+      "enrolled": "Зачислено",
+      "registrationClosed": "Регистрация закрыта",
+      "seatsRemaining": "Свободно {remaining} из {capacity} мест",
+      "sectionFull": "Секция заполнена",
+      "register": "Зарегистрироваться",
+      "credits": "{count, plural, one {# кредит} few {# кредита} many {# кредитов} other {# кредитов}}",
+      "availableSectionsHeading": "Доступные секции",
+      "emptyTitle": "Нет секций",
+      "emptyDescription": "В этом курсе нет секций для выбранного семестра."
+    },
+    "enrollmentTable": {
+      "columns": {
+        "course": "Курс",
+        "section": "Секция",
+        "semester": "Семестр",
+        "weeklyMeetings": "Еженедельные занятия",
+        "status": "Статус",
+        "registered": "Дата регистрации",
+        "actions": "Действия"
+      },
+      "thisSectionFallback": "эту секцию",
+      "allStatuses": "Все статусы",
+      "emptyTitle": "Регистрации не найдены",
+      "emptyDescription": "Перейдите в каталог, чтобы зарегистрироваться на секцию.",
+      "openCatalog": "Открыть каталог",
+      "caption": "Ваши регистрации на курсы"
+    },
+    "supportChat": {
+      "unsupportedFileType": "Прикрепите изображение JPEG, PNG, WebP, GIF или файл PDF.",
+      "fileTooLarge": "Вложения не должны превышать 15 МБ.",
+      "contactAdministration": "Связаться с администрацией",
+      "dialogLabel": "Чат поддержки",
+      "exitFullscreen": "Выйти из полноэкранного режима",
+      "expandFullscreen": "Развернуть на весь экран",
+      "closeChat": "Закрыть чат",
+      "emptyMessages": "Задайте вопрос администрации, и вам ответят здесь.",
+      "removeAttachment": "Удалить вложение",
+      "attachFile": "Прикрепить файл или фото",
+      "composerPlaceholder": "Введите ваш вопрос…",
+      "send": "Отправить"
+    },
+    "weeklyTimetable": {
+      "eventDescription": "{code} {title}, {section}, {day} {start} – {end}",
+      "section": "Секция {number}",
+      "chooseDay": "Выбор дня",
+      "noClassesOnDay": "{day}: нет занятий.",
+      "emptyTitle": "В расписании пока ничего нет",
+      "defaultEmptyMessage": "На этот семестр занятия не запланированы.",
+      "when": "Когда",
+      "instructor": "Преподаватель"
+    }
+  },
+  "pages": {
+    "adminDashboard": {
+      "title": "Администрирование",
+      "description": "Общая статистика по университету.",
+      "stats": {
+        "students": "Студенты",
+        "courses": "Курсы",
+        "sections": "Секции",
+        "registrations": "Регистрации",
+        "activeSemester": "Активный семестр",
+        "noActiveSemester": "Нет"
+      },
+      "chart": {
+        "byStatusTitle": "Регистрации по статусу",
+        "seatFillTitle": "Заполненность мест по семестрам",
+        "statusLabels": {
+          "enrolled": "Зачислены",
+          "pending": "В ожидании",
+          "rejected": "Отклонены",
+          "cancelled": "Отменены"
+        }
+      }
+    },
+    "adminSupportChat": {
+      "title": "Чат поддержки",
+      "description": "Вопросы, которые студенты и преподаватели отправили администрации.",
+      "empty": {
+        "noConversations": {
+          "title": "Пока нет диалогов",
+          "description": "Новые вопросы будут появляться здесь по мере поступления."
+        },
+        "selectConversation": {
+          "title": "Выберите диалог",
+          "description": "Выберите диалог слева, чтобы прочитать и ответить."
+        }
+      },
+      "attachFile": "Прикрепить файл или фото",
+      "removeAttachment": "Удалить вложение",
+      "replyPlaceholder": "Введите ответ…",
+      "send": "Отправить",
+      "errors": {
+        "unsupportedFileType": "Прикрепите изображение JPEG, PNG, WebP, GIF или файл PDF.",
+        "fileTooLarge": "Размер вложения не должен превышать 15 МБ."
+      }
+    },
+    "courseCatalog": {
+      "title": "Каталог курсов",
+      "description": "Найдите курс, сравните его секции и зарегистрируйтесь."
+    },
+    "courseDetails": {
+      "breadcrumbs": {
+        "courseCatalog": "Каталог курсов",
+        "courseDetails": "О курсе"
+      }
+    },
+    "registrationsManagement": {
+      "title": "Регистрации",
+      "description": "Все записи о зачислении по университету.",
+      "enrollStudent": "Зачислить студента",
+      "filters": {
+        "section": "Секция",
+        "allSections": "Все секции",
+        "status": "Статус",
+        "allStatuses": "Все статусы",
+        "student": "Студент",
+        "studentPlaceholder": "Имя, email или номер студента"
+      },
+      "statusLabels": {
+        "enrolled": "Зачислены",
+        "pending": "В ожидании",
+        "rejected": "Отклонены",
+        "cancelled": "Отменены"
+      },
+      "empty": {
+        "title": "Регистрации не найдены"
+      },
+      "table": {
+        "caption": "Регистрации",
+        "columns": {
+          "student": "Студент",
+          "section": "Секция",
+          "semester": "Семестр",
+          "registered": "Дата регистрации",
+          "status": "Статус",
+          "actions": "Действия"
+        }
+      }
+    },
+    "sectionManagement": {
+      "title": "Секции",
+      "description": "Предложения курса в рамках семестра: преподаватель, вместимость и еженедельные занятия.",
+      "addSection": "Добавить секцию",
+      "columns": {
+        "course": "Курс",
+        "section": "Секция",
+        "semester": "Семестр",
+        "teacher": "Преподаватель",
+        "meetings": "Занятия",
+        "seats": "Места",
+        "actions": "Действия"
+      },
+      "unassigned": "Не назначен",
+      "gradesLink": "Оценки",
+      "edit": "Изменить",
+      "empty": {
+        "title": "Секции не найдены"
+      },
+      "table": {
+        "caption": "Секции курсов"
+      },
+      "grades": {
+        "titleWithCourse": "{code} · Секция {number} · Оценки",
+        "titleFallback": "Оценки",
+        "breadcrumbs": {
+          "sections": "Секции",
+          "grades": "Оценки"
+        }
+      }
+    },
+    "semesterManagement": {
+      "title": "Семестры",
+      "description": "Учебные периоды. Регистрация принимается только в открытых семестрах.",
+      "addSemester": "Добавить семестр",
+      "columns": {
+        "name": "Название",
+        "starts": "Начало",
+        "ends": "Окончание",
+        "openForRegistration": "Открыт для регистрации",
+        "actions": "Действия"
+      },
+      "edit": "Изменить",
+      "empty": {
+        "title": "Семестров пока нет"
+      },
+      "table": {
+        "caption": "Семестры"
+      }
+    },
+    "studentDashboard": {
+      "welcomeBack": "С возвращением, {name}",
+      "findCourses": "Найти курсы",
+      "empty": {
+        "noSemesters": {
+          "title": "Семестров пока нет",
+          "description": "Как только университет опубликует семестр, здесь появятся ваши занятия."
+        }
+      },
+      "stats": {
+        "currentSemester": "Текущий семестр",
+        "enrolledSections": "Зачисленные секции",
+        "weeklyClasses": "Занятий в неделю"
+      },
+      "thisWeek": "На этой неделе",
+      "fullSchedule": "Полное расписание",
+      "timetableEmpty": "В этом семестре вы не зачислены ни на одно занятие.",
+      "upcomingClasses": "Ближайшие занятия",
+      "nothingUpcoming": "Ближайших занятий нет."
+    },
+    "teacherDashboard": {
+      "dashboard": {
+        "title": "Панель преподавателя",
+        "description": "Ваши назначенные секции и их заполненность.",
+        "stats": {
+          "assignedSections": "Назначенные секции",
+          "enrolledStudents": "Зачисленные студенты",
+          "courses": "Курсы"
+        },
+        "columns": {
+          "course": "Курс",
+          "section": "Секция",
+          "weeklyMeetings": "Еженедельные занятия",
+          "enrolled": "Зачислено"
+        },
+        "sectionFallback": "Секция {id}",
+        "empty": {
+          "title": "Нет назначенных секций",
+          "description": "Здесь появятся секции, назначенные вам администратором."
+        },
+        "table": {
+          "caption": "Ваши назначенные секции"
+        }
+      },
+      "schedule": {
+        "title": "Расписание преподавателя",
+        "description": "Время указано по местному времени университета.",
+        "sectionFallback": "Секция {id}",
+        "timetableEmpty": "В этом семестре у вас нет назначенных секций."
+      },
+      "section": {
+        "titleWithCourse": "{code} · Секция {number}",
+        "titleFallback": "Сведения о секции",
+        "breadcrumbs": {
+          "dashboard": "Панель преподавателя",
+          "section": "Секция"
+        },
+        "weeklyMeetings": "Еженедельные занятия",
+        "enrollment": "Зачисление",
+        "enrollmentSummary": "Зачислено: {enrolled} · Свободно {remaining} из {capacity} мест",
+        "studentsAndGrades": "Студенты и оценки"
+      }
+    },
+    "courseManagement": {
+      "title": "Курсы",
+      "description": "Каталог учебных дисциплин.",
+      "addCourse": "Добавить курс",
+      "search": "Поиск",
+      "searchPlaceholder": "Название или код",
+      "columns": {
+        "code": "Код",
+        "title": "Название",
+        "credits": "Кредиты",
+        "actions": "Действия"
+      },
+      "edit": "Изменить",
+      "empty": "Курсы не найдены",
+      "caption": "Курсы"
+    },
+    "forbidden": {
+      "title": "403: Доступ запрещён",
+      "description": "У вас нет прав для просмотра этой страницы.",
+      "backToDashboard": "Перейти на мою панель"
+    },
+    "login": {
+      "subtitle": "Войдите, используя учётную запись университета",
+      "sessionExpired": "Ваша сессия завершена. Пожалуйста, войдите снова.",
+      "serviceUnavailable": "Сервис университета временно недоступен. Повторите попытку чуть позже."
+    },
+    "myCourses": {
+      "title": "Мои курсы",
+      "description": "Ваши регистрации по семестрам."
+    },
+    "mySchedule": {
+      "title": "Расписание на неделю",
+      "description": "Время указано по местному времени кампуса.",
+      "noSemesters": "Пока нет семестров",
+      "emptyMessage": "В этом семестре вы не записаны ни на один курс."
+    },
+    "profile": {
+      "title": "Профиль",
+      "description": "Данные вашей учётной записи и безопасность входа.",
+      "notSet": "Не указано",
+      "yes": "Да",
+      "no": "Нет",
+      "genders": {
+        "male": "Мужской",
+        "female": "Женский"
+      },
+      "maritalStatuses": {
+        "single": "Не женат / не замужем",
+        "married": "В браке",
+        "divorced": "В разводе",
+        "widowed": "Вдова / вдовец"
+      },
+      "account": {
+        "title": "Учётная запись",
+        "description": "Чтобы изменить эти данные, обратитесь к администратору университета."
+      },
+      "personal": {
+        "title": "Личная информация",
+        "description": "Заполняется администратором университета.",
+        "lastName": "Фамилия",
+        "firstName": "Имя",
+        "patronymic": "Отчество",
+        "birthDate": "Дата рождения",
+        "gender": "Пол",
+        "maritalStatus": "Семейное положение",
+        "nationality": "Национальность",
+        "citizenship": "Гражданство",
+        "resident": "Резидент"
+      },
+      "academic": {
+        "title": "Академические данные",
+        "description": "Заполняется администратором университета.",
+        "studentId": "Номер студента",
+        "role": "Роль",
+        "program": "Образовательная программа",
+        "yearLevel": "Курс обучения",
+        "admissionYear": "Год поступления",
+        "studyForm": "Форма обучения",
+        "advisor": "Куратор",
+        "needsDormitory": "Нуждается в общежитии",
+        "winterAdmission": "Зимний набор"
+      },
+      "fields": {
+        "fullName": "ФИО",
+        "role": "Роль",
+        "title": "Должность",
+        "department": "Подразделение",
+        "email": "Email",
+        "phone": "Телефон",
+        "office": "Кабинет"
+      },
+      "sessions": {
+        "title": "Сессии",
+        "description": "Потеряли устройство или входили с общего компьютера? Завершите все сессии разом, включая текущую."
+      },
+      "password": {
+        "title": "Пароль",
+        "description": "После смены пароля вы останетесь в системе здесь, но выйдете на других устройствах."
+      }
+    },
+    "staffManagement": {
+      "title": "Сотрудники",
+      "description": "Учётные записи преподавателей и администраторов.",
+      "addStaff": "Добавить сотрудника",
+      "columns": {
+        "name": "Имя",
+        "email": "Email",
+        "role": "Роль",
+        "active": "Активен",
+        "actions": "Действия"
+      },
+      "noName": "Без имени",
+      "editProfile": "Изменить профиль",
+      "changePassword": "Сменить пароль",
+      "empty": "Нет учётных записей сотрудников",
+      "caption": "Учётные записи сотрудников"
+    },
+    "studentGrades": {
+      "gradesTable": {
+        "columns": {
+          "code": "Код",
+          "title": "Название"
+        },
+        "summaryLine": "Взято кредитов: {creditsTaken}. Получено кредитов: {creditsEarned}. Взято ECTS: {ectsTaken}. Получено ECTS: {ectsEarned}. GPA: {gpa}."
+      },
+      "studentCard": {
+        "program": "Программа",
+        "notSet": "Не указано",
+        "id": "ID",
+        "student": "Студент",
+        "yearOfStudy": "Курс обучения"
+      },
+      "attestation": {
+        "title": "Аттестация",
+        "description": "Баллы по курсам, начиная с последнего семестра. Для допуска к экзамену нужно набрать от 30 баллов аттестации.",
+        "crumbStudents": "Студенты",
+        "crumbAttestation": "Аттестация",
+        "transcript": "Транскрипт",
+        "empty": "Пока нет курсов",
+        "columns": {
+          "attestation1": "Аттестация 1 / 30",
+          "attestation2": "Аттестация 2 / 30",
+          "finalExam": "Экзамен / 40",
+          "letter": "Буква"
+        },
+        "notAdmitted": "Не допущен"
+      },
+      "transcript": {
+        "title": "Транскрипт",
+        "crumbStudents": "Студенты",
+        "crumbTranscript": "Транскрипт",
+        "attestation": "Аттестация",
+        "print": "Печать / PDF",
+        "empty": "Пока нет курсов",
+        "columns": {
+          "credits": "Кредиты",
+          "ects": "ECTS",
+          "score": "Балл",
+          "letter": "Буква",
+          "gpa": "GPA",
+          "traditional": "Традиционная оценка"
+        }
+      }
+    },
+    "studentManagement": {
+      "title": "Студенты",
+      "description": "Создание, редактирование и деактивация учётных записей студентов.",
+      "addStudent": "Добавить студента",
+      "search": "Поиск",
+      "searchPlaceholder": "Имя, email или номер студента",
+      "columns": {
+        "name": "Имя",
+        "email": "Email",
+        "program": "Программа",
+        "year": "Курс",
+        "account": "Учётная запись",
+        "actions": "Действия"
+      },
+      "notSet": "Не указано",
+      "active": "Активен",
+      "inactive": "Неактивен",
+      "grades": "Оценки",
+      "details": "Подробнее",
+      "edit": "Изменить",
+      "fields": {
+        "email": "Email",
+        "program": "Программа",
+        "yearLevel": "Курс обучения",
+        "account": "Учётная запись"
+      },
+      "empty": "Студенты не найдены",
+      "caption": "Студенты"
+    }
+  }
+}

@@ -2,36 +2,37 @@ import { Award, BookOpen, CalendarDays, CalendarRange, ClipboardList, FileText, 
 
 import type { Role } from "@/entities/user";
 
-export type NavItem = { label: string; href: string; icon: LucideIcon };
+/** `labelKey` is a key under the `widgets.appShell.nav` message namespace, translated where the item is rendered. */
+export type NavItem = { labelKey: string; href: string; icon: LucideIcon };
 
-const PROFILE: NavItem = { label: "Profile", href: "/profile", icon: UserIcon };
-const CATALOG: NavItem = { label: "Course catalog", href: "/courses", icon: BookOpen };
+const PROFILE: NavItem = { labelKey: "profile", href: "/profile", icon: UserIcon };
+const CATALOG: NavItem = { labelKey: "courseCatalog", href: "/courses", icon: BookOpen };
 
 export const NAVIGATION: Record<Role, NavItem[]> = {
   STUDENT: [
-    { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+    { labelKey: "dashboard", href: "/dashboard", icon: LayoutDashboard },
     CATALOG,
-    { label: "My courses", href: "/my-courses", icon: ClipboardList },
-    { label: "Schedule", href: "/schedule", icon: CalendarDays },
-    { label: "Attestation", href: "/attestation", icon: Award },
-    { label: "Transcript", href: "/transcript", icon: FileText },
+    { labelKey: "myCourses", href: "/my-courses", icon: ClipboardList },
+    { labelKey: "schedule", href: "/schedule", icon: CalendarDays },
+    { labelKey: "attestation", href: "/attestation", icon: Award },
+    { labelKey: "transcript", href: "/transcript", icon: FileText },
     PROFILE,
   ],
   TEACHER: [
-    { label: "Dashboard", href: "/teacher", icon: LayoutDashboard },
-    { label: "Teaching schedule", href: "/teacher/schedule", icon: CalendarDays },
+    { labelKey: "dashboard", href: "/teacher", icon: LayoutDashboard },
+    { labelKey: "teachingSchedule", href: "/teacher/schedule", icon: CalendarDays },
     CATALOG,
     PROFILE,
   ],
   ADMIN: [
-    { label: "Overview", href: "/admin", icon: LayoutDashboard },
-    { label: "Students", href: "/admin/students", icon: Users },
-    { label: "Courses", href: "/admin/courses", icon: BookOpen },
-    { label: "Sections", href: "/admin/sections", icon: Layers },
-    { label: "Semesters", href: "/admin/semesters", icon: CalendarRange },
-    { label: "Registrations", href: "/admin/registrations", icon: ClipboardList },
-    { label: "Staff", href: "/admin/staff", icon: Shield },
-    { label: "Support chat", href: "/admin/support", icon: HelpCircle },
+    { labelKey: "overview", href: "/admin", icon: LayoutDashboard },
+    { labelKey: "students", href: "/admin/students", icon: Users },
+    { labelKey: "courses", href: "/admin/courses", icon: BookOpen },
+    { labelKey: "sections", href: "/admin/sections", icon: Layers },
+    { labelKey: "semesters", href: "/admin/semesters", icon: CalendarRange },
+    { labelKey: "registrations", href: "/admin/registrations", icon: ClipboardList },
+    { labelKey: "staff", href: "/admin/staff", icon: Shield },
+    { labelKey: "supportChat", href: "/admin/support", icon: HelpCircle },
     PROFILE,
   ],
 };

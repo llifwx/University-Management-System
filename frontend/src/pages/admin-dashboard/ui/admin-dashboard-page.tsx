@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { BookOpen, CalendarRange, ClipboardList, Layers, Users } from "lucide-react";
+import { useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
 
@@ -50,7 +51,10 @@ function ChartCard({ title, rows, unit, children }: { title: string; rows: Chart
   );
 }
 
+const STATUS_LABEL_KEYS: Record<string, string> = { Enrolled: "enrolled", Pending: "pending", Rejected: "rejected", Cancelled: "cancelled" };
+
 export function AdminDashboardPage() {
+  const t = useTranslations("pages.adminDashboard");
   const students = useQuery(studentQueries.total());
   const courses = useQuery(courseQueries.total());
   const sections = useQuery(sectionQueries.list());
@@ -59,8 +63,13 @@ export function AdminDashboardPage() {
   const current = semesters.data && pickCurrentSemester(semesters.data.filter((s) => s.is_active));
 
   const byStatus = useMemo<ChartRow[] | undefined>(
-    () => registrations.data && REGISTRATION_STATUSES.map((status) => ({ label: status, value: registrations.data.filter((r) => r.status === status).length })),
-    [registrations.data],
+    () =>
+      registrations.data &&
+      REGISTRATION_STATUSES.map((status) => ({
+        label: t(`chart.statusLabels.${STATUS_LABEL_KEYS[status]}`),
+        value: registrations.data.filter((r) => r.status === status).length,
+      })),
+    [registrations.data, t],
   );
   const seatFill = useMemo<ChartRow[] | undefined>(() => {
     if (!sections.data || !semesters.data) return undefined;
@@ -74,19 +83,19 @@ export function AdminDashboardPage() {
 
   return (
     <>
-      <PageHeader title="Administration" description="University-wide totals." />
+      <PageHeader title={t("title")} description={t("description")} />
       <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
-        <StatCard label="Students" value={students.data} icon={Users} />
-        <StatCard label="Courses" value={courses.data} icon={BookOpen} />
-        <StatCard label="Sections" value={sections.data?.length} icon={Layers} />
-        <StatCard label="Registrations" value={registrations.data?.length} icon={ClipboardList} />
-        <StatCard label="Active semester" value={semesters.data ? (current?.name ?? "None") : undefined} icon={CalendarRange} />
+        <StatCard label={t("stats.students")} value={students.data} icon={Users} />
+        <StatCard label={t("stats.courses")} value={courses.data} icon={BookOpen} />
+        <StatCard label={t("stats.sections")} value={sections.data?.length} icon={Layers} />
+        <StatCard label={t("stats.registrations")} value={registrations.data?.length} icon={ClipboardList} />
+        <StatCard label={t("stats.activeSemester")} value={semesters.data ? (current?.name ?? t("stats.noActiveSemester")) : undefined} icon={CalendarRange} />
       </div>
       <div className="grid gap-6 lg:grid-cols-2">
-        <ChartCard title="Registrations by status" rows={byStatus}>
+        <ChartCard title={t("chart.byStatusTitle")} rows={byStatus}>
           <QueryState query={registrations}>{() => <StatBarChart data={byStatus ?? []} />}</QueryState>
         </ChartCard>
-        <ChartCard title="Seats filled by semester" rows={seatFill} unit="%">
+        <ChartCard title={t("chart.seatFillTitle")} rows={seatFill} unit="%">
           <QueryState query={sections}>{() => <StatBarChart data={seatFill ?? []} unit="%" />}</QueryState>
         </ChartCard>
       </div>

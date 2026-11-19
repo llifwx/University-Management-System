@@ -3,12 +3,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { BookOpen, CalendarDays, ClipboardList, Search } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 
 import { registrationQueries } from "@/entities/registration";
 import { scheduleQueries, upcomingClasses } from "@/entities/schedule";
 import { pickCurrentSemester, semesterQueries } from "@/entities/semester";
 import { studentQueries } from "@/entities/student";
+import { useDateFnsLocale } from "@/shared/i18n";
 import { formatTime } from "@/shared/lib/time";
 import { Button } from "@/shared/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
@@ -18,6 +20,9 @@ import { EmptyState, QueryState } from "@/shared/ui/states";
 import { WeeklyTimetable, scheduleToEvents } from "@/widgets/weekly-timetable";
 
 export function StudentDashboardPage() {
+  const t = useTranslations("pages.studentDashboard");
+  const tCourseSection = useTranslations("entities.courseSection");
+  const dateLocale = useDateFnsLocale();
   const student = useQuery(studentQueries.me());
   const semesters = useQuery(semesterQueries.list());
   const semester = semesters.data && pickCurrentSemester(semesters.data);
@@ -35,7 +40,7 @@ export function StudentDashboardPage() {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           {student.data ? (
-            <h1 className="text-2xl font-semibold tracking-tight">Welcome back, {student.data.full_name}</h1>
+            <h1 className="text-2xl font-semibold tracking-tight">{t("welcomeBack", { name: student.data.full_name })}</h1>
           ) : (
             <Skeleton className="h-8 w-64" />
           )}
@@ -44,40 +49,40 @@ export function StudentDashboardPage() {
         <Button asChild>
           <Link href="/courses">
             <Search aria-hidden />
-            Find courses
+            {t("findCourses")}
           </Link>
         </Button>
       </div>
 
       {noSemester ? (
-        <EmptyState title="No semesters yet" description="Once the university publishes a semester, your classes appear here." />
+        <EmptyState title={t("empty.noSemesters.title")} description={t("empty.noSemesters.description")} />
       ) : (
         <>
           <div className="grid gap-4 sm:grid-cols-3">
-            <StatCard label="Current semester" value={semester?.name} icon={CalendarDays} />
-            <StatCard label="Enrolled sections" value={enrolled} icon={BookOpen} />
-            <StatCard label="Weekly classes" value={weeklyClasses} icon={ClipboardList} />
+            <StatCard label={t("stats.currentSemester")} value={semester?.name} icon={CalendarDays} />
+            <StatCard label={t("stats.enrolledSections")} value={enrolled} icon={BookOpen} />
+            <StatCard label={t("stats.weeklyClasses")} value={weeklyClasses} icon={ClipboardList} />
           </div>
 
           <div className="grid gap-6 xl:grid-cols-[1fr_20rem]">
             <section aria-labelledby="week-heading" className="min-w-0 space-y-3">
               <div className="flex items-center justify-between">
                 <h2 id="week-heading" className="font-semibold">
-                  This week
+                  {t("thisWeek")}
                 </h2>
                 <Button variant="link" size="sm" asChild>
-                  <Link href="/schedule">Full schedule</Link>
+                  <Link href="/schedule">{t("fullSchedule")}</Link>
                 </Button>
               </div>
-              <QueryState query={schedule}>{(data) => <WeeklyTimetable events={scheduleToEvents(data.entries)} emptyMessage="You are not enrolled in any class this semester." />}</QueryState>
+              <QueryState query={schedule}>{(data) => <WeeklyTimetable events={scheduleToEvents(tCourseSection, data.entries)} emptyMessage={t("timetableEmpty")} />}</QueryState>
             </section>
             <Card className="h-fit shadow-sm">
               <CardHeader>
-                <CardTitle className="text-base">Upcoming classes</CardTitle>
+                <CardTitle className="text-base">{t("upcomingClasses")}</CardTitle>
               </CardHeader>
               <CardContent>
                 {upcoming.length === 0 ? (
-                  <p className="text-muted-foreground text-sm">Nothing coming up.</p>
+                  <p className="text-muted-foreground text-sm">{t("nothingUpcoming")}</p>
                 ) : (
                   <ul className="space-y-3">
                     {upcoming.map(({ entry, at }) => (
@@ -86,7 +91,7 @@ export function StudentDashboardPage() {
                           {entry.course_code} · {entry.course_title}
                         </p>
                         <p className="text-muted-foreground tabular-nums">
-                          {format(at, "EEE, MMM d")} · {formatTime(entry.start_time)}–{formatTime(entry.end_time)}
+                          {format(at, "EEE, MMM d", { locale: dateLocale })} · {formatTime(entry.start_time)}–{formatTime(entry.end_time)}
                         </p>
                       </li>
                     ))}

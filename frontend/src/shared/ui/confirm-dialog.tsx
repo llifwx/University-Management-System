@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { ReactNode, useState } from "react";
 
 import {
@@ -21,7 +22,7 @@ export function ConfirmDialog({
   title,
   description,
   confirmLabel,
-  cancelLabel = "Cancel",
+  cancelLabel,
   isPending,
   error,
   onConfirm,
@@ -35,6 +36,7 @@ export function ConfirmDialog({
   error?: string;
   onConfirm: (close: () => void) => void;
 }) {
+  const t = useTranslations("common");
   const [open, setOpen] = useState(false);
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
@@ -46,9 +48,9 @@ export function ConfirmDialog({
         </AlertDialogHeader>
         <FormError message={error} />
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isPending}>{cancelLabel}</AlertDialogCancel>
+          <AlertDialogCancel disabled={isPending}>{cancelLabel ?? t("cancel")}</AlertDialogCancel>
           <Button variant="destructive" disabled={isPending} onClick={() => onConfirm(() => setOpen(false))}>
-            {isPending ? "Working…" : confirmLabel}
+            {isPending ? t("working") : confirmLabel}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

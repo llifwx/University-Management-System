@@ -1,21 +1,24 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import { Section, sectionQueries } from "@/entities/course-section";
-import { getErrorMessage } from "@/shared/api";
+import { useApiErrorMessage } from "@/shared/api";
 import { Button } from "@/shared/ui/button";
 import { ConfirmDialog } from "@/shared/ui/confirm-dialog";
 
 import { deleteSection } from "../api/section-mutations";
 
 export function DeleteSectionButton({ section }: { section: Section }) {
+  const t = useTranslations("features.manageSection");
+  const getMessage = useApiErrorMessage();
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: () => deleteSection(section.section_id),
     onSuccess: async () => {
-      toast.success("Section deleted.");
+      toast.success(t("toast.deleted"));
       await queryClient.invalidateQueries({ queryKey: sectionQueries.all });
     },
   });
@@ -23,14 +26,14 @@ export function DeleteSectionButton({ section }: { section: Section }) {
     <ConfirmDialog
       trigger={
         <Button variant="ghost" size="sm">
-          Delete
+          {t("delete.button")}
         </Button>
       }
-      title={`Delete section ${section.section_number}?`}
-      description="This permanently removes the section and its meetings. It is refused while registrations reference it."
-      confirmLabel="Delete section"
+      title={t("delete.title", { number: section.section_number })}
+      description={t("delete.description")}
+      confirmLabel={t("delete.confirmLabel")}
       isPending={mutation.isPending}
-      error={mutation.isError ? getErrorMessage(mutation.error, { INTEGRITY_CONFLICT: "This section has registration history, so it cannot be deleted." }) : undefined}
+      error={mutation.isError ? getMessage(mutation.error, { INTEGRITY_CONFLICT: t("delete.errors.integrityConflict") }) : undefined}
       onConfirm={(close) => mutation.mutate(undefined, { onSuccess: close })}
     />
   );

@@ -2,24 +2,23 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { HelpCircle, Maximize2, Minimize2, Paperclip, Send, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { ChatMessage, MessageBubble, chatQueries, markMyThreadRead, sendMyMessage, useChatSocket } from "@/entities/chat";
 import { useSessionUser } from "@/entities/user";
-import { getErrorMessage } from "@/shared/api";
+import { useApiErrorMessage } from "@/shared/api";
 import { cn } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";
 import { Textarea } from "@/shared/ui/textarea";
 
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif", "application/pdf"];
 const MAX_BYTES = 15 * 1024 * 1024;
-const MESSAGES = {
-  UNSUPPORTED_MEDIA_TYPE: "Attach a JPEG, PNG, WebP, GIF image or PDF.",
-  FILE_TOO_LARGE: "Attachments must be 15 MB or smaller.",
-};
 
 export function ChatWidget({ wsUrl }: { wsUrl: string }) {
+  const t = useTranslations("widgets.supportChat");
+  const getMessage = useApiErrorMessage();
   const user = useSessionUser();
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
@@ -85,15 +84,15 @@ export function ChatWidget({ wsUrl }: { wsUrl: string }) {
       setBody("");
       setPendingFile(null);
     },
-    onError: (error) => toast.error(getErrorMessage(error, MESSAGES)),
+    onError: (error) => toast.error(getMessage(error)),
   });
 
   function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     event.target.value = "";
     if (!file) return;
-    if (!ACCEPTED_TYPES.includes(file.type)) return toast.error(MESSAGES.UNSUPPORTED_MEDIA_TYPE);
-    if (file.size > MAX_BYTES) return toast.error(MESSAGES.FILE_TOO_LARGE);
+    if (!ACCEPTED_TYPES.includes(file.type)) return toast.error(t("unsupportedFileType"));
+    if (file.size > MAX_BYTES) return toast.error(t("fileTooLarge"));
     setPendingFile(file);
   }
 
@@ -119,7 +118,7 @@ export function ChatWidget({ wsUrl }: { wsUrl: string }) {
         size="icon"
         className="fixed right-4 bottom-4 z-40 size-14 rounded-full shadow-lg"
         onClick={handleOpen}
-        aria-label="Contact administration"
+        aria-label={t("contactAdministration")}
       >
         <HelpCircle className="size-6" aria-hidden />
         {hasUnread && <span className="border-background absolute top-0 right-0 size-3 rounded-full border-2 bg-red-500" aria-hidden />}
@@ -127,7 +126,7 @@ export function ChatWidget({ wsUrl }: { wsUrl: string }) {
       {open && (
         <div
           role="dialog"
-          aria-label="Support chat"
+          aria-label={t("dialogLabel")}
           className={cn(
             "bg-card fixed z-50 flex flex-col overflow-hidden rounded-xl border shadow-2xl",
             fullscreen
@@ -136,7 +135,7 @@ export function ChatWidget({ wsUrl }: { wsUrl: string }) {
           )}
         >
           <div className="flex items-center justify-between border-b px-4 py-3">
-            <p className="text-sm font-semibold">Contact administration</p>
+            <p className="text-sm font-semibold">{t("contactAdministration")}</p>
             <div className="flex items-center gap-1">
               <Button
                 type="button"
@@ -144,19 +143,17 @@ export function ChatWidget({ wsUrl }: { wsUrl: string }) {
                 size="icon"
                 className="size-7"
                 onClick={() => setFullscreen((value) => !value)}
-                aria-label={fullscreen ? "Exit fullscreen" : "Expand to fullscreen"}
+                aria-label={fullscreen ? t("exitFullscreen") : t("expandFullscreen")}
               >
                 {fullscreen ? <Minimize2 className="size-4" aria-hidden /> : <Maximize2 className="size-4" aria-hidden />}
               </Button>
-              <Button type="button" variant="ghost" size="icon" className="size-7" onClick={() => setOpen(false)} aria-label="Close chat">
+              <Button type="button" variant="ghost" size="icon" className="size-7" onClick={() => setOpen(false)} aria-label={t("closeChat")}>
                 <X className="size-4" aria-hidden />
               </Button>
             </div>
           </div>
           <div ref={scrollRef} className="flex-1 space-y-2 overflow-y-auto p-3">
-            {messages.length === 0 && (
-              <p className="text-muted-foreground mt-8 text-center text-sm">Ask the administration a question, and they&apos;ll reply here.</p>
-            )}
+            {messages.length === 0 && <p className="text-muted-foreground mt-8 text-center text-sm">{t("emptyMessages")}</p>}
             {messages.map((message) => (
               <MessageBubble key={message.id} message={message} isMine={message.sender_id === user.id} />
             ))}
@@ -165,20 +162,20 @@ export function ChatWidget({ wsUrl }: { wsUrl: string }) {
             {pendingFile && (
               <div className="bg-muted mb-2 flex items-center justify-between rounded-md px-2 py-1 text-xs">
                 <span className="truncate">{pendingFile.name}</span>
-                <button type="button" onClick={() => setPendingFile(null)} aria-label="Remove attachment">
+                <button type="button" onClick={() => setPendingFile(null)} aria-label={t("removeAttachment")}>
                   <X className="size-3.5" aria-hidden />
                 </button>
               </div>
             )}
             <div className="flex items-end gap-2">
-              <Button type="button" variant="ghost" size="icon" className="size-9 shrink-0" onClick={() => fileInputRef.current?.click()} aria-label="Attach a file or photo">
+              <Button type="button" variant="ghost" size="icon" className="size-9 shrink-0" onClick={() => fileInputRef.current?.click()} aria-label={t("attachFile")}>
                 <Paperclip className="size-4" aria-hidden />
               </Button>
               <Textarea
                 value={body}
                 onChange={(event) => setBody(event.target.value)}
                 onKeyDown={handleComposerKeyDown}
-                placeholder="Type your question…"
+                placeholder={t("composerPlaceholder")}
                 className="max-h-24 min-h-9 flex-1 resize-none py-2"
                 rows={1}
               />
@@ -188,7 +185,7 @@ export function ChatWidget({ wsUrl }: { wsUrl: string }) {
                 className="size-9 shrink-0"
                 onClick={submitMessage}
                 disabled={send.isPending || (!body.trim() && !pendingFile)}
-                aria-label="Send"
+                aria-label={t("send")}
               >
                 <Send className="size-4" aria-hidden />
               </Button>

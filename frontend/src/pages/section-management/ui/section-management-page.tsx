@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { Layers, Plus } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useMemo } from "react";
 
@@ -18,6 +19,7 @@ import { PageHeader } from "@/shared/ui/page-header";
 import { EmptyState, QueryState } from "@/shared/ui/states";
 
 export function SectionManagementPage() {
+  const t = useTranslations("pages.sectionManagement");
   const { semesters, semesterId, setSemesterId } = useSemesterParam({ defaultToAll: true });
   const sections = useQuery(sectionQueries.list({ semester_id: semesterId }));
   const courses = useQuery(courseQueries.list());
@@ -39,23 +41,27 @@ export function SectionManagementPage() {
 
   const columns: Column<Section>[] = [
     {
-      header: "Course",
+      header: t("columns.course"),
       cell: (section) => {
         const course = courseById.get(section.course_id);
         return <span className="font-medium">{course ? `${course.course_code} · ${course.course_title}` : "…"}</span>;
       },
     },
-    { header: "Section", cell: (section) => section.section_number },
-    { header: "Semester", cell: (section) => semesterById.get(section.semester_id)?.name ?? "…" },
-    { header: "Teacher", cell: (section) => (section.teacher_id === null ? "Unassigned" : <span className="break-all">{section.teacher_name ?? userById.get(section.teacher_id)?.email ?? "…"}</span>) },
-    { header: "Meetings", cell: (section) => <MeetingList meetings={section.meetings} /> },
-    { header: "Seats", className: "tabular-nums", cell: (section) => `${section.enrolled_count} / ${section.capacity}` },
+    { header: t("columns.section"), cell: (section) => section.section_number },
+    { header: t("columns.semester"), cell: (section) => semesterById.get(section.semester_id)?.name ?? "…" },
     {
-      header: "Actions",
+      header: t("columns.teacher"),
+      cell: (section) =>
+        section.teacher_id === null ? t("unassigned") : <span className="break-all">{section.teacher_name ?? userById.get(section.teacher_id)?.email ?? "…"}</span>,
+    },
+    { header: t("columns.meetings"), cell: (section) => <MeetingList meetings={section.meetings} /> },
+    { header: t("columns.seats"), className: "tabular-nums", cell: (section) => `${section.enrolled_count} / ${section.capacity}` },
+    {
+      header: t("columns.actions"),
       cell: (section) => (
         <div className="flex justify-end gap-1 md:justify-start">
           <Button asChild variant="ghost" size="sm">
-            <Link href={`/admin/sections/${section.section_id}/grades`}>Grades</Link>
+            <Link href={`/admin/sections/${section.section_id}/grades`}>{t("gradesLink")}</Link>
           </Button>
           {options && (
             <SectionFormDialog
@@ -63,7 +69,7 @@ export function SectionManagementPage() {
               options={options}
               trigger={
                 <Button variant="ghost" size="sm">
-                  Edit
+                  {t("edit")}
                 </Button>
               }
             />
@@ -77,8 +83,8 @@ export function SectionManagementPage() {
   return (
     <>
       <PageHeader
-        title="Sections"
-        description="Offerings of a course in a semester, with teacher, capacity and weekly meetings."
+        title={t("title")}
+        description={t("description")}
         actions={
           options && (
             <SectionFormDialog
@@ -86,7 +92,7 @@ export function SectionManagementPage() {
               trigger={
                 <Button>
                   <Plus aria-hidden />
-                  Add section
+                  {t("addSection")}
                 </Button>
               }
             />
@@ -99,10 +105,10 @@ export function SectionManagementPage() {
       <QueryState query={sections}>
         {() =>
           rows.length === 0 ? (
-            <EmptyState icon={Layers} title="No sections found" />
+            <EmptyState icon={Layers} title={t("empty.title")} />
           ) : (
             <>
-              <DataTable caption="Course sections" columns={columns} rows={pagination.pageItems} rowKey={(section) => section.section_id} />
+              <DataTable caption={t("table.caption")} columns={columns} rows={pagination.pageItems} rowKey={(section) => section.section_id} />
               <PaginationControls page={pagination.page} pageCount={pagination.pageCount} total={pagination.total} onPageChange={pagination.setPage} />
             </>
           )

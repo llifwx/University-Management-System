@@ -1,4 +1,5 @@
 export { apiRequest, apiUpload, fetchAllPages, fetchTotal, parseApiError } from "./client";
 export type { Page, Query } from "./client";
-export { ApiError, NETWORK_ERROR_MESSAGE, applyFieldErrors, getErrorMessage } from "./errors";
+export { ApiError, applyFieldErrors, getErrorMessage } from "./errors";
 export type { components } from "./schema";
+export { useApiErrorMessage } from "./use-error-message";

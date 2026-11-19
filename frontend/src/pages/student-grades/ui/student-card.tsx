@@ -1,20 +1,22 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 
 import { studentQueries } from "@/entities/student";
 import { Card, CardContent } from "@/shared/ui/card";
 
 export function StudentCard({ studentId }: { studentId?: number }) {
+  const t = useTranslations("pages.studentGrades.studentCard");
   const me = useQuery({ ...studentQueries.me(), enabled: !studentId });
   const other = useQuery({ ...studentQueries.detail(studentId ?? 0), enabled: !!studentId });
   const data = studentId ? other.data : me.data;
   if (!data) return null;
   const rows = [
-    ["Program", data.program ?? "Not set"],
-    ["ID", data.student_number],
-    ["Student", data.full_name],
-    ["Year of study", data.year_level],
+    [t("program"), data.program ?? t("notSet")],
+    [t("id"), data.student_number],
+    [t("student"), data.full_name],
+    [t("yearOfStudy"), data.year_level],
   ];
   return (
     <Card className="mx-auto mb-6 max-w-md shadow-sm">

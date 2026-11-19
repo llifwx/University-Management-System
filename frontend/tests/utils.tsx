@@ -1,9 +1,12 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render } from "@testing-library/react";
+import { NextIntlClientProvider } from "next-intl";
 import { ReactElement } from "react";
 import { vi } from "vitest";
 
 import { SessionProvider, User } from "@/entities/user";
+
+import messages from "../messages/en.json";
 
 export const STUDENT_USER: User = { id: 1, email: "s@example.edu", role: "STUDENT", is_active: true };
 
@@ -11,9 +14,11 @@ export function renderWithClient(ui: ReactElement, user: User = STUDENT_USER) {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   const invalidate = vi.spyOn(client, "invalidateQueries");
   const result = render(
-    <QueryClientProvider client={client}>
-      <SessionProvider user={user}>{ui}</SessionProvider>
-    </QueryClientProvider>,
+    <NextIntlClientProvider locale="en" messages={messages}>
+      <QueryClientProvider client={client}>
+        <SessionProvider user={user}>{ui}</SessionProvider>
+      </QueryClientProvider>
+    </NextIntlClientProvider>,
   );
   return { ...result, client, invalidate };
 }

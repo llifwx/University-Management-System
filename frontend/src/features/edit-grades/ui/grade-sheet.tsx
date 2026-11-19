@@ -2,11 +2,12 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Lock, Users } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { toast } from "sonner";
 
 import { GradeInput, GradeSheetRow, gradeQueries } from "@/entities/grade";
-import { getErrorMessage } from "@/shared/api";
+import { useApiErrorMessage } from "@/shared/api";
 import { Badge } from "@/shared/ui/badge";
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
@@ -16,9 +17,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { saveGrades } from "../api/save-grades";
 
 const FIELDS = [
-  { key: "attestation_1", label: "Attestation 1", max: 30 },
-  { key: "attestation_2", label: "Attestation 2", max: 30 },
-  { key: "final_exam", label: "Final exam", max: 40 },
+  { key: "attestation_1", max: 30 },
+  { key: "attestation_2", max: 30 },
+  { key: "final_exam", max: 40 },
 ] as const;
 type Field = (typeof FIELDS)[number]["key"];
 type Draft = Record<number, Partial<Record<Field, string>>>;
@@ -33,24 +34,28 @@ function parse(value: string, max: number): number | null | undefined {
   return Number.isFinite(number) && number >= 0 && number <= max ? Math.round(number * 100) / 100 : undefined;
 }
 
-const MESSAGES = {
-  GRADING_CLOSED: "The semester has ended; ask an administrator to change grades.",
-  NOT_ADMITTED: `A final exam mark needs at least ${ADMISSION_MIN} attestation points.`,
-};
-
 export function GradeSheet({ sectionId }: { sectionId: number }) {
+  const t = useTranslations("features.editGrades");
+  const tCommon = useTranslations("common");
+  const getMessage = useApiErrorMessage();
   const queryClient = useQueryClient();
   const sheet = useQuery(gradeQueries.sheet(sectionId));
   const [draft, setDraft] = useState<Draft>({});
+
+  const fieldLabels: Record<Field, string> = {
+    attestation_1: t("fields.attestation1"),
+    attestation_2: t("fields.attestation2"),
+    final_exam: t("fields.finalExam"),
+  };
 
   const mutation = useMutation({
     mutationFn: (rows: GradeInput[]) => saveGrades(sectionId, rows),
     onSuccess: (data) => {
       queryClient.setQueryData(gradeQueries.sheet(sectionId).queryKey, data);
       setDraft({});
-      toast.success("Grades saved.");
+      toast.success(t("toast.saved"));
     },
-    onError: (error) => toast.error(getErrorMessage(error, MESSAGES)),
+    onError: (error) => toast.error(getMessage(error, { NOT_ADMITTED: t("errors.notAdmitted", { min: ADMISSION_MIN }) })),
   });
 
   const valueOf = (row: GradeSheetRow, key: Field) => draft[row.registration_id]?.[key] ?? row[key]?.toString() ?? "";
@@ -60,12 +65,12 @@ export function GradeSheet({ sectionId }: { sectionId: number }) {
     const payload: GradeInput[] = [];
     for (const row of rows.filter((r) => draft[r.registration_id])) {
       const item: GradeInput = { registration_id: row.registration_id };
-      for (const { key, label, max } of FIELDS) {
+      for (const { key, max } of FIELDS) {
         const parsed = parse(valueOf(row, key), max);
-        if (parsed === undefined) return toast.error(`${row.full_name}: ${label} must be between 0 and ${max}.`);
+        if (parsed === undefined) return toast.error(t("validation.markRange", { name: row.full_name, field: fieldLabels[key], max }));
         item[key] = parsed;
       }
-      if (item.final_exam != null && !admittedNow(row)) return toast.error(`${row.full_name} is not admitted to the final exam.`);
+      if (item.final_exam != null && !admittedNow(row)) return toast.error(t("validation.notAdmitted", { name: row.full_name }));
       payload.push(item);
     }
     mutation.mutate(payload);
@@ -75,7 +80,7 @@ export function GradeSheet({ sectionId }: { sectionId: number }) {
     <QueryState query={sheet}>
       {({ rows, closed, editable }) =>
         rows.length === 0 ? (
-          <EmptyState icon={Users} title="No students enrolled yet" />
+          <EmptyState icon={Users} title={t("emptyTitle")} />
         ) : (
           <form
             onSubmit={(event) => {
@@ -87,24 +92,22 @@ export function GradeSheet({ sectionId }: { sectionId: number }) {
             {closed && (
               <p className="bg-muted flex items-center gap-2 rounded-md px-3 py-2 text-sm">
                 <Lock className="size-4" aria-hidden />
-                {editable
-                  ? "The semester has ended. Teachers can no longer change these grades; as an administrator you still can."
-                  : "The semester has ended, so grades are locked. Ask an administrator for corrections."}
+                {editable ? t("closedBanner.adminEditable") : t("closedBanner.locked")}
               </p>
             )}
             <Table>
-              <caption className="sr-only">Grade sheet</caption>
+              <caption className="sr-only">{t("table.caption")}</caption>
               <TableHeader>
                 <TableRow>
-                  <TableHead>ID</TableHead>
-                  <TableHead>Student</TableHead>
+                  <TableHead>{t("table.id")}</TableHead>
+                  <TableHead>{t("table.student")}</TableHead>
                   {FIELDS.map((f) => (
                     <TableHead key={f.key} className="w-32">
-                      {f.label} <span className="text-muted-foreground">/ {f.max}</span>
+                      {fieldLabels[f.key]} <span className="text-muted-foreground">/ {f.max}</span>
                     </TableHead>
                   ))}
-                  <TableHead>Total</TableHead>
-                  <TableHead>Grade</TableHead>
+                  <TableHead>{t("table.total")}</TableHead>
+                  <TableHead>{t("table.grade")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -114,13 +117,13 @@ export function GradeSheet({ sectionId }: { sectionId: number }) {
                     <TableRow key={row.registration_id}>
                       <TableCell className="tabular-nums">{row.student_number}</TableCell>
                       <TableCell className="font-medium">{row.full_name}</TableCell>
-                      {FIELDS.map(({ key, label, max }) => {
+                      {FIELDS.map(({ key, max }) => {
                         const blocked = key === "final_exam" && !admitted;
                         return (
                           <TableCell key={key}>
                             {blocked && !valueOf(row, key) ? (
-                              <Badge variant="secondary" title={`Attestations total below ${ADMISSION_MIN}`}>
-                                Not admitted
+                              <Badge variant="secondary" title={t("notAdmittedTitle", { min: ADMISSION_MIN })}>
+                                {t("notAdmittedBadge")}
                               </Badge>
                             ) : (
                               <Input
@@ -131,7 +134,7 @@ export function GradeSheet({ sectionId }: { sectionId: number }) {
                                 step={0.01}
                                 disabled={!editable}
                                 aria-invalid={blocked || undefined}
-                                aria-label={`${label} for ${row.full_name}`}
+                                aria-label={t("fieldAriaLabel", { field: fieldLabels[key], name: row.full_name })}
                                 value={valueOf(row, key)}
                                 onChange={(event) => setDraft((d) => ({ ...d, [row.registration_id]: { ...d[row.registration_id], [key]: event.target.value } }))}
                               />
@@ -149,17 +152,14 @@ export function GradeSheet({ sectionId }: { sectionId: number }) {
             {editable && (
               <div className="flex flex-wrap items-center gap-3">
                 <Button type="submit" disabled={mutation.isPending || Object.keys(draft).length === 0}>
-                  {mutation.isPending ? "Saving…" : "Save grades"}
+                  {mutation.isPending ? tCommon("saving") : t("saveLabel")}
                 </Button>
                 {Object.keys(draft).length > 0 && (
                   <Button type="button" variant="ghost" onClick={() => setDraft({})}>
-                    Discard changes
+                    {t("discardLabel")}
                   </Button>
                 )}
-                <p className="text-muted-foreground text-sm">
-                  The final exam opens at {ADMISSION_MIN}+ attestation points. A letter grade appears once the final exam is entered; with no final by the end of the semester it is
-                  an F.
-                </p>
+                <p className="text-muted-foreground text-sm">{t("helperText", { min: ADMISSION_MIN })}</p>
               </div>
             )}
           </form>

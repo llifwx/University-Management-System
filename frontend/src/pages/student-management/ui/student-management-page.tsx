@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { Plus, Users } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
@@ -19,11 +20,12 @@ import { PageHeader } from "@/shared/ui/page-header";
 import { EmptyState, QueryState } from "@/shared/ui/states";
 
 function StudentDetails({ student, active }: { student: Student; active: boolean | undefined }) {
+  const t = useTranslations("pages.studentManagement");
   const rows: [string, string | number][] = [
-    ["Email", student.email],
-    ["Program", student.program ?? "Not set"],
-    ["Year level", student.year_level],
-    ["Account", active === undefined ? "…" : active ? "Active" : "Inactive"],
+    [t("fields.email"), student.email],
+    [t("fields.program"), student.program ?? t("notSet")],
+    [t("fields.yearLevel"), student.year_level],
+    [t("fields.account"), active === undefined ? "…" : active ? t("active") : t("inactive")],
   ];
   return (
     <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-sm">
@@ -38,6 +40,7 @@ function StudentDetails({ student, active }: { student: Student; active: boolean
 }
 
 export function StudentManagementPage() {
+  const t = useTranslations("pages.studentManagement");
   const [term, setTerm] = useState("");
   const students = useQuery(studentQueries.list());
   const users = useQuery(userQueries.list());
@@ -52,29 +55,29 @@ export function StudentManagementPage() {
   const pagination = useClientPagination(filtered);
 
   const columns: Column<Student>[] = [
-    { header: "Name", cell: (student) => <span className="font-medium">{student.full_name}</span> },
-    { header: "Email", cell: (student) => <span className="break-all">{student.email}</span> },
-    { header: "Program", cell: (student) => student.program ?? "Not set" },
-    { header: "Year", cell: (student) => student.year_level },
+    { header: t("columns.name"), cell: (student) => <span className="font-medium">{student.full_name}</span> },
+    { header: t("columns.email"), cell: (student) => <span className="break-all">{student.email}</span> },
+    { header: t("columns.program"), cell: (student) => student.program ?? t("notSet") },
+    { header: t("columns.year"), cell: (student) => student.year_level },
     {
-      header: "Account",
+      header: t("columns.account"),
       cell: (student) => {
         const active = activeByUser.get(student.user_id);
         if (active === undefined) return "…";
-        return <Badge variant={active ? "default" : "secondary"}>{active ? "Active" : "Inactive"}</Badge>;
+        return <Badge variant={active ? "default" : "secondary"}>{active ? t("active") : t("inactive")}</Badge>;
       },
     },
     {
-      header: "Actions",
+      header: t("columns.actions"),
       cell: (student) => (
         <div className="flex flex-wrap justify-end gap-1 md:justify-start">
           <Button asChild variant="ghost" size="sm">
-            <Link href={`/admin/students/${student.student_id}/transcript`}>Grades</Link>
+            <Link href={`/admin/students/${student.student_id}/transcript`}>{t("grades")}</Link>
           </Button>
           <FormDialog
             trigger={
               <Button variant="ghost" size="sm">
-                Details
+                {t("details")}
               </Button>
             }
             title={student.full_name}
@@ -85,7 +88,7 @@ export function StudentManagementPage() {
             student={student}
             trigger={
               <Button variant="ghost" size="sm">
-                Edit
+                {t("edit")}
               </Button>
             }
           />
@@ -98,30 +101,30 @@ export function StudentManagementPage() {
   return (
     <>
       <PageHeader
-        title="Students"
-        description="Create, edit and deactivate student accounts."
+        title={t("title")}
+        description={t("description")}
         actions={
           <StudentFormDialog
             trigger={
               <Button>
                 <Plus aria-hidden />
-                Add student
+                {t("addStudent")}
               </Button>
             }
           />
         }
       />
       <div className="mb-4 max-w-sm space-y-1.5">
-        <Label htmlFor="student-search">Search</Label>
-        <Input id="student-search" type="search" placeholder="Name, email or student ID" value={term} onChange={(event) => setTerm(event.target.value)} />
+        <Label htmlFor="student-search">{t("search")}</Label>
+        <Input id="student-search" type="search" placeholder={t("searchPlaceholder")} value={term} onChange={(event) => setTerm(event.target.value)} />
       </div>
       <QueryState query={students}>
         {() =>
           filtered.length === 0 ? (
-            <EmptyState icon={Users} title="No students found" />
+            <EmptyState icon={Users} title={t("empty")} />
           ) : (
             <>
-              <DataTable caption="Students" columns={columns} rows={pagination.pageItems} rowKey={(student) => student.student_id} />
+              <DataTable caption={t("caption")} columns={columns} rows={pagination.pageItems} rowKey={(student) => student.student_id} />
               <PaginationControls page={pagination.page} pageCount={pagination.pageCount} total={pagination.total} onPageChange={pagination.setPage} />
             </>
           )
