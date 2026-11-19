@@ -8,6 +8,7 @@
       "admin": "Әкімшілік",
       "transcript": "Транскрипт",
       "login": "Кіру",
+      "adminRooms": "Бөлмелер",
       "adminSections": "Секциялар",
       "adminSemesters": "Семестрлер",
       "studentAttestation": "Студент аттестациясы",
@@ -246,6 +247,37 @@
       "errors": {
         "duplicateCode": "Бұл кодпен пән бұрыннан бар."
       }
+    },
+    "manageRoom": {
+      "fields": {
+        "code": "Бөлме коды",
+        "building": "Корпус (міндетті емес)",
+        "capacity": "Сыйымдылық (міндетті емес)",
+        "active": "Белсенді"
+      },
+      "validation": {
+        "codeRequired": "Бөлме кодын енгізіңіз.",
+        "codeTooLong": "20 таңбадан аспауы керек.",
+        "buildingTooLong": "80 таңбадан аспауы керек.",
+        "capacityPositive": "Сыйымдылық кемінде 1 болуы керек."
+      },
+      "toast": {
+        "updated": "Бөлме жаңартылды.",
+        "created": "Бөлме құрылды.",
+        "deleted": "Бөлме өшірілді."
+      },
+      "errors": {
+        "codeInUse": "Бұл кодпен бөлме бұрыннан бар."
+      },
+      "availableAriaLabel": "{code} тағайындауға қолжетімді",
+      "deleteButton": "Өшіру",
+      "deleteConfirmTitle": "{code} өшірілсін бе?",
+      "deleteConfirmDescription": "Бұл бөлмені біржолата өшіреді. Оған тағайындалған сабақтар кестесін сақтайды, бірақ бөлмесіз қалады.",
+      "deleteConfirmLabel": "Бөлмені өшіру",
+      "saveChangesLabel": "Өзгерістерді сақтау",
+      "createLabel": "Бөлме құру",
+      "editDialogTitle": "{code} өзгерту",
+      "addDialogTitle": "Бөлме қосу"
     },
     "manageSection": {
       "form": {
@@ -753,6 +785,25 @@
           "status": "Мәртебе",
           "actions": "Әрекеттер"
         }
+      }
+    },
+    "roomManagement": {
+      "title": "Бөлмелер",
+      "description": "Кесте үшін қолжетімді аудиториялар. Белсенді емес бөлмені жаңа сабақтарға тағайындау мүмкін емес.",
+      "addRoom": "Бөлме қосу",
+      "columns": {
+        "code": "Код",
+        "building": "Корпус",
+        "capacity": "Сыйымдылық",
+        "availableForAssignment": "Тағайындауға қолжетімді",
+        "actions": "Әрекеттер"
+      },
+      "edit": "Өзгерту",
+      "empty": {
+        "title": "Бөлмелер әзірге жоқ"
+      },
+      "table": {
+        "caption": "Бөлмелер"
       }
     },
     "sectionManagement": {

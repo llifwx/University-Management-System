@@ -8,6 +8,7 @@
       "admin": "Administration",
       "transcript": "Transcript",
       "login": "Sign in",
+      "adminRooms": "Rooms",
       "adminSections": "Sections",
       "adminSemesters": "Semesters",
       "studentAttestation": "Student attestation",
@@ -246,6 +247,37 @@
       "errors": {
         "duplicateCode": "A course with this code already exists."
       }
+    },
+    "manageRoom": {
+      "fields": {
+        "code": "Room code",
+        "building": "Building (optional)",
+        "capacity": "Capacity (optional)",
+        "active": "Active"
+      },
+      "validation": {
+        "codeRequired": "Enter a room code.",
+        "codeTooLong": "Use at most 20 characters.",
+        "buildingTooLong": "Use at most 80 characters.",
+        "capacityPositive": "Capacity must be at least 1."
+      },
+      "toast": {
+        "updated": "Room updated.",
+        "created": "Room created.",
+        "deleted": "Room deleted."
+      },
+      "errors": {
+        "codeInUse": "A room with this code already exists."
+      },
+      "availableAriaLabel": "{code} available for assignment",
+      "deleteButton": "Delete",
+      "deleteConfirmTitle": "Delete {code}?",
+      "deleteConfirmDescription": "This permanently removes the room. Meetings assigned to it keep their schedule but lose their room.",
+      "deleteConfirmLabel": "Delete room",
+      "saveChangesLabel": "Save changes",
+      "createLabel": "Create room",
+      "editDialogTitle": "Edit {code}",
+      "addDialogTitle": "Add room"
     },
     "manageSection": {
       "form": {
@@ -753,6 +785,25 @@
           "status": "Status",
           "actions": "Actions"
         }
+      }
+    },
+    "roomManagement": {
+      "title": "Rooms",
+      "description": "Classrooms available for scheduling. An inactive room cannot be assigned to new meetings.",
+      "addRoom": "Add room",
+      "columns": {
+        "code": "Code",
+        "building": "Building",
+        "capacity": "Capacity",
+        "availableForAssignment": "Available for assignment",
+        "actions": "Actions"
+      },
+      "edit": "Edit",
+      "empty": {
+        "title": "No rooms yet"
+      },
+      "table": {
+        "caption": "Rooms"
       }
     },
     "sectionManagement": {
