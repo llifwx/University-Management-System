@@ -30,6 +30,7 @@
       "teacherDashboard": "Teaching dashboard",
       "sectionDetails": "Section details",
       "messages": "Messages",
+      "materials": "Materials",
       "notFoundTitle": "Page not found",
       "news": "News"
     },
@@ -619,6 +620,26 @@
       "deleteConfirmDescription": "This permanently removes the news item and its attachment.",
       "save": "Save changes",
       "editDialogTitle": "Edit news"
+    },
+    "manageMaterials": {
+      "fields": {
+        "section": "Course section",
+        "chooseSection": "Choose a section",
+        "category": "Category",
+        "title": "Title",
+        "description": "Description",
+        "descriptionHint": "Optional notes for students about this file.",
+        "file": "File"
+      },
+      "upload": "Upload",
+      "dialogTitle": "Upload material",
+      "toast": {
+        "uploaded": "Material uploaded.",
+        "deleted": "Material deleted."
+      },
+      "delete": "Delete",
+      "deleteConfirmTitle": "Delete “{title}”?",
+      "deleteConfirmDescription": "This permanently removes the file for every student in the section."
     }
   },
   "widgets": {
@@ -655,6 +676,7 @@
         "registrations": "Registrations",
         "staff": "Staff",
         "messages": "Messages",
+        "materials": "Materials",
         "supportChat": "Support chat",
         "news": "News"
       }
@@ -990,6 +1012,27 @@
         "unsupportedFileType": "Attach a JPEG, PNG, WebP, GIF image or PDF.",
         "fileTooLarge": "Attachments must be 15 MB or smaller.",
         "notEligible": "This person is not one of your teachers or students."
+      }
+    },
+    "materials": {
+      "title": "Materials",
+      "description": "Syllabi, homework and practice files shared for your courses.",
+      "upload": "Upload material",
+      "uploadedBy": "Uploaded by {name}",
+      "filters": {
+        "allCategories": "All categories",
+        "allCourses": "All courses"
+      },
+      "categories": {
+        "syllabus": "Syllabus",
+        "homework": "Homework",
+        "practice": "Practice",
+        "other": "Other"
+      },
+      "empty": {
+        "title": "No materials yet",
+        "description": "Files your teachers share will show up here.",
+        "noMatches": "No materials match the selected filters."
       }
     },
     "myCourses": {

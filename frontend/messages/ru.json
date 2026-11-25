@@ -30,6 +30,7 @@
       "teacherDashboard": "Панель преподавателя",
       "sectionDetails": "Информация о секции",
       "messages": "Сообщения",
+      "materials": "Материалы",
       "notFoundTitle": "Страница не найдена",
       "news": "Новости"
     },
@@ -619,6 +620,26 @@
       "deleteConfirmDescription": "Новость и её вложение будут удалены безвозвратно.",
       "save": "Сохранить",
       "editDialogTitle": "Редактирование новости"
+    },
+    "manageMaterials": {
+      "fields": {
+        "section": "Секция курса",
+        "chooseSection": "Выберите секцию",
+        "category": "Категория",
+        "title": "Название",
+        "description": "Описание",
+        "descriptionHint": "Необязательные заметки для студентов об этом файле.",
+        "file": "Файл"
+      },
+      "upload": "Загрузить",
+      "dialogTitle": "Загрузка материала",
+      "toast": {
+        "uploaded": "Материал загружен.",
+        "deleted": "Материал удалён."
+      },
+      "delete": "Удалить",
+      "deleteConfirmTitle": "Удалить «{title}»?",
+      "deleteConfirmDescription": "Файл будет окончательно удалён для всех студентов секции."
     }
   },
   "widgets": {
@@ -655,6 +676,7 @@
         "registrations": "Регистрации",
         "staff": "Сотрудники",
         "messages": "Сообщения",
+        "materials": "Материалы",
         "supportChat": "Чат поддержки",
         "news": "Новости"
       }
@@ -990,6 +1012,27 @@
         "unsupportedFileType": "Прикрепите изображение JPEG, PNG, WebP, GIF или PDF.",
         "fileTooLarge": "Размер вложения не должен превышать 15 МБ.",
         "notEligible": "Этот пользователь не является вашим преподавателем или студентом."
+      }
+    },
+    "materials": {
+      "title": "Материалы",
+      "description": "Силлабусы, домашние задания и материалы для практики по вашим курсам.",
+      "upload": "Загрузить материал",
+      "uploadedBy": "Загрузил(а) {name}",
+      "filters": {
+        "allCategories": "Все категории",
+        "allCourses": "Все курсы"
+      },
+      "categories": {
+        "syllabus": "Силлабус",
+        "homework": "Домашнее задание",
+        "practice": "Практика",
+        "other": "Другое"
+      },
+      "empty": {
+        "title": "Материалов пока нет",
+        "description": "Здесь появятся файлы, которыми поделятся ваши преподаватели.",
+        "noMatches": "Нет материалов, соответствующих выбранным фильтрам."
       }
     },
     "myCourses": {

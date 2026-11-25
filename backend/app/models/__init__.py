@@ -1,6 +1,7 @@
 from app.modules.auth.models import AuthSession, LoginFailure, RefreshToken, Role, User
 from app.modules.chat.models import ChatMessage, ChatThread
 from app.modules.courses.models import Course
+from app.modules.materials.models import CourseMaterial
 from app.modules.messaging.models import DirectMessage, MessageThread
 from app.modules.news.models import News
 from app.modules.registrations.models import Registration
@@ -27,4 +28,5 @@ __all__ = [
     "MessageThread",
     "DirectMessage",
     "News",
+    "CourseMaterial",
 ]
