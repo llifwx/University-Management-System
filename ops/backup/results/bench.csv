@@ -1,0 +1,5 @@
+rows,dump_mb,dump_s,dump_nocompress_s,dump_parallel_s,restore_s,restore_parallel_s
+10000,1,0.1,0.1,0.1,0.1,0.1
+100000,5,0.3,0.1,0.3,0.1,0.2
+500000,21,0.9,0.2,0.9,0.4,0.4
+1000000,41,1.7,0.3,1.6,0.6,0.6
