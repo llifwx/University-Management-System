@@ -12,7 +12,6 @@ import { useSessionUser } from "@/entities/user";
 import { useApiErrorMessage } from "@/shared/api";
 import { cn } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";
-import { PageHeader } from "@/shared/ui/page-header";
 import { EmptyState, ErrorState, ListSkeleton } from "@/shared/ui/states";
 import { Textarea } from "@/shared/ui/textarea";
 
@@ -189,9 +188,8 @@ export function MessagesPage({ wsUrl }: { wsUrl: string }) {
   }
 
   return (
-    <div className="flex h-[calc(100vh-7rem)] flex-col">
-      <PageHeader title={t("title")} description={t("description")} />
-      <div className="flex min-h-0 flex-1 overflow-hidden rounded-lg border">
+    <div className="-m-4 flex h-[calc(100dvh-3.5rem)] flex-col md:-m-6">
+      <div className="flex min-h-0 flex-1 overflow-hidden">
         <aside className="w-72 shrink-0 overflow-y-auto border-r">
           <ul className="space-y-1 p-2">
             <li>
