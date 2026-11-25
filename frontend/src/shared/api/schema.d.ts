@@ -784,6 +784,76 @@ export interface components {
             /** Student Id */
             student_id: number;
         };
+        /** AttendanceInput */
+        AttendanceInput: {
+            /** Registration Id */
+            registration_id: number;
+            /** Status */
+            status: "PRESENT" | "LATE" | "ABSENT" | null;
+        };
+        /** AttendanceRecord */
+        AttendanceRecord: {
+            /** Format: date */
+            class_date: string;
+            /** Format: time */
+            start_time: string;
+            /** Format: time */
+            end_time: string;
+            /** @enum {string} */
+            status: "PRESENT" | "LATE" | "ABSENT";
+        };
+        /** AttendanceRow */
+        AttendanceRow: {
+            registration_id: number;
+            student_number: string;
+            full_name: string;
+            status: "PRESENT" | "LATE" | "ABSENT" | null;
+        };
+        /** AttendanceSheet */
+        AttendanceSheet: {
+            lesson: components["schemas"]["ClassOut"];
+            rows: components["schemas"]["AttendanceRow"][];
+        };
+        /** ClassOut */
+        ClassOut: {
+            meeting_id: number;
+            section_id: number;
+            course_code: string;
+            course_title: string;
+            section_number: string;
+            /** Format: date */
+            class_date: string;
+            /** Format: time */
+            start_time: string;
+            /** Format: time */
+            end_time: string;
+            room_code: string | null;
+            enrolled: number;
+            marked: number;
+        };
+        /** CourseAttendance */
+        CourseAttendance: {
+            section_id: number;
+            course_code: string;
+            course_title: string;
+            present: number;
+            late: number;
+            absent: number;
+            rate: number | null;
+            records: components["schemas"]["AttendanceRecord"][];
+        };
+        /** SemesterAttendance */
+        SemesterAttendance: {
+            semester_id: number;
+            name: string;
+            /** Format: date */
+            start_date: string;
+            courses: components["schemas"]["CourseAttendance"][];
+        };
+        /** StudentAttendance */
+        StudentAttendance: {
+            semesters: components["schemas"]["SemesterAttendance"][];
+        };
         /** Body_login_api_v1_auth_login_post */
         Body_login_api_v1_auth_login_post: {
             /** Grant Type */
