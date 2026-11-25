@@ -29,7 +29,8 @@
       "teacherSchedule": "Teaching schedule",
       "teacherDashboard": "Teaching dashboard",
       "sectionDetails": "Section details",
-      "notFoundTitle": "Page not found"
+      "notFoundTitle": "Page not found",
+      "news": "News"
     },
     "notFound": {
       "heading": "404: Page not found",
@@ -595,6 +596,28 @@
       "label": "Semester",
       "allOption": "All semesters",
       "closedSuffix": " (closed)"
+    },
+    "manageNews": {
+      "fields": {
+        "title": "Title",
+        "body": "Text",
+        "file": "File (optional)",
+        "replaceFile": "Replace file (optional)",
+        "removeFile": "Remove attached file {name}"
+      },
+      "fileHint": "Image, PDF, Word, Excel or PowerPoint up to 15 MB.",
+      "publish": "Publish",
+      "dialogTitle": "Add news",
+      "toast": {
+        "created": "News published.",
+        "deleted": "News deleted.",
+        "updated": "News updated."
+      },
+      "delete": "Delete",
+      "deleteConfirmTitle": "Delete “{title}”?",
+      "deleteConfirmDescription": "This permanently removes the news item and its attachment.",
+      "save": "Save changes",
+      "editDialogTitle": "Edit news"
     }
   },
   "widgets": {
@@ -630,7 +653,8 @@
         "rooms": "Rooms",
         "registrations": "Registrations",
         "staff": "Staff",
-        "supportChat": "Support chat"
+        "supportChat": "Support chat",
+        "news": "News"
       }
     },
     "courseCatalog": {
@@ -1111,6 +1135,14 @@
       },
       "empty": "No students found",
       "caption": "Students"
+    },
+    "news": {
+      "title": "News",
+      "add": "Add news",
+      "empty": "No news yet",
+      "hasAttachment": "Has attachment",
+      "attachment": "Attachment",
+      "edit": "Edit"
     }
   }
 }

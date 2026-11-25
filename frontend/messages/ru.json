@@ -29,7 +29,8 @@
       "teacherSchedule": "Расписание занятий",
       "teacherDashboard": "Панель преподавателя",
       "sectionDetails": "Информация о секции",
-      "notFoundTitle": "Страница не найдена"
+      "notFoundTitle": "Страница не найдена",
+      "news": "Новости"
     },
     "notFound": {
       "heading": "404: Страница не найдена",
@@ -595,6 +596,28 @@
       "label": "Семестр",
       "allOption": "Все семестры",
       "closedSuffix": " (закрыт)"
+    },
+    "manageNews": {
+      "fields": {
+        "title": "Заголовок",
+        "body": "Текст",
+        "file": "Файл (необязательно)",
+        "replaceFile": "Заменить файл (необязательно)",
+        "removeFile": "Удалить прикреплённый файл {name}"
+      },
+      "fileHint": "Изображение, PDF, Word, Excel или PowerPoint до 15 МБ.",
+      "publish": "Опубликовать",
+      "dialogTitle": "Новая новость",
+      "toast": {
+        "created": "Новость опубликована.",
+        "deleted": "Новость удалена.",
+        "updated": "Новость обновлена."
+      },
+      "delete": "Удалить",
+      "deleteConfirmTitle": "Удалить «{title}»?",
+      "deleteConfirmDescription": "Новость и её вложение будут удалены безвозвратно.",
+      "save": "Сохранить",
+      "editDialogTitle": "Редактирование новости"
     }
   },
   "widgets": {
@@ -630,7 +653,8 @@
         "rooms": "Кабинеты",
         "registrations": "Регистрации",
         "staff": "Сотрудники",
-        "supportChat": "Чат поддержки"
+        "supportChat": "Чат поддержки",
+        "news": "Новости"
       }
     },
     "courseCatalog": {
@@ -1111,6 +1135,14 @@
       },
       "empty": "Студенты не найдены",
       "caption": "Студенты"
+    },
+    "news": {
+      "title": "Новости",
+      "add": "Добавить новость",
+      "empty": "Новостей пока нет",
+      "hasAttachment": "Есть вложение",
+      "attachment": "Вложение",
+      "edit": "Редактировать"
     }
   }
 }
