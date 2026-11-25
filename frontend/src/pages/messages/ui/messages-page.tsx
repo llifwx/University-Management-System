@@ -190,35 +190,34 @@ export function MessagesPage({ wsUrl }: { wsUrl: string }) {
   return (
     <div className="-m-4 flex h-[calc(100dvh-3.5rem)] flex-col md:-m-6">
       <div className="flex min-h-0 flex-1 overflow-hidden">
-        <aside className="w-72 shrink-0 overflow-y-auto border-r">
-          <ul className="space-y-1 p-2">
-            <li>
-              <button
-                type="button"
-                onClick={() => setSelected({ kind: "support" })}
-                className={cn(
-                  "flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors",
-                  active.kind === "support" ? "bg-accent" : "hover:bg-accent/50",
-                )}
-              >
-                <HelpCircle className="size-4 shrink-0" aria-hidden />
-                <span className="flex-1 truncate font-medium">{t("supportLabel")}</span>
-                {(supportThread.data?.user_unread ?? false) && <span className="size-2 shrink-0 rounded-full bg-red-500" aria-hidden />}
-              </button>
-            </li>
-          </ul>
-          <div className="border-t" />
-          {contacts.isError ? (
-            <ErrorState error={contacts.error} onRetry={() => contacts.refetch()} />
-          ) : contacts.isPending ? (
-            <div className="p-3">
-              <ListSkeleton />
-            </div>
-          ) : contactRows.length === 0 ? (
-            <EmptyState title={t("empty.noConversations.title")} description={t("empty.noConversations.description")} />
-          ) : (
-            <ul className="space-y-1 p-2">{contactRows.map(contactRow)}</ul>
-          )}
+        <aside className="flex w-72 shrink-0 flex-col border-r">
+          <div className="border-b">
+            <button
+              type="button"
+              onClick={() => setSelected({ kind: "support" })}
+              className={cn(
+                "flex w-full items-center gap-2 px-4 py-3 text-left text-sm font-medium transition-colors",
+                active.kind === "support" ? "bg-accent" : "hover:bg-accent/50",
+              )}
+            >
+              <HelpCircle className="size-4 shrink-0" aria-hidden />
+              <span className="flex-1 truncate">{t("supportLabel")}</span>
+              {(supportThread.data?.user_unread ?? false) && <span className="size-2 shrink-0 rounded-full bg-red-500" aria-hidden />}
+            </button>
+          </div>
+          <div className="min-h-0 flex-1 overflow-y-auto">
+            {contacts.isError ? (
+              <ErrorState error={contacts.error} onRetry={() => contacts.refetch()} />
+            ) : contacts.isPending ? (
+              <div className="p-3">
+                <ListSkeleton />
+              </div>
+            ) : contactRows.length === 0 ? (
+              <EmptyState title={t("empty.noConversations.title")} description={t("empty.noConversations.description")} />
+            ) : (
+              <ul className="space-y-1 p-2">{contactRows.map(contactRow)}</ul>
+            )}
+          </div>
         </aside>
         <section className="flex min-w-0 flex-1 flex-col">
           <div className="border-b px-4 py-3">
