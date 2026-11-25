@@ -29,7 +29,8 @@
       "teacherSchedule": "Сабақ кестесі",
       "teacherDashboard": "Оқытушы панелі",
       "sectionDetails": "Секция туралы ақпарат",
-      "notFoundTitle": "Бет табылмады"
+      "notFoundTitle": "Бет табылмады",
+      "news": "Жаңалықтар"
     },
     "notFound": {
       "heading": "404: Бет табылмады",
@@ -595,6 +596,28 @@
       "label": "Семестр",
       "allOption": "Барлық семестрлер",
       "closedSuffix": " (жабық)"
+    },
+    "manageNews": {
+      "fields": {
+        "title": "Тақырып",
+        "body": "Мәтін",
+        "file": "Файл (міндетті емес)",
+        "replaceFile": "Файлды ауыстыру (міндетті емес)",
+        "removeFile": "Тіркелген {name} файлын жою"
+      },
+      "fileHint": "15 МБ-қа дейінгі сурет, PDF, Word, Excel немесе PowerPoint.",
+      "publish": "Жариялау",
+      "dialogTitle": "Жаңа жаңалық",
+      "toast": {
+        "created": "Жаңалық жарияланды.",
+        "deleted": "Жаңалық жойылды.",
+        "updated": "Жаңалық жаңартылды."
+      },
+      "delete": "Жою",
+      "deleteConfirmTitle": "«{title}» жойылсын ба?",
+      "deleteConfirmDescription": "Жаңалық пен оның тіркемесі біржола жойылады.",
+      "save": "Сақтау",
+      "editDialogTitle": "Жаңалықты өңдеу"
     }
   },
   "widgets": {
@@ -630,7 +653,8 @@
         "rooms": "Бөлмелер",
         "registrations": "Тіркеулер",
         "staff": "Қызметкерлер",
-        "supportChat": "Қолдау көрсету чаты"
+        "supportChat": "Қолдау көрсету чаты",
+        "news": "Жаңалықтар"
       }
     },
     "courseCatalog": {
@@ -1111,6 +1135,14 @@
       },
       "empty": "Студенттер табылмады",
       "caption": "Студенттер"
+    },
+    "news": {
+      "title": "Жаңалықтар",
+      "add": "Жаңалық қосу",
+      "empty": "Әзірге жаңалықтар жоқ",
+      "hasAttachment": "Тіркеме бар",
+      "attachment": "Тіркеме",
+      "edit": "Өңдеу"
     }
   }
 }

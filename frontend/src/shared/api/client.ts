@@ -58,11 +58,12 @@ export async function apiUpload<T>(
   file: File | null,
   signal?: AbortSignal,
   fields?: Record<string, string>,
+  method: "POST" | "PATCH" = "POST",
 ): Promise<T> {
   const formData = new FormData();
   for (const [key, value] of Object.entries(fields ?? {})) formData.append(key, value);
   if (file) formData.append("file", file);
-  const response = await fetch(`${PROXY_BASE}${path}`, { method: "POST", body: formData, signal });
+  const response = await fetch(`${PROXY_BASE}${path}`, { method, body: formData, signal });
   if (!response.ok) {
     const error = await parseApiError(response);
     if (response.status === 401) redirectToLogin();

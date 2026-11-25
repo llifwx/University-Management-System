@@ -1022,6 +1022,26 @@ export interface components {
              */
             created_at: string;
         };
+        /** NewsOut */
+        NewsOut: {
+            /** Id */
+            id: number;
+            /** Title */
+            title: string;
+            /** Body */
+            body: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Attachment Name */
+            attachment_name: string | null;
+            /** Attachment Content Type */
+            attachment_content_type: string | null;
+            /** Attachment Url */
+            attachment_url: string | null;
+        };
         /** Page[CourseOut] */
         Page_CourseOut_: {
             /** Items */

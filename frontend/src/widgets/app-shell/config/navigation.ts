@@ -1,4 +1,4 @@
-import { Award, BookOpen, CalendarDays, CalendarRange, ClipboardList, DoorOpen, FileText, GraduationCap, HelpCircle, Layers, LayoutDashboard, LucideIcon, Shield, User as UserIcon, Users } from "lucide-react";
+import { Award, BookOpen, CalendarDays, CalendarRange, ClipboardList, DoorOpen, FileText, GraduationCap, HelpCircle, Layers, LayoutDashboard, LucideIcon, Newspaper, Shield, User as UserIcon, Users } from "lucide-react";
 
 import type { Role } from "@/entities/user";
 
@@ -7,6 +7,7 @@ export type NavItem = { labelKey: string; href: string; icon: LucideIcon };
 
 const PROFILE: NavItem = { labelKey: "profile", href: "/profile", icon: UserIcon };
 const CATALOG: NavItem = { labelKey: "courseCatalog", href: "/courses", icon: BookOpen };
+const NEWS: NavItem = { labelKey: "news", href: "/news", icon: Newspaper };
 
 export const NAVIGATION: Record<Role, NavItem[]> = {
   STUDENT: [
@@ -16,6 +17,7 @@ export const NAVIGATION: Record<Role, NavItem[]> = {
     { labelKey: "schedule", href: "/schedule", icon: CalendarDays },
     { labelKey: "attestation", href: "/attestation", icon: Award },
     { labelKey: "transcript", href: "/transcript", icon: FileText },
+    NEWS,
     PROFILE,
   ],
   TEACHER: [
@@ -34,6 +36,7 @@ export const NAVIGATION: Record<Role, NavItem[]> = {
     { labelKey: "registrations", href: "/admin/registrations", icon: ClipboardList },
     { labelKey: "staff", href: "/admin/staff", icon: Shield },
     { labelKey: "supportChat", href: "/admin/support", icon: HelpCircle },
+    NEWS,
     PROFILE,
   ],
 };
