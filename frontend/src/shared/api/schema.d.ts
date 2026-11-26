@@ -823,6 +823,58 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/attendance/classes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** My Classes */
+        get: operations["my_classes_api_v1_attendance_classes_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/attendance/classes/{meeting_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Attendance Sheet */
+        get: operations["attendance_sheet_api_v1_attendance_classes__meeting_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Save Attendance */
+        patch: operations["save_attendance_api_v1_attendance_classes__meeting_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/students/me/attendance": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** My Attendance */
+        get: operations["my_attendance_api_v1_students_me_attendance_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/news": {
         parameters: {
             query?: never;
@@ -976,6 +1028,53 @@ export interface components {
             /** Student Id */
             student_id: number;
         };
+        /** AttendanceInput */
+        AttendanceInput: {
+            /** Registration Id */
+            registration_id: number;
+            /** Status */
+            status: ("PRESENT" | "LATE" | "ABSENT") | null;
+        };
+        /** AttendanceRecord */
+        AttendanceRecord: {
+            /**
+             * Class Date
+             * Format: date
+             */
+            class_date: string;
+            /**
+             * Start Time
+             * Format: time
+             */
+            start_time: string;
+            /**
+             * End Time
+             * Format: time
+             */
+            end_time: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "PRESENT" | "LATE" | "ABSENT";
+        };
+        /** AttendanceRow */
+        AttendanceRow: {
+            /** Registration Id */
+            registration_id: number;
+            /** Student Number */
+            student_number: string;
+            /** Full Name */
+            full_name: string;
+            /** Status */
+            status: ("PRESENT" | "LATE" | "ABSENT") | null;
+        };
+        /** AttendanceSheet */
+        AttendanceSheet: {
+            lesson: components["schemas"]["ClassOut"];
+            /** Rows */
+            rows: components["schemas"]["AttendanceRow"][];
+        };
         /** Body_create_material_api_v1_materials_post */
         Body_create_material_api_v1_materials_post: {
             /** Section Id */
@@ -1062,6 +1161,43 @@ export interface components {
             /** File */
             file: string;
         };
+        /**
+         * ClassOut
+         * @description A section meeting on a given date: the unit a teacher takes attendance for.
+         */
+        ClassOut: {
+            /** Meeting Id */
+            meeting_id: number;
+            /** Section Id */
+            section_id: number;
+            /** Course Code */
+            course_code: string;
+            /** Course Title */
+            course_title: string;
+            /** Section Number */
+            section_number: string;
+            /**
+             * Class Date
+             * Format: date
+             */
+            class_date: string;
+            /**
+             * Start Time
+             * Format: time
+             */
+            start_time: string;
+            /**
+             * End Time
+             * Format: time
+             */
+            end_time: string;
+            /** Room Code */
+            room_code: string | null;
+            /** Enrolled */
+            enrolled: number;
+            /** Marked */
+            marked: number;
+        };
         /** ContactOut */
         ContactOut: {
             /** User Id */
@@ -1077,6 +1213,25 @@ export interface components {
             last_message_at: string | null;
             /** Unread */
             unread: boolean;
+        };
+        /** CourseAttendance */
+        CourseAttendance: {
+            /** Section Id */
+            section_id: number;
+            /** Course Code */
+            course_code: string;
+            /** Course Title */
+            course_title: string;
+            /** Present */
+            present: number;
+            /** Late */
+            late: number;
+            /** Absent */
+            absent: number;
+            /** Rate */
+            rate: number | null;
+            /** Records */
+            records: components["schemas"]["AttendanceRecord"][];
         };
         /** CourseCreate */
         CourseCreate: {
@@ -1688,6 +1843,20 @@ export interface components {
             /** Meetings */
             meetings?: components["schemas"]["MeetingInput"][] | null;
         };
+        /** SemesterAttendance */
+        SemesterAttendance: {
+            /** Semester Id */
+            semester_id: number;
+            /** Name */
+            name: string;
+            /**
+             * Start Date
+             * Format: date
+             */
+            start_date: string;
+            /** Courses */
+            courses: components["schemas"]["CourseAttendance"][];
+        };
         /** SemesterCreate */
         SemesterCreate: {
             /** Name */
@@ -1791,6 +1960,11 @@ export interface components {
             password?: string | null;
             /** Full Name */
             full_name?: string | null;
+        };
+        /** StudentAttendance */
+        StudentAttendance: {
+            /** Semesters */
+            semesters: components["schemas"]["SemesterAttendance"][];
         };
         /** StudentCreate */
         StudentCreate: {
@@ -7845,6 +8019,352 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["StudentGrades"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    my_classes_api_v1_attendance_classes_get: {
+        parameters: {
+            query: {
+                date: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ClassOut"][];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    attendance_sheet_api_v1_attendance_classes__meeting_id__get: {
+        parameters: {
+            query: {
+                date: string;
+            };
+            header?: never;
+            path: {
+                meeting_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AttendanceSheet"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    save_attendance_api_v1_attendance_classes__meeting_id__patch: {
+        parameters: {
+            query: {
+                date: string;
+            };
+            header?: never;
+            path: {
+                meeting_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AttendanceInput"][];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AttendanceSheet"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    my_attendance_api_v1_students_me_attendance_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StudentAttendance"];
                 };
             };
             /** @description Bad Request */
