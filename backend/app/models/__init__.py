@@ -1,3 +1,4 @@
+from app.modules.attendance.models import Attendance
 from app.modules.auth.models import AuthSession, LoginFailure, RefreshToken, Role, User
 from app.modules.chat.models import ChatMessage, ChatThread
 from app.modules.courses.models import Course
@@ -21,6 +22,7 @@ __all__ = [
     "CourseSection",
     "SectionMeeting",
     "Registration",
+    "Attendance",
     "ChatThread",
     "ChatMessage",
     "News",
