@@ -19,3 +19,12 @@ dist/
 .claude/
 skills-lock.json
 backend/media/
+*.dump
+*.sql
+!ops/backup/counts.sql
+backups/
+bis-backup/
+*.pem
+id_ed25519*
+*.save
+*.old
