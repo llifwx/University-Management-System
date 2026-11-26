@@ -52,7 +52,7 @@ async def db_factory(monkeypatch):
         await connection.execute(
             text(
                 "TRUNCATE login_failures, refresh_tokens, auth_sessions, "
-                "registrations, section_meetings, "
+                "attendance, registrations, section_meetings, "
                 "course_sections, students, courses, semesters, rooms, news, users "
                 "RESTART IDENTITY CASCADE"
             )

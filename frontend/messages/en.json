@@ -31,7 +31,8 @@
       "sectionDetails": "Section details",
       "messages": "Messages",
       "notFoundTitle": "Page not found",
-      "news": "News"
+      "news": "News",
+      "attendance": "Attendance"
     },
     "notFound": {
       "heading": "404: Page not found",
@@ -81,6 +82,13 @@
         "student": "Student",
         "teacher": "Teacher",
         "admin": "Administrator"
+      }
+    },
+    "attendance": {
+      "status": {
+        "PRESENT": "Present",
+        "LATE": "Late",
+        "ABSENT": "Absent"
       }
     }
   },
@@ -619,6 +627,26 @@
       "deleteConfirmDescription": "This permanently removes the news item and its attachment.",
       "save": "Save changes",
       "editDialogTitle": "Edit news"
+    },
+    "takeAttendance": {
+      "save": "Save attendance",
+      "saving": "Saving…",
+      "toast": {
+        "saved": "Attendance saved."
+      },
+      "errors": {
+        "future": "Attendance can't be taken before the class."
+      },
+      "empty": "No students are enrolled in this class.",
+      "progress": "Marked {marked} of {total}",
+      "markRestPresent": "Mark the rest present",
+      "caption": "Attendance",
+      "columns": {
+        "id": "ID",
+        "student": "Student",
+        "status": "Status"
+      },
+      "statusAriaLabel": "Attendance of {name}"
     }
   },
   "widgets": {
@@ -656,7 +684,8 @@
         "staff": "Staff",
         "messages": "Messages",
         "supportChat": "Support chat",
-        "news": "News"
+        "news": "News",
+        "attendance": "Attendance"
       }
     },
     "courseCatalog": {
@@ -1166,6 +1195,27 @@
       "hasAttachment": "Has attachment",
       "attachment": "Attachment",
       "edit": "Edit"
+    },
+    "attendance": {
+      "teacher": {
+        "title": "Attendance",
+        "description": "Pick a date and a class, then mark each enrolled student.",
+        "date": "Date",
+        "noClasses": "You have no classes on this date.",
+        "classesLabel": "Classes",
+        "section": "Section {number}",
+        "marked": "Marked {marked} / {total}",
+        "sheetLabel": "Attendance sheet",
+        "pickClass": "Select a class to open its student list."
+      },
+      "student": {
+        "title": "Attendance",
+        "description": "Your attendance per course; late counts as attended.",
+        "empty": "No courses yet",
+        "rateLabel": "Attendance rate",
+        "warning": "Attendance is below {min}%.",
+        "history": "History ({count})"
+      }
     }
   }
 }

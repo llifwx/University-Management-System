@@ -31,7 +31,8 @@
       "sectionDetails": "Секция туралы ақпарат",
       "messages": "Хабарлар",
       "notFoundTitle": "Бет табылмады",
-      "news": "Жаңалықтар"
+      "news": "Жаңалықтар",
+      "attendance": "Қатысу"
     },
     "notFound": {
       "heading": "404: Бет табылмады",
@@ -81,6 +82,13 @@
         "student": "Студент",
         "teacher": "Оқытушы",
         "admin": "Әкімші"
+      }
+    },
+    "attendance": {
+      "status": {
+        "PRESENT": "Қатысты",
+        "LATE": "Кешікті",
+        "ABSENT": "Қатыспады"
       }
     }
   },
@@ -619,6 +627,26 @@
       "deleteConfirmDescription": "Жаңалық пен оның тіркемесі біржола жойылады.",
       "save": "Сақтау",
       "editDialogTitle": "Жаңалықты өңдеу"
+    },
+    "takeAttendance": {
+      "save": "Қатысуды сақтау",
+      "saving": "Сақталуда…",
+      "toast": {
+        "saved": "Қатысу сақталды."
+      },
+      "errors": {
+        "future": "Сабақ басталмай тұрып қатысуды белгілеуге болмайды."
+      },
+      "empty": "Бұл сабаққа ешкім тіркелмеген.",
+      "progress": "{total} ішінен {marked} белгіленді",
+      "markRestPresent": "Қалғандары қатысты",
+      "caption": "Қатысу",
+      "columns": {
+        "id": "ID",
+        "student": "Студент",
+        "status": "Күйі"
+      },
+      "statusAriaLabel": "{name} қатысуы"
     }
   },
   "widgets": {
@@ -656,7 +684,8 @@
         "staff": "Қызметкерлер",
         "messages": "Хабарлар",
         "supportChat": "Қолдау көрсету чаты",
-        "news": "Жаңалықтар"
+        "news": "Жаңалықтар",
+        "attendance": "Қатысу"
       }
     },
     "courseCatalog": {
@@ -1166,6 +1195,27 @@
       "hasAttachment": "Тіркеме бар",
       "attachment": "Тіркеме",
       "edit": "Өңдеу"
+    },
+    "attendance": {
+      "teacher": {
+        "title": "Қатысу",
+        "description": "Күн мен сабақты таңдап, әр тіркелген студентті белгілеңіз.",
+        "date": "Күні",
+        "noClasses": "Бұл күні сізде сабақ жоқ.",
+        "classesLabel": "Сабақтар",
+        "section": "{number} секция",
+        "marked": "Белгіленді {marked} / {total}",
+        "sheetLabel": "Қатысу тізімі",
+        "pickClass": "Студенттер тізімін ашу үшін сабақты таңдаңыз."
+      },
+      "student": {
+        "title": "Қатысу",
+        "description": "Әр курс бойынша қатысуыңыз; кешігу қатысу ретінде есептеледі.",
+        "empty": "Әзірге курстар жоқ",
+        "rateLabel": "Қатысу пайызы",
+        "warning": "Қатысу {min}%-дан төмен.",
+        "history": "Тарих ({count})"
+      }
     }
   }
 }
