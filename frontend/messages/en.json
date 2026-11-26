@@ -29,6 +29,8 @@
       "teacherSchedule": "Teaching schedule",
       "teacherDashboard": "Teaching dashboard",
       "sectionDetails": "Section details",
+      "messages": "Messages",
+      "materials": "Materials",
       "notFoundTitle": "Page not found",
       "news": "News",
       "attendance": "Attendance"
@@ -627,6 +629,26 @@
       "save": "Save changes",
       "editDialogTitle": "Edit news"
     },
+    "manageMaterials": {
+      "fields": {
+        "section": "Course section",
+        "chooseSection": "Choose a section",
+        "category": "Category",
+        "title": "Title",
+        "description": "Description",
+        "descriptionHint": "Optional notes for students about this file.",
+        "file": "File"
+      },
+      "upload": "Upload",
+      "dialogTitle": "Upload material",
+      "toast": {
+        "uploaded": "Material uploaded.",
+        "deleted": "Material deleted."
+      },
+      "delete": "Delete",
+      "deleteConfirmTitle": "Delete “{title}”?",
+      "deleteConfirmDescription": "This permanently removes the file for every student in the section."
+    },
     "takeAttendance": {
       "save": "Save attendance",
       "saving": "Saving…",
@@ -681,6 +703,8 @@
         "rooms": "Rooms",
         "registrations": "Registrations",
         "staff": "Staff",
+        "messages": "Messages",
+        "materials": "Materials",
         "supportChat": "Support chat",
         "news": "News",
         "attendance": "Attendance"
@@ -997,6 +1021,48 @@
       "subtitle": "Sign in with your university account",
       "sessionExpired": "Your session has ended. Please sign in again.",
       "serviceUnavailable": "The university service is unavailable right now. Please try again shortly."
+    },
+    "messages": {
+      "title": "Messages",
+      "description": "Private conversations with your teachers, students and support.",
+      "supportLabel": "Support",
+      "empty": {
+        "noConversations": {
+          "title": "No conversations yet",
+          "description": "Conversations with your teachers or students will show up here."
+        },
+        "noMessages": "No messages yet. Say hello!"
+      },
+      "attachFile": "Attach a file or photo",
+      "removeAttachment": "Remove attachment",
+      "composerPlaceholder": "Type a message…",
+      "send": "Send",
+      "errors": {
+        "unsupportedFileType": "Attach a JPEG, PNG, WebP, GIF image or PDF.",
+        "fileTooLarge": "Attachments must be 15 MB or smaller.",
+        "notEligible": "This person is not one of your teachers or students."
+      }
+    },
+    "materials": {
+      "title": "Materials",
+      "description": "Syllabi, homework and practice files shared for your courses.",
+      "upload": "Upload material",
+      "uploadedBy": "Uploaded by {name}",
+      "filters": {
+        "allCategories": "All categories",
+        "allCourses": "All courses"
+      },
+      "categories": {
+        "syllabus": "Syllabus",
+        "homework": "Homework",
+        "practice": "Practice",
+        "other": "Other"
+      },
+      "empty": {
+        "title": "No materials yet",
+        "description": "Files your teachers share will show up here.",
+        "noMatches": "No materials match the selected filters."
+      }
     },
     "myCourses": {
       "title": "My courses",

@@ -40,6 +40,8 @@ def roles(*allowed: str):
 
 Admin = Annotated[UserOut, Depends(roles("ADMIN"))]
 StudentActor = Annotated[UserOut, Depends(roles("STUDENT"))]
+TeacherActor = Annotated[UserOut, Depends(roles("TEACHER"))]
 StaffActor = Annotated[UserOut, Depends(roles("ADMIN", "TEACHER"))]
+TeacherOrStudent = Annotated[UserOut, Depends(roles("STUDENT", "TEACHER"))]
 Offset = Annotated[int, Query(ge=0)]
 Limit = Annotated[int, Query(ge=1, le=100)]

@@ -7,6 +7,8 @@ from app.modules.auth.router import users_router
 from app.modules.chat.router import router as chat_router
 from app.modules.courses.router import router as courses_router
 from app.modules.grades.router import router as grades_router
+from app.modules.materials.router import router as materials_router
+from app.modules.messaging.router import router as messaging_router
 from app.modules.news.router import router as news_router
 from app.modules.registrations.router import router as registrations_router
 from app.modules.rooms.router import router as rooms_router
@@ -30,8 +32,10 @@ for module_router in (
     registrations_router,
     schedules_router,
     chat_router,
+    messaging_router,
     grades_router,
     attendance_router,
     news_router,
+    materials_router,
 ):
     router.include_router(module_router)

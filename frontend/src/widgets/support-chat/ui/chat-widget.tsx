@@ -3,6 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { HelpCircle, Maximize2, Minimize2, Paperclip, Send, X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { usePathname } from "next/navigation";
 import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
@@ -20,6 +21,7 @@ export function ChatWidget({ wsUrl }: { wsUrl: string }) {
   const t = useTranslations("widgets.supportChat");
   const getMessage = useApiErrorMessage();
   const user = useSessionUser();
+  const pathname = usePathname();
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
@@ -109,7 +111,9 @@ export function ChatWidget({ wsUrl }: { wsUrl: string }) {
     }
   }
 
-  if (user.role === "ADMIN") return null;
+  // The Messages page already embeds this same support conversation inline, without the
+  // overlap risk of a fixed-position bubble sitting over that page's own composer.
+  if (user.role === "ADMIN" || pathname?.startsWith("/messages")) return null;
 
   return (
     <>
